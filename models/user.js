@@ -7,7 +7,9 @@ var userSchema = new Schema({
     email: String,
     password: String,
     admin: Boolean,
-    cuentas: [{cuentaTwitter: String}]
+    cuentas: [{cuentaTwitter: String}],
+    origen: String
+
 });
 
 userSchema.methods.log = function(){
