@@ -8,7 +8,35 @@ console.log(bdPath);
 
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
+/**
+ * Acceso mediante login normal
+ */
 
+passport.use(new LocalStrategy(function (username,password,done) {
+  var usuario = {};
+  var query = {
+    email: username
+  };
+  bdApi.getUsuarios(query, function (err,res,body) {
+    if(err){return done(err);}
+    if(body.message.length === 0){
+      console.log("No existe el usuario");
+      return done(null,false,{message: "Error en las crendenciales"});
+    }else {
+      usuario = body.message[0];
+      if (usuario.password !== password) {
+        console.log("contraseña invalida");
+        console.log(password);
+        console.log(usuario);
+        return done(null, false, {message: "Error en las crendenciales"});
+      }
+      console.log("Login OK");
+      return done(null, usuario);
+    }});
+}));
+
+const login = passport.authenticate('local',{successRedirect: "/frontend/index",failureRedirect:"/"});
 /**
  * Configuración y callback del acceso mediante la cuenta de Google
  */
@@ -147,5 +175,6 @@ module.exports = {
   loginTwitter: loginTwitter,
   loginTwitterCallback: loginTwitterCallback,
   index: index,
-  logout: logout
+  logout: logout,
+  login: login
 };

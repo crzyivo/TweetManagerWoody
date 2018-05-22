@@ -16,7 +16,22 @@
                 check=false;
             }
         }
-
+        if(check){
+          $.ajax({
+            type: "GET",
+            url:"/login",
+            data: {
+              username:$("#username"),
+              password:$("#password")
+            },
+            success:function () {
+              
+            },
+            error:function () {
+              
+            }
+          });
+        }
         return check;
     });
 
@@ -55,3 +70,4 @@
     
 
 })(jQuery);
+
