@@ -1,6 +1,8 @@
 const passport = require('passport');
 const request = require('request');
-var bdPath = require("../../bin/bdSettings").bdPath;
+var hpaths = require("../../bin/herokuSettings");
+var bdPath = hpaths.bdPath;
+var urlPath = hpaths.urlPath;
 console.log(bdPath);
 
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -8,7 +10,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(new GoogleStrategy({
       clientID: "798313746266-ds9o88dnpa0b1r60hbiqn33fqq5o5ree.apps.googleusercontent.com",
       clientSecret:"KypPKTK7K8yZD43sVcWjxl1a",
-      callbackURL: "http://localhost:3000/loginGoogle/callback",
+      callbackURL: urlPath+"/loginGoogle/callback",
     },
     function(token, tokenSecret, profile, done) {
       var usuario = {};
