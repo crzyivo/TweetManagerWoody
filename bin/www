@@ -7,25 +7,14 @@
 var app = require('../app');
 var debug = require('debug')('proyecto:server');
 var http = require('http');
-
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+
 app.set('port', port);
 
-/**
- *
- * Direccion de la API de Mongo
- */
-var bdPath;
-if(process.env.EXEC === 'heroku'){
-  bdPath = "https://frozen-atoll-44380.herokuapp.com/";
-}else {
-  bdPath = "localhost:3001/"
-}
-app.set('bdPath',bdPath);
 /**
  * Create HTTP server.
  */
@@ -99,3 +88,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
