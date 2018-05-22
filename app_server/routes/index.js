@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ctrlMain =  require('../controllers/main');
-
+router.get('',ctrlMain.index);
+router.get('/logout',ctrlMain.logout);
 router.get('/loginGoogle',ctrlMain.loginGoogle);
 router.get('/loginGoogle/callback',ctrlMain.loginGoogle,ctrlMain.loginGoogleCallback);
 router.get('/loginTwitter',ctrlMain.loginTwitter);

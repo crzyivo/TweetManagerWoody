@@ -47,6 +47,16 @@ passport.use(new GoogleStrategy({
       return done(null, usuario);
     }));
 
+const loginGoogle = passport.authenticate('google', {
+  scope: ['https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/plus.profile.emails.read'],
+  failureRedirect: '/'
+});
+
+const loginGoogleCallback = function (req, res) {
+  res.redirect('/frontend/index.html');
+};
+
 /**
  * Configuración y acceso mediante la cuenta de Twitter
  */
@@ -85,6 +95,16 @@ passport.use(new TwitterStrategy({
       console.log(profile.id);
       return done(null, usuario);
     }));
+
+const loginTwitter = passport.authenticate('twitter');
+
+const loginTwitterCallback = function (req, res) {
+  res.redirect('/frontend/index');
+};
+
+/**
+ * Uso de sesiones con passport
+ */
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -93,24 +113,39 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-const loginGoogle = passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/plus.profile.emails.read'],
-  faliureRedirect: '/'
-});
-
-const loginGoogleCallback = function (req, res) {
-  res.redirect('/frontend/index.html');
+/**
+ * Control de sesión al acceder a root
+ * @param req
+ * @param res
+ */
+const index = function(req, res){
+  if(req.cookies.user_sid){
+    console.log("sesion ya iniciada");
+    res.redirect('/frontend/index');
+  }else {
+    console.log("inicia sesion pls");
+    res.redirect('index.html');
+  }
 };
 
-const loginTwitter = passport.authenticate('twitter');
-
-const loginTwitterCallback = function (req, res) {
-  res.redirect('/frontend/index.html');
+/**
+ * Salida de la sesión del usuario, borramos la cookie de sesión
+ * @param req
+ * @param res
+ */
+const logout = function(req, res){
+  if(req.cookies.user_sid){
+    res.clearCookie('user_sid');
+    res.redirect('/');
+  }
 };
+
+
 module.exports = {
   loginGoogle: loginGoogle,
   loginGoogleCallback: loginGoogleCallback,
   loginTwitter: loginTwitter,
-  loginTwitterCallback: loginTwitterCallback
+  loginTwitterCallback: loginTwitterCallback,
+  index: index,
+  logout: logout
 };
