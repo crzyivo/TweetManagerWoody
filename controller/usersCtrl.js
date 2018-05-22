@@ -31,8 +31,9 @@ const usrGet = function(req, res) {
     }
     if(req.query.origen){
       query.origen  = req.query.origen;
-    }
+      }
     if(req.query.id){}
+    console.log(query);
     Usuario.find(query,function (err, data) {
         if(err){
           response = {"error" : true,"message" : "Error al obtener datos"};
@@ -43,6 +44,23 @@ const usrGet = function(req, res) {
     });
 };
 
+const usrPut = function (req,res) {
+  console.log(req.body.nombre);
+  var newUser = req.body;
+  var response = {};
+  console.log(newUser);
+  Usuario.update({email: newUser.email},newUser,function (err,msg) {
+    if(err) {
+      response = {"error" : true,"message" : "Error adding data"};
+      console.log(msg);
+    } else {
+      response = {"error" : false,"message" : "User has been updated!"};
+      console.log(msg);
+    }
+    res.json(response);
+  });
+};
+
  module.exports = {
-    usrGet,usrPost
+    usrGet,usrPost,usrPut
 };

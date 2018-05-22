@@ -8,7 +8,7 @@ var userSchema = new Schema({
     password: String,
     admin: Boolean,
     cuentas: [{cuentaTwitter: String}],
-    origen: String
+    origen: [String]
 
 });
 
