@@ -6,6 +6,7 @@ var bdPath = hpaths.bdPath;
 var urlPath = hpaths.urlPath;
 console.log(bdPath);
 
+var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
@@ -84,6 +85,50 @@ const loginGoogle = passport.authenticate('google', {
 
 const loginGoogleCallback = function (req, res) {
   res.redirect('/frontend/index.html');
+};
+
+/**
+ * Configuracion y acceso mediante la cuenta de Facebook
+ */
+passport.use(new FacebookStrategy({
+        clientID: "248940799181481",
+        clientSecret: "4507bf08d0818017acbb26fc4aeda0fc",
+        callbackURL: urlPath + "/loginFacebook/callback"
+    },
+    function (token, tokenSecret, profile, done) {
+        var usuario = {};
+        console.log(profile.emails[0].value);
+        var query = {
+            email: profile.emails[0].value
+        };
+        bdApi.getUsuarios(query,
+            function (err, res, body) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log("Get response: " + res.statusCode);
+                if (body.message.length !== 0) {
+                    console.log(body.message);
+                    usuario = body.message[0];
+                    if(usuario.origen.indexOf(profile.provider) === -1) {
+                        usuario.origen.push(profile.provider);
+                        bdApi.putUsuarios(usuario);
+                    }
+                } else {
+                    usuario.email = profile.emails[0].value;
+                    usuario.origen = profile.provider;
+                    bdApi.postUsuarios(usuario);
+                }
+            });
+        console.log(profile.id);
+        return done(null, usuario);
+    }));
+
+const loginFacebook = passport.authenticate('facebook');
+
+const loginFacebookCallback = function (req, res) {
+    res.redirect('/frontend/index');
 };
 
 /**
@@ -171,11 +216,13 @@ const logout = function(req, res){
 
 
 module.exports = {
-  loginGoogle: loginGoogle,
-  loginGoogleCallback: loginGoogleCallback,
-  loginTwitter: loginTwitter,
-  loginTwitterCallback: loginTwitterCallback,
-  index: index,
-  logout: logout,
-  login: login
+    loginFacebook: loginFacebook,
+    loginFacebookCallback: loginFacebookCallback,
+    loginGoogle: loginGoogle,
+    loginGoogleCallback: loginGoogleCallback,
+    loginTwitter: loginTwitter,
+    loginTwitterCallback: loginTwitterCallback,
+    index: index,
+    logout: logout,
+    login: login
 };

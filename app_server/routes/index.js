@@ -8,5 +8,7 @@ router.get('/loginGoogle',ctrlMain.loginGoogle);
 router.get('/loginGoogle/callback',ctrlMain.loginGoogle,ctrlMain.loginGoogleCallback);
 router.get('/loginTwitter',ctrlMain.loginTwitter);
 router.get('/loginTwitter/callback',ctrlMain.loginTwitter,ctrlMain.loginTwitterCallback);
+router.get('/loginFacebook',ctrlMain.loginFacebook);
+router.get('/loginFacebook/callback',ctrlMain.loginFacebook,ctrlMain.loginFacebookCallback);
 router.get('',ctrlMain.index);
 module.exports = router;
