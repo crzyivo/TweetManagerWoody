@@ -5,12 +5,7 @@ const Usuario = require('../models/user');
 
 const usrPost = function (req,res) {
   console.log(req.body.nombre);
-  var newUser = new Usuario();
-    newUser.nombre= req.body.nombre;
-    newUser.apellidos =  req.body.apellidos;
-    newUser.email = req.body.email;
-    newUser.password = req.body.password;
-    newUser.origen = req.body.origen;
+  var newUser = new Usuario(req.body);
   var response = {};
   newUser.save(function (err,newUser) {
     if(err) {
