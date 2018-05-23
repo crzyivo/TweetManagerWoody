@@ -93,7 +93,8 @@ const loginGoogleCallback = function (req, res) {
 passport.use(new FacebookStrategy({
         clientID: "248940799181481",
         clientSecret: "4507bf08d0818017acbb26fc4aeda0fc",
-        callbackURL: urlPath + "/loginFacebook/callback"
+        callbackURL: urlPath + "/loginFacebook/callback",
+        profileFields: ['id', 'emails', 'name']
     },
     function (token, tokenSecret, profile, done) {
         var usuario = {};
@@ -125,7 +126,7 @@ passport.use(new FacebookStrategy({
         return done(null, usuario);
     }));
 
-const loginFacebook = passport.authenticate('facebook');
+const loginFacebook = passport.authenticate('facebook', { scope : ['email'] });
 
 const loginFacebookCallback = function (req, res) {
     res.redirect('/frontend/index');
