@@ -37,6 +37,7 @@ passport.use(new LocalStrategy(function (username,password,done) {
 }));
 
 const login = passport.authenticate('local',{successRedirect: "/frontend/index",failureRedirect:"/"});
+
 /**
  * Configuración y callback del acceso mediante la cuenta de Google
  */
@@ -150,9 +151,9 @@ const index = function(req, res){
   if(req.cookies.user_sid){
     console.log("sesion ya iniciada");
     res.redirect('/frontend/index');
-  }else {
+  }else{
     console.log("inicia sesion pls");
-    res.redirect('index.html');
+    res.redirect('/index');
   }
 };
 
