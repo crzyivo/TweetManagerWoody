@@ -12,22 +12,22 @@ function getUsuarios(query,callback) {
 
 }
 
-function postUsuarios(usuario){
+function postUsuarios(usuario,callback){
   request.post({
     baseUrl: bdPath,
     uri: "/users",
     json: true,
     body: usuario
-  });
+  },callback);
 }
 
-function putUsuarios(usuario){
+function putUsuarios(usuario,callback){
   request.put({
     baseUrl: bdPath,
     uri: "/users",
     json: true,
     body: usuario
-  });
+  },callback);
 }
 
 module.exports = {getUsuarios,postUsuarios,putUsuarios};

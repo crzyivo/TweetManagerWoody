@@ -3,5 +3,5 @@ const router = express.Router();
 const ctrlUsers = require('../controllers/users');
 
 /* GET users listing. */
-router.get('/',ctrlUsers.listUsers);
+router.post('/',ctrlUsers.postUsers);
 module.exports = router;
