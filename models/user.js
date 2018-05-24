@@ -9,7 +9,7 @@ var userSchema = new Schema({
     admin: Boolean,
     cuentas: [{cuentaTwitter: String}],
     origen: [String],
-    primerAccesso: Boolean
+    primerAcceso: Boolean
 
 });
 
