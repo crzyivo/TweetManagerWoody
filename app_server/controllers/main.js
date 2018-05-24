@@ -33,11 +33,16 @@ passport.use(new LocalStrategy(function (username,password,done) {
         return done(null, false, {message: "Error en las crendenciales"});
       }
       console.log("Login OK");
-      return done(null, usuario);
+      return done(null,usuario);
     }});
 }));
 
-const login = passport.authenticate('local',{successRedirect: "/frontend/index",failureRedirect:"/"});
+const login = passport.authenticate('local');
+
+const  loginCallback = function(req,res){
+  console.log(req.user);
+  res.json({username: req.user.email});
+};
 
 /**
  * Configuración y callback del acceso mediante la cuenta de Google
@@ -225,5 +230,6 @@ module.exports = {
     loginTwitterCallback: loginTwitterCallback,
     index: index,
     logout: logout,
-    login: login
+    login: login,
+    loginCallback: loginCallback
 };

@@ -10,10 +10,29 @@ function mainLogin($scope,$http) {
       params: $scope.loginData
     })
         .success(function (data) {
-          window.location.href= ("/frontend/index");
+            loginNg.value("username", $scope.loginData.username);
+            console.log(data);
+            window.location.href = ("/frontend/index");
         })
         .error(function (data) {
+          $scope.error= "Login incorrecto";
           console.log(data);
         });
   };
+
+  function firstLogin($scope,$http,username) {
+    $scope.password1;
+    $scope.password2;
+     if($scope.password1 === $scope.password2){
+       $http.put('users',{
+         body: {
+           email: username,
+           password: $scope.password1
+         }
+       })
+           .success(function (data) {
+             window.location.href("/frontend/index");
+           })
+     }
+  }
 }
