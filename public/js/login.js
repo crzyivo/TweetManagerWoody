@@ -1,38 +1,51 @@
 //public/js/login.js
 
-var loginNg = angular.module('login',[]);
+var loginNg = angular.module('login',['LocalStorageModule']);
 
-function mainLogin($scope,$http) {
+loginNg.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+      .setPrefix('loginNg')
+      .setStorageType('sessionStorage')
+});
+
+loginNg.controller('mainLogin',['$scope','$http','$window','localStorageService',function($scope,$http,$window,localStorageService) {
   $scope.loginData = {};
-  
+  var usuario
   $scope.loginSubmit = function () {
-    $http.get('/login',{
+    $http.get('/login', {
       params: $scope.loginData
     })
         .success(function (data) {
-            loginNg.value("username", $scope.loginData.username);
-            console.log(data);
-            window.location.href = ("/frontend/index");
+          localStorageService.set('username',data.username);
+          console.log(data);
+          $window.location.href = data.next;
         })
         .error(function (data) {
-          $scope.error= "Login incorrecto";
+          $scope.error = "Login incorrecto";
           console.log(data);
         });
   };
+}]);
 
-  function firstLogin($scope,$http,username) {
-    $scope.password1;
-    $scope.password2;
-     if($scope.password1 === $scope.password2){
-       $http.put('users',{
-         body: {
-           email: username,
-           password: $scope.password1
-         }
-       })
-           .success(function (data) {
-             window.location.href("/frontend/index");
-           })
-     }
+loginNg.controller('firstLogin',['$scope','$http','localStorageService',function($scope,$http,localStorageService) {
+  $scope.cambioSubmit = function () {
+    console.log(localStorageService.get('username'));
+    console.log($scope.password1);
+    console.log($scope.password2);
+    if ($scope.password1 !== $scope.password2) {
+      $scope.datavalidate = "Las contraseñas no coinciden";
+      $scope.alert = true;
+
+    } else {
+      $http.put('users', {
+        body: {
+          email: username,
+          password: $scope.password1
+        }
+      })
+          .success(function (data) {
+            window.location.href("/frontend/index");
+          })
+    }
   }
-}
+}]);

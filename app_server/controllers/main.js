@@ -41,7 +41,15 @@ const login = passport.authenticate('local');
 
 const  loginCallback = function(req,res){
   console.log(req.user);
-  res.json({username: req.user.email});
+  var response = {}
+  if(req.user.primerAcceso){
+    response.next = '/firstLogin';
+  }else{
+    response.next = '/frontend/index';
+  }
+  response.username = req.user.email;
+  res.json(response);
+
 };
 
 /**
