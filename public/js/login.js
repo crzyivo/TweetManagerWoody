@@ -41,12 +41,12 @@ loginNg.controller('firstLogin',['$scope','$http','$window','localStorageService
       $scope.alert = true;
 
     } else {
-      $http.put('users', {
+      $http.put('/users', {
           email: localStorageService.get('username'),
           password: CryptoJS.SHA256($scope.password1).toString(CryptoJS.enc.Base64)
       })
           .success(function (data) {
-            $window.location.href("/frontend/index");
+            $window.location.href=data.next;
           })
           .error(function (data) {
           })

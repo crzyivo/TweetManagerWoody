@@ -1,14 +1,16 @@
 const bdPath = require('../bdApiCalls');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
+const CryptoJS = require('crypto-js');
 const randomstring = require('randomstring');
 const ethmail = 'ucso5tvh2lduroxg@ethereal.email';
+const ethpass ='zfyZVHFC5rqU7uTtXJ';
 const transporter = nodemailer.createTransport({
   host: 'smtp.ethereal.email',
   port: 587,
   auth: {
     user: ethmail,
-    pass: 'zfyZVHFC5rqU7uTtXJ'
+    pass: ethpass
   }
 });
 
@@ -20,32 +22,37 @@ const postUsers = function(req,res){
           res.send(err);
         }
         if(body.message.length !== 0){
-          res.status(400);
-          res.send("El usuario ya esta registrado");
+          res.status(400).send("El usuario ya esta registrado");
         }else{
           var passGenerada = randomstring.generate({charset: 'wody',length: 10});
           var usuario = req.body;
-          usuario.password = passGenerada;
-          bdPath.postUsuarios(usuario,function (err,resPost,body){
-            if(err){
-              res.status(500);
-              res.send(err);
-            }
-            var mail = {
-              from: ethmail ,
-              to: usuario.email,
-              subject: 'Cuenta creada en WoodyTweetManager',
-              text: 'Se ha creado con exito su cuenta. Su contraseña es '+passGenerada+
-                    '\nEsta contraseña es provisional, se le pedirá que cambie su contraseña cuando acceda por primera' +
-                    'vez a la aplicación',
-            }
-            transporter.send(mail, function (err,info) {
-              if(err){console.log(err)}
-              console.log(info);
-            })
+          usuario.primerAcceso=true;
+          usuario.password = CryptoJS.SHA256(passGenerada).toString(CryptoJS.enc.Base64);
+          bcrypt.hash(usuario.password,5).then(function (hash) {
+            usuario.password = hash;
+            bdPath.postUsuarios(usuario,function (err,resPost,body){
+              if(err){
+                res.status(500);
+                res.send(err);
+              }
+              var mail = {
+                from: ethmail ,
+                to: usuario.email,
+                subject: 'Cuenta creada en WoodyTweetManager',
+                text: 'Se ha creado con exito su cuenta. Su contraseña es '+passGenerada+
+                '\nEsta contraseña es provisional, se le pedirá que cambie su contraseña cuando acceda por primera ' +
+                'vez a la aplicación',
+              };
+              transporter.sendMail(mail, function (err,info) {
+                if(err){console.log(err)}
+                console.log(info);
+              });
+              res.status(200);
+              res.end();
+            });
           });
         }
-      })
+      });
 };
 
 const nuevaPass = function(req,res){
@@ -77,7 +84,7 @@ const nuevaPass = function(req,res){
         });
       });
   res.status(200);
-  res.end();
+  res.json({next:'/frontend/index'});
 };
 
 module.exports = {
