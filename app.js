@@ -30,15 +30,17 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public'),{extensions :['html'],index: false}));
 
-app.use('*',function (req,res,next) {
-  if(req.secure){
-    console.log("secured");
-    next();
-  }else {
-    console.log("not secured");
-    res.redirect(herokuSettings.urlPath+req.url);
-  }
-});
+if(herokuSettings.entorno !== 'heroku') {
+  app.use('*', function (req, res, next) {
+    if (req.secure) {
+      console.log("secured");
+      next();
+    } else {
+      console.log("not secured");
+      res.redirect(herokuSettings.urlPath + req.url);
+    }
+  });
+}
 
 app.use('/users', usersRouter);
 app.use('/', indexRouter); //Esto siempre el último
