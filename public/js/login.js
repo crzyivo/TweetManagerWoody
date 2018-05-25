@@ -10,10 +10,13 @@ loginNg.config(function (localStorageServiceProvider) {
 
 loginNg.controller('mainLogin',['$scope','$http','$window','localStorageService',function($scope,$http,$window,localStorageService) {
   $scope.loginData = {};
-  var usuario
   $scope.loginSubmit = function () {
+    var login = $scope.loginData;
     $http.get('/login', {
-      params: $scope.loginData
+      params: {
+        username: login.username,
+        password: CryptoJS.SHA256(login.password).toString(CryptoJS.enc.Base64)
+      }
     })
         .success(function (data) {
           localStorageService.set('username',data.username);
@@ -27,7 +30,8 @@ loginNg.controller('mainLogin',['$scope','$http','$window','localStorageService'
   };
 }]);
 
-loginNg.controller('firstLogin',['$scope','$http','localStorageService',function($scope,$http,localStorageService) {
+loginNg.controller('firstLogin',['$scope','$http','$window','localStorageService',
+  function($scope,$http,$window,localStorageService) {
   $scope.cambioSubmit = function () {
     console.log(localStorageService.get('username'));
     console.log($scope.password1);
@@ -38,13 +42,13 @@ loginNg.controller('firstLogin',['$scope','$http','localStorageService',function
 
     } else {
       $http.put('users', {
-        body: {
-          email: username,
-          password: $scope.password1
-        }
+          email: localStorageService.get('username'),
+          password: CryptoJS.SHA256($scope.password1).toString(CryptoJS.enc.Base64)
       })
           .success(function (data) {
-            window.location.href("/frontend/index");
+            $window.location.href("/frontend/index");
+          })
+          .error(function (data) {
           })
     }
   }

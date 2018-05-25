@@ -2,6 +2,7 @@ const passport = require('passport');
 const request = require('request');
 const bdApi = require('../bdApiCalls');
 var hpaths = require("../conf/herokuSettings");
+const bcrypt = require('bcrypt');
 var bdPath = hpaths.bdPath;
 var urlPath = hpaths.urlPath;
 console.log(bdPath);
@@ -26,14 +27,16 @@ passport.use(new LocalStrategy(function (username,password,done) {
       return done(null,false,{message: "Error en las crendenciales"});
     }else {
       usuario = body.message[0];
-      if (usuario.password !== password) {
-        console.log("contraseña invalida");
-        console.log(password);
-        console.log(usuario);
-        return done(null, false, {message: "Error en las crendenciales"});
-      }
-      console.log("Login OK");
-      return done(null,usuario);
+      bcrypt.compare(password,usuario.password).then(function (res) {
+        if (!res) {
+          console.log("contraseña invalida");
+          console.log(password);
+          console.log(usuario);
+          return done(null, false, {message: "Error en las crendenciales"});
+        }
+        console.log("Login OK");
+        return done(null,usuario);
+      });
     }});
 }));
 
@@ -41,7 +44,7 @@ const login = passport.authenticate('local');
 
 const  loginCallback = function(req,res){
   console.log(req.user);
-  var response = {}
+  var response = {};
   if(req.user.primerAcceso){
     response.next = '/firstLogin';
   }else{
