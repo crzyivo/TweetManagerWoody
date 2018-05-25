@@ -17,7 +17,7 @@ app.set('views', path.join(__dirname,'app_server', 'views'));
 app.set('view engine', 'pug');
 app.use(session({
   name: "user_sid",
-  secret: "HayUnaSerpienteEnMiBota" ,
+  secret: "HayUnaSerpienteEnMiBota",
   resave: false,
   saveUninitialized: false
 }));

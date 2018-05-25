@@ -1,5 +1,6 @@
 const bdPath = require('../bdApiCalls');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const ethmail = 'ucso5tvh2lduroxg@ethereal.email';
 const transporter = nodemailer.createTransport({
@@ -45,8 +46,41 @@ const postUsers = function(req,res){
           });
         }
       })
-}
+};
+
+const nuevaPass = function(req,res){
+  bdPath.getUsuarios({email:req.body.email},
+      function (err,resBd,body) {
+        if(err){
+          res.status(500);
+          res.send(err);
+        }
+        var actualizado = body.message[0];
+        if(actualizado.primerAcceso){
+          actualizado.primerAcceso = false;
+        }
+        if(req.body.oldPass){
+          //TODO: Cambio de contraseña desde perfil
+        }
+        console.log(req.body);
+        bcrypt.hash(req.body.password,5).then(function (hash) {
+          console.log("hasheado");
+          actualizado.password = hash;
+          console.log(actualizado);
+          bdPath.putUsuarios(actualizado,
+              function (err,resBd,body) {
+                if(err){
+                  res.status(500);
+                  res.send(err);
+                }
+              })
+        });
+      });
+  res.status(200);
+  res.end();
+};
 
 module.exports = {
-    postUsers: postUsers
+    postUsers: postUsers,
+    nuevaPass: nuevaPass
 };
