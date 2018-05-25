@@ -1,5 +1,5 @@
 const request = require('request');
-var hpaths = require("./herokuSettings");
+var hpaths = require("./conf/herokuSettings");
 var bdPath = hpaths.bdPath;
 
 function getUsuarios(query,callback) {

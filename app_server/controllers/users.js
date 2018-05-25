@@ -1,4 +1,4 @@
-const bdPath = require('../../bin/bdApiCalls');
+const bdPath = require('../bdApiCalls');
 const nodemailer = require('nodemailer');
 const randomstring = require('randomstring');
 const ethmail = 'ucso5tvh2lduroxg@ethereal.email';

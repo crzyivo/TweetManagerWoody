@@ -7,6 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('proyecto:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+const herokuSettings = require('../app_server/conf/herokuSettings');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -16,9 +21,21 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
+ * Create HTTPS server.
+ */
+var cert = path.join(__dirname,'..','app_server','conf','.sslcert','local','localhost.crt');
+var key = path.join(__dirname,'..','app_server','conf','.sslcert','local','localhost.key');
+
+const httpsOptions = {
+  cert: fs.readFileSync(cert),
+  key: fs.readFileSync(key)
+};
+
+var serverhttps = https.createServer(httpsOptions,app).listen(3003);
+
+/**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**

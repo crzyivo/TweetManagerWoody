@@ -1,7 +1,7 @@
 const passport = require('passport');
 const request = require('request');
-const bdApi = require('../../bin/bdApiCalls');
-var hpaths = require("../../bin/herokuSettings");
+const bdApi = require('../bdApiCalls');
+var hpaths = require("../conf/herokuSettings");
 var bdPath = hpaths.bdPath;
 var urlPath = hpaths.urlPath;
 console.log(bdPath);
@@ -10,10 +10,10 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
+
 /**
  * Acceso mediante login normal
  */
-
 passport.use(new LocalStrategy(function (username,password,done) {
   var usuario = {};
   var query = {

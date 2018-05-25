@@ -6,7 +6,7 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var lessMiddleware = require('less-middleware');
 var logger = require('morgan');
-
+const herokuSettings = require('./app_server/conf/herokuSettings');
 const indexRouter = require('./app_server/routes/index');
 const usersRouter = require('./app_server/routes/users');
 
@@ -30,8 +30,18 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public'),{extensions :['html'],index: false}));
 
+app.use('*',function (req,res,next) {
+  if(req.secure){
+    console.log("secured");
+    next();
+  }else {
+    console.log("not secured");
+    res.redirect(herokuSettings.urlPath+req.url);
+  }
+});
+
 app.use('/users', usersRouter);
-app.use('/', indexRouter);
+app.use('/', indexRouter); //Esto siempre el último
 
 
 // catch 404 and forward to error handler
