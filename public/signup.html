@@ -24,7 +24,8 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.js"></script> <!-- load angular -->
+<!--===============================================================================================-->
 </head>
 <body ng-controller="registro">
 	
@@ -62,7 +63,12 @@
 						<input class="input100" type="text" ng-model="Datos.email" >
 						<span class="focus-input100"></span>
 					</div>
-                    <div class="alert-success alert" ng-show=mostrar>
+					<!--Recaptcha Widget--->
+					<div vc-recaptcha class="m-t-10" lang="es" on-create="setWidget(widgetId)" key="publicKey" ></div>
+					<div class="alert-danger alert" ng-show=introduceCaptcha>
+						¿Eres un robot?
+					</div>
+                    <div class="alert-success alert" ng-show=exito>
                         Su cuenta de usuario se ha registrado correctamente, se le ha enviado al correo una contraseña
                         provisional que deberá cambiar al iniciar sesión.
                     </div>
@@ -92,7 +98,7 @@
 	
 
 	<div id="dropDownSelect1"></div>
-	
+
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -107,6 +113,6 @@
 <!--===============================================================================================-->
 	<script src="./js/main.js"></script>
 	<script src="./js/signup.js"></script>
-
+	<script src="./js/angular-recaptcha.js"></script>
 </body>
 </html>
