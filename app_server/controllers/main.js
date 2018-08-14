@@ -75,6 +75,7 @@ passport.use(new GoogleStrategy({
               console.log(err);
               return;
             }
+            console.log(body.message);
             console.log("Get response: " + res.statusCode);
             if (body.message.length !== 0) {
               console.log(body.message);
@@ -227,8 +228,8 @@ const index = function(req, res){
 const logout = function(req, res){
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
-    res.redirect('/');
   }
+  res.redirect('/');
 };
 
 
