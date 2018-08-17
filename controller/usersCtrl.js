@@ -13,8 +13,12 @@ const usrPost = function (req,res) {
       origen: req.body.origen,
       password: "test",
       admin: false,
-      primerAcceso: true
+      primerAcceso: true,
+      cuentas: []
     });
+  if(req.body.cuentas !== undefined){
+    newUser.cuentas.push({cuentaTwitter: req.body.cuentas})
+  }
   var response = {};
   newUser.save()
   .then((newUser) => {
@@ -65,6 +69,23 @@ const usrPut = function (req,res) {
   });
 };
 
+const usrDelete = function (req,res) {
+  console.log(req.body.nombre);
+  var newUser = req.body;
+  var response = {};
+  console.log(newUser);
+  Usuario.delete({email: newUser.email},function (err, msg) {
+    if(err) {
+      response = {"error" : true,"message" : "Error deleting data"};
+      console.log(msg);
+    } else {
+      response = {"error" : false,"message" : "User has been deleted!"};
+      console.log(msg);
+    }
+    res.json(response);
+  });
+};
+
  module.exports = {
-    usrGet,usrPost,usrPut
+    usrGet,usrPost,usrPut,usrDelete
 };
