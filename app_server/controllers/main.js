@@ -65,7 +65,7 @@ passport.use(new GoogleStrategy({
     },
     function (token, tokenSecret, profile, done) {
       var usuario = {};
-      console.log(profile.emails[0].value);
+      console.log(profile); // .emails[0].value
       var query = {
         email: profile.emails[0].value
       };
@@ -75,9 +75,8 @@ passport.use(new GoogleStrategy({
               console.log(err);
               return;
             }
-            console.log(body.message);
             console.log("Get response: " + res.statusCode);
-            if (body.message.length !== 0) {
+            if (body.message.id !== undefined) {
               console.log(body.message);
               usuario = body.message[0];
               if(usuario.origen.indexOf(profile.provider) === -1) {
@@ -86,6 +85,8 @@ passport.use(new GoogleStrategy({
               }
             } else {
               usuario.email = profile.emails[0].value;
+              usuario.nombre = profile.name.givenName
+              usuario.apellidos = profile.name.familyName
               usuario.origen = profile.provider;
               bdApi.postUsuarios(usuario);
             }
@@ -134,9 +135,11 @@ passport.use(new FacebookStrategy({
                         bdApi.putUsuarios(usuario);
                     }
                 } else {
-                    usuario.email = profile.emails[0].value;
-                    usuario.origen = profile.provider;
-                    bdApi.postUsuarios(usuario);
+                  usuario.email = profile.emails[0].value;
+                  usuario.nombre = profile.name.givenName
+                  usuario.apellidos = profile.name.familyName
+                  usuario.origen = profile.provider;
+                  bdApi.postUsuarios(usuario);
                 }
             });
         console.log(profile.id);
@@ -180,6 +183,8 @@ passport.use(new TwitterStrategy({
               }
             } else {
               usuario.email = profile.emails[0].value;
+              usuario.nombre = profile.name.givenName
+              usuario.apellidos = profile.name.familyName
               usuario.origen = profile.provider;
               bdApi.postUsuarios(usuario);
             }
