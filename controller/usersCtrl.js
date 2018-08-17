@@ -4,17 +4,26 @@ const Usuario = require('../models/user');
 
 
 const usrPost = function (req,res) {
-  console.log(req.body.nombre);
-  var newUser = new Usuario(req.body);
+  console.log(req.body);
+  var newUser = new Usuario(
+    {
+      nombre: req.body.nombre,
+      apellidos: req.body.apellidos,
+      email: req.body.email,
+      origen: req.body.origen,
+      password: "test",
+      admin: false,
+      primerAcceso: true
+    });
   var response = {};
-  newUser.save(function (err,newUser) {
-    if(err) {
-      response = {"error" : true,"message" : "Error adding data"};
-      newUser.log();
-    } else {
-      response = {"error" : false,"message" : "User has been added!"};
-      newUser.log();
-    }
+  newUser.save()
+  .then((newUser) => {
+    response = {"error" : false,"message" : "User has been added!"};
+    console.log(newUser);
+    res.json(response);
+  }).catch((err) => {
+    response = {"error" : true,"message" : "Error adding data"};
+    console.log(err)
     res.json(response);
   });
 };
@@ -29,9 +38,9 @@ const usrGet = function(req, res) {
       }
     if(req.query.id){}
     console.log(query);
-    Usuario.find(query,function (err, data) {
+    Usuario.find(query, function (err, data) {
         if(err){
-          response = {"error" : true,"message" : "Error al obtener datos"};
+          response = {"error" : true,"message" : err}; // "Error al obtener datos"
         }else{
           response = {"error" : false,"message" : data};
         }

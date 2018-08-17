@@ -21,17 +21,18 @@ app.set('port', port);
  */
 var dbAddr;
 if(process.env.EXEC === 'heroku'){
-  dbAddr ="mongodb://woody:1234@ds129770.mlab.com:29770/woodydb";
+  dbAddr = "mongodb://woody:1234@ds129770.mlab.com:29770/woodydb";
 }else {
   dbAddr = "mongodb://localhost/test";
 }
 mongoose.connect(dbAddr);
 var db =  mongoose.connection;
-
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Conexion a Mongo correcta");
   app.set('db',dbAddr);
+  console.log(dbAddr)
+  console.log(port)
 });
 
 /**
