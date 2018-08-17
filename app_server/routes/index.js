@@ -3,6 +3,7 @@ const router = express.Router();
 const ctrlMain =  require('../controllers/main');
 
 router.get('/logout',ctrlMain.logout);
+router.get('/deleteUser',ctrlMain.deleteUser);
 router.get('/login',ctrlMain.login,ctrlMain.loginCallback);
 router.get('/loginGoogle',ctrlMain.loginGoogle);
 router.get('/loginGoogle/callback',ctrlMain.loginGoogle,ctrlMain.loginGoogleCallback);

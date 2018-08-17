@@ -30,4 +30,13 @@ function putUsuarios(usuario,callback){
   },callback);
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios};
+function deleteUsuarios(usuario,callback){
+  request.delete({
+    baseUrl: bdPath,
+    uri: "/users",
+    json: true,
+    body: usuario
+  },callback);
+}
+
+module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios};
