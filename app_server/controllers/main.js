@@ -65,7 +65,7 @@ passport.use(new GoogleStrategy({
     },
     function (token, tokenSecret, profile, done) {
       var usuario = {};
-      console.log(profile.emails[0].value);
+      console.log('Profile: '+profile.emails[0].value);
       var query = {
         email: profile.emails[0].value
       };
@@ -96,6 +96,7 @@ passport.use(new GoogleStrategy({
 const loginGoogle = passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/plus.login',
     'https://www.googleapis.com/auth/plus.profile.emails.read'],
+  prompt: 'select_account',
   failureRedirect: '/'
 });
 
@@ -142,7 +143,7 @@ passport.use(new FacebookStrategy({
         return done(null, usuario);
     }));
 
-const loginFacebook = passport.authenticate('facebook', { scope : ['email'] });
+const loginFacebook = passport.authenticate('facebook', { scope : ['email'] ,failureRedirect:'/'});
 
 const loginFacebookCallback = function (req, res) {
     res.redirect('/frontend/index');
@@ -155,6 +156,7 @@ passport.use(new TwitterStrategy({
       consumerKey: "M4ttQz1CxynrO0lZzXQBeaFF4",
       consumerSecret: "FETpbJhYhcojkJKCKFagZE9LFkVl3vUHR8kKgY3TazC3MgUpre",
       callbackURL: urlPath + "/loginTwitter/callback",
+      userAuthorizationURL: 'https://api.twitter.com/oauth/authenticate?force_login=true',
       includeEmail: true
     },
     function (token, tokenSecret, profile, done) {
@@ -187,7 +189,7 @@ passport.use(new TwitterStrategy({
       return done(null, usuario);
     }));
 
-const loginTwitter = passport.authenticate('twitter');
+const loginTwitter = passport.authenticate('twitter',{prompt: 'select_account'});
 
 const loginTwitterCallback = function (req, res) {
   res.redirect('/frontend/index');
@@ -226,6 +228,8 @@ const index = function(req, res){
  */
 const logout = function(req, res){
   if(req.cookies.user_sid){
+    request.post({uri: 'https://twitter.com/logout'});
+    req.logout();
     res.clearCookie('user_sid');
     res.redirect('/');
   }
