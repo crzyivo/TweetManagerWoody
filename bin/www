@@ -31,7 +31,8 @@ const httpsOptions = {
   key: fs.readFileSync(key)
 };
 
-var serverhttps = https.createServer(httpsOptions,app).listen(3003);
+var serverhttps = https.createServer(httpsOptions,app);
+serverhttps.listen(3003);
 
 /**
  * Create HTTP server.

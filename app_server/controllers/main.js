@@ -75,6 +75,7 @@ passport.use(new GoogleStrategy({
               console.log(err);
               return;
             }
+            console.log(body.message);
             console.log("Get response: " + res.statusCode);
             if (body.message.length !== 0) {
               console.log(body.message);
@@ -231,8 +232,8 @@ const logout = function(req, res){
     request.post({uri: 'https://twitter.com/logout'});
     req.logout();
     res.clearCookie('user_sid');
-    res.redirect('/');
   }
+  res.redirect('/');
 };
 
 
