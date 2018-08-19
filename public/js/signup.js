@@ -16,6 +16,7 @@ regNg.controller('registro',['$scope','$http','$window','vcRecaptchaService',fun
   };
 
   $scope.nuevaCuenta = function() {
+    console.log("entro en nueva cuenta")
     if($vcRecaptchaService.getResponse()===""){
       $scope.introduceCaptcha=true;
     }else {

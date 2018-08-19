@@ -76,7 +76,7 @@ passport.use(new GoogleStrategy({
               return;
             }
             console.log("Get response: " + res.statusCode);
-            if (body.message[0]._id !== undefined) {
+            if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
               if(usuario.origen.indexOf(profile.provider) === -1) {
@@ -127,7 +127,7 @@ passport.use(new FacebookStrategy({
                     return;
                 }
                 console.log("Get response: " + res.statusCode);
-                if (body.message[0]._id !== undefined) {
+                if (body.message.length !== 0) {
                     console.log(body.message);
                     usuario = body.message[0];
                     if(usuario.origen.indexOf(profile.provider) === -1) {
@@ -174,7 +174,7 @@ passport.use(new TwitterStrategy({
               return;
             }
             console.log("Get response: " + res.statusCode);
-            if (body.message[0]._id !== undefined) {
+            if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
               if(usuario.origen.indexOf(profile.provider) === -1){
@@ -186,7 +186,7 @@ passport.use(new TwitterStrategy({
               usuario.nombre = profile.displayName.substr(0,profile.displayName.indexOf(' '));
               usuario.apellidos = profile.displayName.substr(profile.displayName.indexOf(' ')+1);
               usuario.origen = profile.provider;
-              usuario.cuentas = profile.emails[0].value
+              usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
           });
@@ -232,34 +232,11 @@ const index = function(req, res){
  * @param res
  */
 const logout = function(req, res){
-  console.log(here)
   console.log(req.body)
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
   }
   res.redirect('/');
-};
-
-/**
- * Eliminar el usuario.
- * @param req
- * @param res
- */
-const deleteUser = function(req, res){
-  var query = {
-    email: req.body.email
-  };
-  if(req.cookies.user_sid){
-    res.clearCookie('user_sid');
-  }
-  bdApi.deleteUsuarios(query,
-    function (err, res) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      res.redirect('/');
-    });
 };
 
 
@@ -272,7 +249,6 @@ module.exports = {
     loginTwitterCallback: loginTwitterCallback,
     index: index,
     logout: logout,
-    deleteUser: deleteUser,
     login: login,
     loginCallback: loginCallback
 };

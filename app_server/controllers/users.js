@@ -19,6 +19,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const postUsers = function(req,res){
+  console.log("estoy en controllers->users.js->postUsers")
   var googleCaptcha ={
     'secret':secretoCaptcha,
     'response':req.body.gRecaptcha
@@ -47,6 +48,7 @@ const postUsers = function(req,res){
               res.status(400).send("El usuario ya esta registrado");
             } else {
               var passGenerada = randomstring.generate({charset: 'wody', length: 10});
+              console.log(passGenerada)
               var usuario = req.body;
               usuario.primerAcceso = true;
               usuario.password = CryptoJS.SHA256(passGenerada).toString(CryptoJS.enc.Base64);
@@ -113,7 +115,41 @@ const nuevaPass = function(req,res){
   res.json({next:'/frontend/index'});
 };
 
+/**
+ * Eliminar el usuario.
+ * @param req
+ * @param res
+ */
+const deleteUser = function(req, res){
+  console.log("He entrado en deleteUser")
+  console.log(req)
+  var query = {error: true}
+  if(req.user.email !== undefined){  // Local
+    var query = {
+      email: req.user.email
+    };
+  }
+  else if(req.user.emails !== undefined){ // google no va???
+    var query = {
+      email: req.user.emails[0]
+    };
+  }
+  if(req.cookies.user_sid){
+    res.clearCookie('user_sid');
+  }
+  console.log(query)
+  bdPath.deleteUsuarios(query,
+    function (err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+  });
+  res.redirect('/');
+};
+
 module.exports = {
     postUsers: postUsers,
+    deleteUser: deleteUser,
     nuevaPass: nuevaPass
 };
