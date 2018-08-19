@@ -4,21 +4,9 @@ const Usuario = require('../models/user');
 
 
 const usrPost = function (req,res) {
+  console.log("imprimo nuevo user")
   console.log(req.body);
-  var newUser = new Usuario(
-    {
-      nombre: req.body.nombre,
-      apellidos: req.body.apellidos,
-      email: req.body.email,
-      origen: req.body.origen,
-      password: "test",
-      admin: false,
-      primerAcceso: true,
-      cuentas: []
-    });
-  if(req.body.cuentas !== undefined){
-    newUser.cuentas.push({cuentaTwitter: req.body.cuentas})
-  }
+  var newUser = new Usuario(req.body);
   var response = {};
   newUser.save()
   .then((newUser) => {
@@ -39,12 +27,11 @@ const usrGet = function(req, res) {
     }
     if(req.query.origen){
       query.origen  = req.query.origen;
-      }
-    if(req.query.id){}
+    }
     console.log(query);
     Usuario.find(query, function (err, data) {
         if(err){
-          response = {"error" : true,"message" : err}; // "Error al obtener datos"
+          response = {"error" : true,"message" : "Error al obtener datos"};
         }else{
           response = {"error" : false,"message" : data};
         }
@@ -70,20 +57,17 @@ const usrPut = function (req,res) {
 };
 
 const usrDelete = function (req,res) {
-  console.log(req.body.nombre);
-  var newUser = req.body;
-  var response = {};
-  console.log(newUser);
-  Usuario.delete({email: newUser.email},function (err, msg) {
-    if(err) {
-      response = {"error" : true,"message" : "Error deleting data"};
-      console.log(msg);
-    } else {
+  // console.log(req.query)  // Para hacer con postman
+  // console.log(req.body)
+  Usuario.findOneAndRemove({email: req.body.email})
+  .then(() => {
       response = {"error" : false,"message" : "User has been deleted!"};
-      console.log(msg);
-    }
-    res.json(response);
-  });
+      res.json(response);
+  }).catch((err)=>{
+      response = {"error" : true,"message" : "Error deleting data"};
+      console.log(err)
+      res.json(response);
+  })
 };
 
  module.exports = {

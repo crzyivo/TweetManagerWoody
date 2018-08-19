@@ -4,7 +4,10 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     nombre: String,
     apellidos: String,
-    email: String,
+    email: {
+        type: String,
+        unique: true
+    },
     password: String,
     admin: Boolean,
     cuentas: [{cuentaTwitter: String}],
@@ -22,4 +25,4 @@ userSchema.methods.log = function(){
         "Cuentas: "+this.cuentas+",\n";
     console.log(mensaje);
 };
-module.exports = mongoose.model('Usuario',userSchema);
+module.exports = mongoose.model('Usuario', userSchema);
