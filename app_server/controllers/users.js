@@ -143,6 +143,7 @@ const nuevaPass = function(req,res){
         var actualizado = body.message[0];
         if(actualizado.primerAcceso){
           actualizado.primerAcceso = false;
+          actualizado.entradaApp = new Date()
         }
         if(req.body.oldPass){
           //TODO: Cambio de contraseña desde perfil

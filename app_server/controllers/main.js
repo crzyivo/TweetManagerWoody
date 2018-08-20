@@ -36,6 +36,8 @@ passport.use(new LocalStrategy(function (username,password,done) {
           return done(null, false, {message: "Error en las crendenciales"});
         }
         console.log("Login OK");
+        usuario.ultimoAcceso = new Date()
+        bdApi.putUsuarios(usuario)
         return done(null,usuario);
       });
     }});
@@ -80,6 +82,7 @@ passport.use(new GoogleStrategy({
             if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
+              usuario.ultimoAcceso = new Date()
               if(usuario.origen.indexOf(profile.provider) === -1) {
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
@@ -90,6 +93,7 @@ passport.use(new GoogleStrategy({
               usuario.nombre = profile.name.givenName
               usuario.apellidos = profile.name.familyName
               usuario.origen = profile.provider;
+              usuario.entradaApp = new Date();
               bdApi.postUsuarios(usuario);
             }
             return done(null, usuario);
@@ -132,6 +136,7 @@ passport.use(new FacebookStrategy({
                 if (body.message.length !== 0) {
                     console.log(body.message);
                     usuario = body.message[0];
+                    usuario.ultimoAcceso = new Date()
                     if(usuario.origen.indexOf(profile.provider) === -1) {
                         usuario.origen.push(profile.provider);
                         bdApi.putUsuarios(usuario);
@@ -141,6 +146,7 @@ passport.use(new FacebookStrategy({
                   usuario.nombre = profile.name.givenName
                   usuario.apellidos = profile.name.familyName
                   usuario.origen = profile.provider;
+                  usuario.entradaApp = new Date();
                   bdApi.postUsuarios(usuario);
                 }
                 return done(null, usuario);
@@ -178,6 +184,7 @@ passport.use(new TwitterStrategy({
             if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
+              usuario.ultimoAcceso = new Date()
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
@@ -187,6 +194,7 @@ passport.use(new TwitterStrategy({
               usuario.nombre = profile.displayName.substr(0,profile.displayName.indexOf(' '));
               usuario.apellidos = profile.displayName.substr(profile.displayName.indexOf(' ')+1);
               usuario.origen = profile.provider;
+              usuario.entradaApp = new Date()
               usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
