@@ -19,6 +19,7 @@ const usrPost = function (req,res) {
     res.json(response);
   });
 };
+
 const usrGet = function(req, res) {
     var response = {};
     var query = {};

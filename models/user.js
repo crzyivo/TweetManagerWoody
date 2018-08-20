@@ -23,6 +23,7 @@ userSchema.methods.log = function(){
         "Contraseña: "+this.password+",\n"+
         "admin: "+this.admin+",\n"+
         "Cuentas: "+this.cuentas+",\n";
+        "Origen: "+this.origen+",\n";
     console.log(mensaje);
 };
 module.exports = mongoose.model('Usuario', userSchema);
