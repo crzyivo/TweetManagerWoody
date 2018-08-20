@@ -199,9 +199,30 @@ const deleteUser = function(req, res){
   res.redirect('/');
 };
 
+/**
+ * Información de perfil de usuario.
+ * @param req
+ * @param res
+ */
+const getUser = function(req,res){
+  var user = req.user.email !== undefined ? req.user.email : req.user.emails[0];
+  console.log(user);
+  bdPath.getUsuarios({email: user},function (err,resBd,body) {
+      if(err){
+          res.status(500);
+          res.send(err);
+      }else{
+          res.json(body.message[0]);
+      }
+
+  })
+};
+
 module.exports = {
     postUsers: postUsers,
     deleteUser: deleteUser,
     nuevaPass: nuevaPass,
-    recoverPass: recoverPass
+    recoverPass: recoverPass,
+    getUser: getUser
+
 };
