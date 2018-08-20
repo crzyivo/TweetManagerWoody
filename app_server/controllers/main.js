@@ -82,6 +82,7 @@ passport.use(new GoogleStrategy({
               if(usuario.origen.indexOf(profile.provider) === -1) {
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
+                
               }
             } else {
               usuario.email = profile.emails[0].value;
@@ -90,9 +91,9 @@ passport.use(new GoogleStrategy({
               usuario.origen = profile.provider;
               bdApi.postUsuarios(usuario);
             }
+            return done(null, usuario);
           });
-      console.log(profile.id);
-      return done(null, usuario);
+      
     }));
 
 const loginGoogle = passport.authenticate('google', {
@@ -141,9 +142,8 @@ passport.use(new FacebookStrategy({
                   usuario.origen = profile.provider;
                   bdApi.postUsuarios(usuario);
                 }
+                return done(null, usuario);
             });
-        console.log(profile.id);
-        return done(null, usuario);
     }));
 
 const loginFacebook = passport.authenticate('facebook', { scope : ['email'] });
@@ -189,9 +189,8 @@ passport.use(new TwitterStrategy({
               usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
+            return done(null, usuario);
           });
-      console.log(profile.id);
-      return done(null, usuario);
     }));
 
 const loginTwitter = passport.authenticate('twitter');
