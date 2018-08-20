@@ -24,7 +24,7 @@ userSchema.methods.log = function(){
         "email: "+this.email+",\n"+
         "Contraseña: "+this.password+",\n"+
         "admin: "+this.admin+",\n"+
-        "Cuentas: "+this.cuentas+",\n";
+        "Cuentas: "+this.cuentas+",\n"+
         "Origen: "+this.origen+",\n";
     console.log(mensaje);
 };
