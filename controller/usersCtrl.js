@@ -5,7 +5,7 @@ const Usuario = require('../models/user');
 
 const usrPost = function (req,res) {
   console.log("imprimo nuevo user")
-  console.log(req.body);
+  // console.log(req.body);
   var newUser = new Usuario(req.body);
   var response = {};
   newUser.save()
