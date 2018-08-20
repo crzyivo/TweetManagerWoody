@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="login">
+<html lang="en" ng-app="forgot">
 <head>
 	<title>Login TweetManager</title>
 	<meta charset="UTF-8">
@@ -28,7 +28,7 @@
 <!--===============================================================================================-->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
 </head>
-<body ng-controller="mainLogin">
+<body ng-controller="forgot">
 	
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('./images/bg-01.jpg');">
@@ -39,16 +39,19 @@
 					</span>
 					<div class="p-t-31 p-b-9">
 						<span class="txt1">
-							Username
+							Email
 						</span>
 					</div>
-					<div class="wrap-input100 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" name="username" ng-model="loginData.username" >
+					<div class="wrap-input100 validate-input ng-class:{'alert-validate': alert}" data-validate = {{datavalidate}}>
+						<input class="input100" type="email" name="username" ng-model="Datos.email">
 						<span class="focus-input100"></span>
 					</div>
+					<div class="alert-success alert" ng-show=exito>
+                        Se ha enviado un correo a su cuenta para que entre a su cuenta. Cuando inicie sesión se le pedirá que modifique su contraseña.
+                    </div>
 					<div class="container-login100-form-btn m-t-17">
-						<button class="login100-form-btn" type="submit" ng-click="#">
-							<a href="#">Recuperar</a>
+						<button class="login100-form-btn" type="submit" ng-click="recoverEmail()">
+							<a href="#">{{textoBoton}}</a>
 						</button>
 						<div class="col-12 text-center flex-col">
 							<span class="badge-pill badge-danger m-t-5">{{error}}</span>
@@ -62,6 +65,13 @@
 
 						<a href="/signup" class="txt2 bo1">
 							Sign up now
+						</a>
+					<br/>
+						<span class="txt2">
+							Remember your password?
+						</span>
+						<a href="/index" class="txt2 bo1">
+							Sign in now
 						</a>
 					</div>
 				</form>
@@ -88,7 +98,8 @@
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="./js/main.js"></script>
-    <script src="./js/login.js"></script>
+	<script src="./js/login.js"></script>
+	<script src="./js/forgot.js"></script>
 	<script src="./js/angular-local-storage.js"></script>
 	<!--<script src="./js/sha256.js"></script>-->
     <script type="text/javascript" src="./js/crypto-js/crypto-js.js"></script>

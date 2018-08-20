@@ -27,6 +27,7 @@ passport.use(new LocalStrategy(function (username,password,done) {
       return done(null,false,{message: "Error en las crendenciales"});
     }else {
       usuario = body.message[0];
+      usuario.origen.push("local")
       bcrypt.compare(password,usuario.password).then(function (res) {
         if (!res) {
           console.log("contraseña invalida");
@@ -35,6 +36,8 @@ passport.use(new LocalStrategy(function (username,password,done) {
           return done(null, false, {message: "Error en las crendenciales"});
         }
         console.log("Login OK");
+        usuario.ultimoAcceso = new Date()
+        bdApi.putUsuarios(usuario)
         return done(null,usuario);
       });
     }});
@@ -80,18 +83,23 @@ passport.use(new GoogleStrategy({
             if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
+              usuario.ultimoAcceso = new Date()
               if(usuario.origen.indexOf(profile.provider) === -1) {
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
+
               }
             } else {
               usuario.email = profile.emails[0].value;
+              usuario.nombre = profile.name.givenName
+              usuario.apellidos = profile.name.familyName
               usuario.origen = profile.provider;
+              usuario.entradaApp = new Date();
               bdApi.postUsuarios(usuario);
             }
+            return done(null, usuario);
           });
-      console.log(profile.id);
-      return done(null, usuario);
+
     }));
 
 const loginGoogle = passport.authenticate('google', {
@@ -130,18 +138,21 @@ passport.use(new FacebookStrategy({
                 if (body.message.length !== 0) {
                     console.log(body.message);
                     usuario = body.message[0];
+                    usuario.ultimoAcceso = new Date()
                     if(usuario.origen.indexOf(profile.provider) === -1) {
                         usuario.origen.push(profile.provider);
                         bdApi.putUsuarios(usuario);
                     }
                 } else {
-                    usuario.email = profile.emails[0].value;
-                    usuario.origen = profile.provider;
-                    bdApi.postUsuarios(usuario);
+                  usuario.email = profile.emails[0].value;
+                  usuario.nombre = profile.name.givenName
+                  usuario.apellidos = profile.name.familyName
+                  usuario.origen = profile.provider;
+                  usuario.entradaApp = new Date();
+                  bdApi.postUsuarios(usuario);
                 }
+                return done(null, usuario);
             });
-        console.log(profile.id);
-        return done(null, usuario);
     }));
 
 const loginFacebook = passport.authenticate('facebook', { scope : ['email'] ,failureRedirect:'/'});
@@ -176,18 +187,22 @@ passport.use(new TwitterStrategy({
             if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
+              usuario.ultimoAcceso = new Date()
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
               }
             } else {
               usuario.email = profile.emails[0].value;
+              usuario.nombre = profile.displayName.substr(0,profile.displayName.indexOf(' '));
+              usuario.apellidos = profile.displayName.substr(profile.displayName.indexOf(' ')+1);
               usuario.origen = profile.provider;
+              usuario.entradaApp = new Date()
+              usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
+            return done(null, usuario);
           });
-      console.log(profile.id);
-      return done(null, usuario);
     }));
 
 const loginTwitter = passport.authenticate('twitter',{prompt: 'select_account'});
@@ -228,9 +243,8 @@ const index = function(req, res){
  * @param res
  */
 const logout = function(req, res){
+  console.log(req.body)
   if(req.cookies.user_sid){
-    request.post({uri: 'https://twitter.com/logout'});
-    req.logout();
     res.clearCookie('user_sid');
   }
   res.redirect('/');
