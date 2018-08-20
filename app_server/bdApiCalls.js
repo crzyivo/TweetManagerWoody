@@ -21,6 +21,15 @@ function postUsuarios(usuario,callback){
   },callback);
 }
 
+function recoverPassword(usuario,callback){
+  request.post({
+    baseUrl: bdPath,
+    uri: "/users/recover",
+    json: true,
+    body: usuario
+  },callback);
+}
+
 function putUsuarios(usuario,callback){
   request.put({
     baseUrl: bdPath,
@@ -39,4 +48,4 @@ function deleteUsuarios(usuario,callback){
   },callback);
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios};
+module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, recoverPassword};

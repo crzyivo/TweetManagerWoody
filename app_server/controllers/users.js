@@ -83,6 +83,56 @@ const postUsers = function(req,res){
   });
 };
 
+const recoverPass = function(req,res){
+    bdPath.getUsuarios({email: req.body.email},
+      function (err, resBd, data) {
+        if (err) {
+          res.status(500);
+          res.send(err);
+        }
+        console.log(req.body.email)
+        console.log(data)
+        if (data.message.length === 0) {
+          res.status(400).send("El usuario no esta registrado");
+        }
+        else if (data.message[0].origen.indexOf("local") === -1) {
+          console.log(data.message[0].origen)
+          res.status(400).send("El usuario no esta registrado via local");
+        }else {
+          var passGenerada = randomstring.generate({charset: 'wody', length: 10});
+          console.log(passGenerada)
+          var usuario = data.message[0];
+          usuario.primerAcceso = true;
+          usuario.password = CryptoJS.SHA256(passGenerada).toString(CryptoJS.enc.Base64);
+          bcrypt.hash(usuario.password, 5).then(function (hash) {
+            usuario.password = hash;
+            bdPath.recoverPassword(usuario, function (err, resPost, body) {
+              if (err) {
+                res.status(500);
+                res.send(err);
+              }
+              var mail = {
+                from: ethmail,
+                to: usuario.email,
+                subject: 'Recuperación de cuenta',
+                text: 'Se ha restaurado con exito su cuenta. Su contraseña es ' + passGenerada +
+                '\nEsta contraseña es provisional, se le pedirá que cambie su contraseña cuando acceda nuevamente ' +
+                'a la aplicación',
+              };
+              transporter.sendMail(mail, function (err, info) {
+                if (err) {
+                  console.log(err)
+                }
+                console.log(info);
+              });
+              res.status(200);
+              res.end();
+            });
+          });
+        }
+      });
+};
+
 const nuevaPass = function(req,res){
   bdPath.getUsuarios({email:req.body.email},
       function (err,resBd,body) {
@@ -151,5 +201,6 @@ const deleteUser = function(req, res){
 module.exports = {
     postUsers: postUsers,
     deleteUser: deleteUser,
-    nuevaPass: nuevaPass
+    nuevaPass: nuevaPass,
+    recoverPass: recoverPass
 };
