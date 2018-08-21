@@ -13,18 +13,22 @@ setNg.controller('perfilCtrl',['$scope','$http','$window',function ($scope,$http
     };
     $scope.passSubmit = function(){
         $scope.same=false;
+        $scope.changed=false;
+        $scope.failure=false;
         if ($scope.password1 !== $scope.password2) {
             $scope.same=true;
 
         } else {
-            // $http.put('/users', {
-            //     password: CryptoJS.SHA256($scope.password1).toString(CryptoJS.enc.Base64)
-            // })
-            //     .success(function (data) {
-            //         $window.location.href=data.next;
-            //     })
-            //     .error(function (data) {
-            //     })
+            $http.put('/users', {
+                email: $scope.email,
+                password: CryptoJS.SHA256($scope.password1).toString(CryptoJS.enc.Base64)
+            })
+                .success(function (data) {
+                    $scope.changed=true;
+                })
+                .error(function (data) {
+                    $scope.failure=true;
+                })
         }
     };
     init();

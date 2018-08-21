@@ -137,6 +137,7 @@ const nuevaPass = function(req,res){
   bdPath.getUsuarios({email:req.body.email},
       function (err,resBd,body) {
         if(err){
+            console.log('usuario no encontrado');
           res.status(500);
           res.send(err);
         }
