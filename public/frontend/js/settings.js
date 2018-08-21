@@ -1,6 +1,6 @@
 // public/frontend/js/settings.js
 
-var setNg = angular.module('perfil',[]);
+var setNg = angular.module('perfil',['navs']);
 
 setNg.controller('perfilCtrl',['$scope','$http','$window',function ($scope,$http,$window) {
     var init = function () {
