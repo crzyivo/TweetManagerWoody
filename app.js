@@ -9,6 +9,7 @@ var logger = require('morgan');
 const herokuSettings = require('./app_server/conf/herokuSettings');
 const indexRouter = require('./app_server/routes/index');
 const usersRouter = require('./app_server/routes/users');
+const accRouter = require('./app_server/routes/account');
 
 var app = express();
 
@@ -43,6 +44,7 @@ if(herokuSettings.entorno !== 'heroku') {
 }
 
 app.use('/users', usersRouter);
+app.use('/acc', accRouter);
 app.use('/', indexRouter); //Esto siempre el último
 
 

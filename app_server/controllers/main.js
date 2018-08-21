@@ -51,7 +51,7 @@ const  loginCallback = function(req,res){
   if(req.user.primerAcceso){
     response.next = '/firstLogin';
   }else{
-    response.next = '/frontend/index';
+    response.next = '/frontend/pages/indexUser.html';
   }
   response.username = req.user.email;
   res.json(response);
@@ -94,6 +94,7 @@ passport.use(new GoogleStrategy({
               usuario.apellidos = profile.name.familyName
               usuario.origen = profile.provider;
               usuario.entradaApp = new Date();
+              usuario.ultimoAcceso = new Date();
               bdApi.postUsuarios(usuario);
             }
             return done(null, usuario);
@@ -108,7 +109,7 @@ const loginGoogle = passport.authenticate('google', {
 });
 
 const loginGoogleCallback = function (req, res) {
-  res.redirect('/frontend/index.html');
+  res.redirect('/frontend/pages/indexUser.html');
 };
 
 /**
@@ -147,6 +148,7 @@ passport.use(new FacebookStrategy({
                   usuario.apellidos = profile.name.familyName
                   usuario.origen = profile.provider;
                   usuario.entradaApp = new Date();
+                  usuario.ultimoAcceso = new Date();
                   bdApi.postUsuarios(usuario);
                 }
                 return done(null, usuario);
@@ -156,7 +158,7 @@ passport.use(new FacebookStrategy({
 const loginFacebook = passport.authenticate('facebook', { scope : ['email'] });
 
 const loginFacebookCallback = function (req, res) {
-    res.redirect('/frontend/index');
+    res.redirect('/frontend/pages/indexUser');
 };
 
 /**
@@ -185,6 +187,9 @@ passport.use(new TwitterStrategy({
               console.log(body.message);
               usuario = body.message[0];
               usuario.ultimoAcceso = new Date()
+              if(usuario.cuentas.indexOf(profile.emails[0].value) === -1){
+                usuario.cuentas.push({cuentaTwitter: profile.emails[0].value})
+              }
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
@@ -194,7 +199,8 @@ passport.use(new TwitterStrategy({
               usuario.nombre = profile.displayName.substr(0,profile.displayName.indexOf(' '));
               usuario.apellidos = profile.displayName.substr(profile.displayName.indexOf(' ')+1);
               usuario.origen = profile.provider;
-              usuario.entradaApp = new Date()
+              usuario.entradaApp = new Date();
+              usuario.ultimoAcceso = new Date();
               usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
@@ -205,7 +211,7 @@ passport.use(new TwitterStrategy({
 const loginTwitter = passport.authenticate('twitter');
 
 const loginTwitterCallback = function (req, res) {
-  res.redirect('/frontend/index');
+  res.redirect('/frontend/pages/indexUser');
 };
 
 /**
@@ -227,7 +233,7 @@ passport.deserializeUser(function (user, done) {
 const index = function(req, res){
   if(req.cookies.user_sid){
     console.log("sesion ya iniciada");
-    res.redirect('/frontend/index');
+    res.redirect('/frontend/pages/indexUser');
   }else{
     console.log("inicia sesion pls");
     res.redirect('/index');
@@ -240,10 +246,10 @@ const index = function(req, res){
  * @param res
  */
 const logout = function(req, res){
-  console.log(req.body)
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
   }
+  console.log(req)
   res.redirect('/');
 };
 
