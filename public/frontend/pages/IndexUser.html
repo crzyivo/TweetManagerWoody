@@ -145,7 +145,7 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Mis cuentas<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level" ng-controller="index">
                                 <li ng-repeat="cuenta in cuentas">
-                                    <p><a href="/acc/{{cuenta.cuentaTwitter}}">{{'@' + cuenta.cuentaTwitter}}</a></p>
+                                    <a href="/acc/{{cuenta.cuentaTwitter}}">{{'@' + cuenta.cuentaTwitter}}</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -175,9 +175,15 @@
                 <!-- /.col-lg-12 -->
             </div>
             <table ng-controller="index">
+                <tr>
+                    <td> Id de la cuenta </td>
+                    <td> Correo de la cuenta </td>
+                    <td> Eliminar</td>
+                </tr>
                 <tr ng-repeat="cuenta in cuentas">
-                    <td> {{cuenta.name}} </td>
-                    <td> {{cuenta.name}} </td>
+                    <td> {{cuenta._id}} </td>
+                    <td> {{cuenta.cuentaTwitter}} </td>
+                    <td> <button ng-click="/acc/deleteAcc">Delete</button></td>
                 </tr>
             </table>
         </div>
@@ -198,8 +204,21 @@
     <script src="../vendor/morrisjs/morris.min.js"></script>
     <script src="../data/morris-data.js"></script>
     <!-- Custom Theme JavaScript -->
+    <script src="../js/angular-local-storage.js"></script>
     <script src="../dist/js/sb-admin-2.js"></script>
-
+    <style>
+        table, th , td {
+            border: 1px solid blue;
+            border-collapse: collapse;
+            padding: 6px;
+        }
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+    }
+    </style>
 </body>
 
 </html>

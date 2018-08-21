@@ -1,14 +1,21 @@
 //frontend/js/indexUser.js
 
-var indexUser = angular.module('indexUs',[]);
+var indexUser = angular.module('indexUs',['LocalStorageModule']);
 
-indexUser.controller('index',['$scope','$http','$window',function($scope,$http,$window) {
+indexUser.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+      .setPrefix('loginNg')
+      .setStorageType('sessionStorage')
+});
+
+indexUser.controller('index',['$scope','$http','$window','localStorageService',function($scope,$http,$window,localStorageService) {
 
   $http.get('/acc', {
     params: {
-      email: "santiaguitomoron@hotmail.com"
+      email: localStorageService.get('username')
     }
   }).then(function(response){
+    console.log(localStorageService.get('username'))
     $scope.cuentas = response.data
   })
 }]);

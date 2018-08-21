@@ -19,7 +19,7 @@ loginNg.controller('mainLogin',['$scope','$http','$window','localStorageService'
       }
     })
         .success(function (data) {
-          localStorageService.set('username',data.username);
+          localStorageService.set('username',$scope.loginData.email);
           console.log(data);
           $window.location.href = data.next;
         })

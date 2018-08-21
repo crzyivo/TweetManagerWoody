@@ -27,7 +27,9 @@ passport.use(new LocalStrategy(function (username,password,done) {
       return done(null,false,{message: "Error en las crendenciales"});
     }else {
       usuario = body.message[0];
-      usuario.origen.push("local")
+      if(usuario.origen.indexOf("local") === -1){
+        usuario.origen.push("local")
+      }
       bcrypt.compare(password,usuario.password).then(function (res) {
         if (!res) {
           console.log("contraseña invalida");

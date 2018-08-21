@@ -3,7 +3,7 @@ const bdPath = require('../bdApiCalls');
 const request = require('request');
 
 const recover = function(req,res){
-    bdPath.getUsuarios({email: req.body.email},
+    bdPath.getUsuarios({email: req.query.email},
         function (err, resBd, body) {
         if (err) {
             res.status(500);
@@ -14,6 +14,7 @@ const recover = function(req,res){
         } else {
             var response = {}
             response.cuentas = body.message[0].cuentas
+            console.log(response.cuentas)
             res.status(200)
             res.send(body.message[0].cuentas)
         }
@@ -21,7 +22,7 @@ const recover = function(req,res){
 };
 
 const InfoCuenta = function(req,res){
-    console.log(req.user)
+    console.log(req)
     console.log(req.params)
     bdPath.getUsuarios({email: req.user.email, cuentas: {cuentaTwitter: req.params.email} },
         function (err, resBd, body) {
