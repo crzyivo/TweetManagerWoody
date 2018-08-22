@@ -145,7 +145,9 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Mis cuentas<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level" ng-controller="index">
                                 <li ng-repeat="cuenta in cuentas">
-                                    <a href="/acc/{{cuenta.cuentaTwitter}}">{{'@' + cuenta.cuentaTwitter}}</a>
+                                    <a ng-click="openAcc(cuenta.cuentaTwitter)">
+                                        {{'@' + cuenta.cuentaTwitter}}
+                                    </a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -177,24 +179,44 @@
             <div ng-controller="index">
                 <table>
                     <tr>
-                        <td width="60%"> Correo de la cuenta </td>
-                        <td width="40%"> Eliminar</td>
+                        <td width="30%"> Correo de la cuenta </td>
+                        <td width="50%"> Descripción de la cuenta</td>
+                        <td width="10%"> Editar</td>
+                        <td width="10%"> Eliminar</td>
                     </tr>
                     <tr ng-repeat="cuenta in cuentas">
                         <td> {{cuenta.cuentaTwitter}} </td>
-                        <td> <button type="submit" ng-click="deleteAcc(cuenta.cuentaTwitter)">Delete</button></td>
+                        <td> {{cuenta.cuentaTwitter}} </td>
+                        <td> 
+                            <button type="submit" ng-click="openAcc(cuenta.cuentaTwitter)">
+                                Abrir
+                            </button>
+                        </td>
+                        <td> 
+                            <button type="submit" ng-click="deleteAcc(cuenta.cuentaTwitter)">
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
+            <br/>
             <div>
-                <button type="button" ng-click="">
-                    Sign In
-                </button>
-                <div>
-                    <span>{{error}}</span>
-                </div>
+                <form>
+                    <div>
+                        <input required type="text" name="username" ng-model="nameAcc" >
+                        <button type="submit" ng-click="updateAcc()">
+                            Añadir cuenta
+                        </button>
+                        <div>
+                            <span>{{error}}</span>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <!-- /#form -->
         </div>
+        <!-- /#wrapper -->
     </div>
     <!-- /#wrapper -->
 
@@ -216,7 +238,7 @@
     <script src="../dist/js/sb-admin-2.js"></script>
     <style>
         table  {
-            width: 40%;
+            width: 100%;
             height: 50px;
             border: 1px solid blue;
             border-collapse: collapse;
@@ -240,7 +262,17 @@
         table tr:nth-child(even) {
             background-color: #ffffff;
             font-family: Arial, Helvetica, sans-serif;
-    }
+        }
+        input {
+            padding: 6px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
     </style>
 </body>
 

@@ -22,8 +22,24 @@ const recover = function(req,res){
     });
 };
 
-const InfoCuenta = function(req,res){
-    bdPath.getUsuarios({email: req.user.email, cuentas: {cuentaTwitter: req.params.email} },
+const getAcc = function(req,res){
+    bdPath.getAccount({email: req.params.user, account: req.params.email },
+        function (err, resBd, body) {
+        if (err) {
+            res.status(500);
+            res.send(err);
+        }
+        if (body.message.length === 0) {
+            res.status(400).send("La cuenta no existe");
+        } else {
+            res.status(200)
+            res.send(body.message[0])
+        }
+    });
+};
+
+const deleteAcc = function(req,res){
+    bdPath.deleteAccount({email: req.body.params.email, account: req.body.params.acc},
         function (err, resBd, body) {
         if (err) {
             res.status(500);
@@ -32,18 +48,14 @@ const InfoCuenta = function(req,res){
         if (body.message.length === 0) {
             res.status(400).send("El usuario no existe");
         } else {
-            var response = {}
-            response.cuentas = body.message[0].cuentas
             res.status(200)
             res.send(body.message[0].cuentas)
         }
     });
 };
 
-const deleteAcc = function(req,res){
-    console.log("debajo")
-    console.log(req.body.params.acc)
-    bdPath.deleteAccount({email: req.body.params.email, account: req.body.params.acc},
+const postAcc = function(req,res){
+    bdPath.postAccount({email: req.body.params.email, account: req.body.params.acc},
         function (err, resBd, body) {
         if (err) {
             res.status(500);
@@ -60,6 +72,7 @@ const deleteAcc = function(req,res){
 
 module.exports = {
     recover: recover,
-    InfoCuenta: InfoCuenta,
-    deleteAcc: deleteAcc
+    getAcc: getAcc,
+    deleteAcc: deleteAcc,
+    postAcc: postAcc
 };

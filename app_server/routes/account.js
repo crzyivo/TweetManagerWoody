@@ -5,5 +5,6 @@ const ctrlAcc =  require('../controllers/account');
 // extrae las contraseñas de un usuario
 router.get('/',ctrlAcc.recover);
 router.put('/deleteAcc',ctrlAcc.deleteAcc);
-router.get('/:email',ctrlAcc.InfoCuenta);
+router.put('/insertAcc',ctrlAcc.postAcc);
+router.get('/:email/:user',ctrlAcc.getAcc);
 module.exports = router;
