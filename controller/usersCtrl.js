@@ -71,6 +71,32 @@ const usrDelete = function (req,res) {
   })
 };
 
+const accDelete = function (req,res) {
+  // console.log(req.query)  // Para hacer con postman
+  // console.log(req.body)
+  Usuario.find({email: req.body.email})
+  .then((user) => {
+      var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.body.account)
+      console.log(index)
+      if (index !== -1) {
+        user[0].cuentas.splice(index, 1)
+      }
+      console.log(user[0].cuentas)
+      Usuario.update({email: req.body.email},user[0],function (err,msg) {
+        if(err) {
+          response = {"error" : true,"message" : "Error updating data"};
+        } else {
+          response = {"error" : false,"message" : user};
+        }
+        res.json(response);
+      })
+  }).catch((err)=>{
+      response = {"error" : true,"message" : "Error deleting account"};
+      console.log(err)
+      res.json(response);
+  })
+};
+
  module.exports = {
-    usrGet,usrPost,usrPut,usrDelete
+    usrGet,usrPost,usrPut,usrDelete, accDelete
 };

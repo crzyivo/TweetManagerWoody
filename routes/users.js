@@ -7,5 +7,6 @@ router.post('/',usrController.usrPost);
 router.post('/recover',usrController.usrPut);
 router.put('/',usrController.usrPut);
 router.delete('/',usrController.usrDelete);
+router.put('/acc',usrController.accDelete);
 
 module.exports = router;
