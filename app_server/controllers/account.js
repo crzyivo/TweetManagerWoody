@@ -23,8 +23,6 @@ const recover = function(req,res){
 };
 
 const InfoCuenta = function(req,res){
-    console.log(req)
-    console.log(req.params)
     bdPath.getUsuarios({email: req.user.email, cuentas: {cuentaTwitter: req.params.email} },
         function (err, resBd, body) {
         if (err) {
@@ -42,7 +40,26 @@ const InfoCuenta = function(req,res){
     });
 };
 
+const deleteAcc = function(req,res){
+    console.log("debajo")
+    console.log(req.body.params.acc)
+    bdPath.deleteAccount({email: req.body.params.email, account: req.body.params.acc},
+        function (err, resBd, body) {
+        if (err) {
+            res.status(500);
+            res.send(err);
+        }
+        if (body.message.length === 0) {
+            res.status(400).send("El usuario no existe");
+        } else {
+            res.status(200)
+            res.send(body.message[0].cuentas)
+        }
+    });
+};
+
 module.exports = {
     recover: recover,
-    InfoCuenta: InfoCuenta
+    InfoCuenta: InfoCuenta,
+    deleteAcc: deleteAcc
 };

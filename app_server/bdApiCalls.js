@@ -48,4 +48,13 @@ function deleteUsuarios(usuario,callback){
   },callback);
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, recoverPassword};
+function deleteAccount(cuenta,callback){
+  request.put({
+    baseUrl: bdPath,
+    uri: "/users/acc",
+    json: true,
+    body: cuenta
+  },callback);
+}
+
+module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, recoverPassword, deleteAccount};

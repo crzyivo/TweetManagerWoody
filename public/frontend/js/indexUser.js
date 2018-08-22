@@ -8,7 +8,7 @@ indexUser.config(function (localStorageServiceProvider) {
       .setStorageType('sessionStorage')
 });
 
-indexUser.controller('index',['$scope','$http','$window','localStorageService',function($scope, $http,$window,localStorageService) {
+indexUser.controller('index',['$scope','$http','$window','localStorageService',function($scope, $http, $window, localStorageService) {
 
   $http.get('/acc', {
     params: {
@@ -17,4 +17,18 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
   }).then(function(response){
     $scope.cuentas = response.data
   })
+
+  $scope.deleteAcc = function(account){
+    console.log("entro aqui")
+    console.log(account)
+    $http.put('/acc/deleteAcc', {
+      params: {
+        email: localStorageService.get('username'),
+        acc: account
+      }
+    }).then(function(response){
+      $scope.cuentas = response.cuentas
+    })
+  };
+  
 }]);
