@@ -3,6 +3,7 @@ const bdPath = require('../bdApiCalls');
 const request = require('request');
 
 const recover = function(req,res){
+    console.log(req.query.email)
     bdPath.getUsuarios({email: req.query.email},
         function (err, resBd, body) {
         if (err) {

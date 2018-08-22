@@ -163,7 +163,7 @@ const nuevaPass = function(req,res){
         });
       });
   res.status(200);
-  res.json({next:'/frontend/index'});
+  res.json({next:'/frontend/indexUser'});
 };
 
 /**

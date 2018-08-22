@@ -8,7 +8,6 @@ forgNg.controller('forgot',['$scope','$http','$window',function ($scope,$http,$w
   $scope.exito = false;
   $scope.textoBoton = 'Recuperar';
   $scope.funcionBoton = 'recoverEmail()';
-  $scope.publicKey="6LcF1V0UAAAAAJ1_J88wxbd2FbGP1qbq3Rh22Ibi";
 
   $scope.recoverEmail = function() {
     $scope.alert = false;

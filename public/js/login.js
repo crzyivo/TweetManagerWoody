@@ -19,8 +19,19 @@ loginNg.controller('mainLogin',['$scope','$http','$window','localStorageService'
       }
     })
         .success(function (data) {
-          localStorageService.set('username',$scope.loginData.email);
+          localStorageService.set('username',data.username);
+          $window.location.href = data.next;
+        })
+        .error(function (data) {
+          $scope.error = "Login incorrecto";
           console.log(data);
+        });
+  };
+
+  $scope.googleSubmit = function () {
+    $http.get('/loginGoogle')
+        .success(function (data) {
+          localStorageService.set('username',data.username);
           $window.location.href = data.next;
         })
         .error(function (data) {
