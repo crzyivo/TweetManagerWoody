@@ -30,6 +30,7 @@ regNg.controller('registro',['$scope','$http','$window','vcRecaptchaService',fun
             $scope.funcionBoton = 'vuelta()';
           })
           .error(function (data) {
+            console.log(data);
             $vcRecaptchaService.reload($scope.widgetId);
             $scope.introduceCaptcha=false;
             $scope.datavalidate = "Este email ya esta en uso";

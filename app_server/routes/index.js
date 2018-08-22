@@ -10,5 +10,6 @@ router.get('/loginTwitter',ctrlMain.loginTwitter);
 router.get('/loginTwitter/callback',ctrlMain.loginTwitter,ctrlMain.loginTwitterCallback);
 router.get('/loginFacebook',ctrlMain.loginFacebook);
 router.get('/loginFacebook/callback',ctrlMain.loginFacebook,ctrlMain.loginFacebookCallback);
+router.get('/session',ctrlMain.session);
 router.get('/*',ctrlMain.index);
 module.exports = router;

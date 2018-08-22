@@ -27,7 +27,7 @@ passport.use(new LocalStrategy(function (username,password,done) {
       return done(null,false,{message: "Error en las crendenciales"});
     }else {
       usuario = body.message[0];
-      usuario.origen.push("local")
+      usuario.origen.push("local");
       bcrypt.compare(password,usuario.password).then(function (res) {
         if (!res) {
           console.log("contraseña invalida");
@@ -36,8 +36,8 @@ passport.use(new LocalStrategy(function (username,password,done) {
           return done(null, false, {message: "Error en las crendenciales"});
         }
         console.log("Login OK");
-        usuario.ultimoAcceso = new Date()
-        bdApi.putUsuarios(usuario)
+        usuario.ultimoAcceso = new Date();
+        bdApi.putUsuarios(usuario);
         return done(null,usuario);
       });
     }});
@@ -110,7 +110,7 @@ const loginGoogle = passport.authenticate('google', {
 });
 
 const loginGoogleCallback = function (req, res) {
-  res.redirect('/frontend/index.html');
+    res.redirect('/frontend/index');
 };
 
 /**
@@ -187,7 +187,7 @@ passport.use(new TwitterStrategy({
             if (body.message.length !== 0) {
               console.log(body.message);
               usuario = body.message[0];
-              usuario.ultimoAcceso = new Date()
+              usuario.ultimoAcceso = new Date();
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
@@ -197,8 +197,8 @@ passport.use(new TwitterStrategy({
               usuario.nombre = profile.displayName.substr(0,profile.displayName.indexOf(' '));
               usuario.apellidos = profile.displayName.substr(profile.displayName.indexOf(' ')+1);
               usuario.origen = profile.provider;
-              usuario.entradaApp = new Date()
-              usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
+              usuario.entradaApp = new Date();
+              usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}];
               bdApi.postUsuarios(usuario);
             }
             return done(null, usuario);
@@ -223,6 +223,16 @@ passport.deserializeUser(function (user, done) {
 });
 
 /**
+ * Devuelve el usuario que ha iniciado sesión, para ser almacenado en el navegador
+ * @param req
+ * @param res
+ */
+const session = function (req,res) {
+    if(req.cookies.user_sid) {
+        res.json({user: req.user.email});
+    }
+};
+/**
  * Control de sesión al acceder a root
  * @param req
  * @param res
@@ -243,7 +253,7 @@ const index = function(req, res){
  * @param res
  */
 const logout = function(req, res){
-  console.log(req.body)
+  console.log(req.body);
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
   }
@@ -261,5 +271,6 @@ module.exports = {
     index: index,
     logout: logout,
     login: login,
-    loginCallback: loginCallback
+    loginCallback: loginCallback,
+    session: session
 };
