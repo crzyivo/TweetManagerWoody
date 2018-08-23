@@ -48,4 +48,33 @@ function deleteUsuarios(usuario,callback){
   },callback);
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, recoverPassword};
+function deleteAccount(cuenta,callback){
+  request.put({
+    baseUrl: bdPath,
+    uri: "/users/deleteAcc",
+    json: true,
+    body: cuenta
+  },callback);
+}
+
+function postAccount(cuenta,callback){
+  request.put({
+    baseUrl: bdPath,
+    uri: "/users/postAcc",
+    json: true,
+    body: cuenta
+  },callback);
+}
+
+function getAccount(query,callback) {
+  request.get({
+    baseUrl: bdPath,
+    uri: "/users/getAcc",
+    qs: query,
+    json:true
+  },callback);
+
+}
+
+module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, 
+  recoverPassword, deleteAccount, postAccount, getAccount};

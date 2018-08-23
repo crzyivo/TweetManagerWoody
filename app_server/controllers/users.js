@@ -164,7 +164,7 @@ const nuevaPass = function(req,res){
         });
       });
   res.status(200);
-  res.json({next:'/frontend/index'});
+  res.json({next:'/frontend/indexUser'});
 };
 
 /**
@@ -174,7 +174,6 @@ const nuevaPass = function(req,res){
  */
 const deleteUser = function(req, res){
   console.log("He entrado en deleteUser")
-  console.log(req)
   var query = {error: true}
   if(req.user.email !== undefined){  // Local
     var query = {
@@ -186,9 +185,6 @@ const deleteUser = function(req, res){
       email: req.user.emails[0]
     };
   }
-  if(req.cookies.user_sid){
-    res.clearCookie('user_sid');
-  }
   console.log(query)
   bdPath.deleteUsuarios(query,
     function (err, res) {
@@ -197,6 +193,9 @@ const deleteUser = function(req, res){
         return;
       }
   });
+  if(req.cookies.user_sid){
+    res.clearCookie('user_sid');
+  }
   res.redirect('/');
 };
 
