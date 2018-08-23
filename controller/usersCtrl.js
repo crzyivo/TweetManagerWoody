@@ -23,6 +23,7 @@ const usrPost = function (req,res) {
 const usrGet = function(req, res) {
     var response = {};
     var query = {};
+    console.log(req.query)
     if(req.query.email){
       query.email = req.query.email;
     }
