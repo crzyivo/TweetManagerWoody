@@ -49,6 +49,27 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
     })
   };
 
+  $scope.TWAcc = function(){
+    if($scope.nameAcc.replace(/\s/g, '') !== '') {
+      $http.get('/acc/show').then(()=>{
+        $http.put('/acc/insertAcc', {
+          params: {
+            email: localStorageService.get('username'),
+            acc: $scope.nameAcc
+          }
+        }).then(function(response){
+          $scope.cuentas = response.data
+          localStorageService.set('cuentas', response.data);
+          $scope.error = ""
+          $window.location.href = '/frontend/pages/indexUser';
+        })
+      }).catch()
+    }
+    else {
+      $scope.error = "Inserte un usuario para insertar nueva cuenta"
+    }
+  };
+
   $scope.updateAcc = function(){
     if($scope.nameAcc.replace(/\s/g, '') !== '') {
       $http.put('/acc/insertAcc', {

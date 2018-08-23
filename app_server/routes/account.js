@@ -6,5 +6,7 @@ const ctrlAcc =  require('../controllers/account');
 router.get('/',ctrlAcc.recover);
 router.put('/deleteAcc',ctrlAcc.deleteAcc);
 router.put('/insertAcc',ctrlAcc.postAcc);
+router.get('/show',ctrlAcc.TWExtract);
+router.get('/show/callback',ctrlAcc.TWExtract,ctrlAcc.TWCallback);
 router.get('/:email/:user',ctrlAcc.getAcc);
 module.exports = router;
