@@ -6,27 +6,28 @@ indexUser.config(function (localStorageServiceProvider) {
   localStorageServiceProvider
       .setPrefix('loginNg')
       .setStorageType('sessionStorage')
+      .setNotify(true, true);
 });
 
 indexUser.controller('index',['$scope','$http','$window','localStorageService',function($scope, $http, $window, localStorageService) {
 
-  $scope.nameAcc = " "
-  $scope.error = ""
-  $scope.cuentas = {}
+  $scope.nameAcc = " ";
+  $scope.error = "";
+  $scope.cuentas = {};
   $http.get('/acc', {
     params: {
       email: localStorageService.get('username')
     }
   }).then(function(response){
-    $scope.cuentas = response.data
+    $scope.cuentas = response.data;
     localStorageService.set('cuentas', response.data);
-  })
+  });
 
   $scope.openAcc = function(account){
-    var aux = $scope.cuentas.map((acc)=> {return acc.cuentaTwitter}).indexOf(account)
+    var aux = $scope.cuentas.map((acc)=> {return acc.cuentaTwitter}).indexOf(account);
     if(aux !== -1){
       localStorageService.set('account', account);
-      console.log(aux)
+      console.log(aux);
       $window.location.href = '/frontend/pages/cuenta';  
       // redirige siempre aquí aunque borres la cuenta porque no se actualiza
     }
@@ -43,7 +44,7 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
         acc: account
       }
     }).then(function(response){
-      $scope.cuentas = response.data
+      $scope.cuentas = response.data;
       localStorageService.set('cuentas', response.data);
       $scope.error = ""
     })
@@ -58,9 +59,9 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
             acc: $scope.nameAcc
           }
         }).then(function(response){
-          $scope.cuentas = response.data
+          $scope.cuentas = response.data;
           localStorageService.set('cuentas', response.data);
-          $scope.error = ""
+          $scope.error = "";
           $window.location.href = '/frontend/pages/indexUser';
         })
       }).catch()
@@ -78,9 +79,9 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
           acc: $scope.nameAcc
         }
       }).then(function(response){
-        $scope.cuentas = response.data
+        $scope.cuentas = response.data;
         localStorageService.set('cuentas', response.data);
-        $scope.error = ""
+        $scope.error = "";
         $window.location.href = '/frontend/pages/indexUser';
       })
     }

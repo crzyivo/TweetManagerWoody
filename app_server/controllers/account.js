@@ -70,8 +70,7 @@ const recover = function(req,res){
             res.status(400).send("El usuario no existe");
         } else {
             var response = {}
-            response.cuentas = body.message[0].cuentas
-            console.log(response.cuentas)
+            response.cuentas = body.message.cuentas;
             res.status(200)
             res.send(body.message[0].cuentas)
         }

@@ -18,11 +18,10 @@
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Mis cuentas<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a href="cuenta.html">@jorge_aguaron</a>
-                    </li>
-                    <li>
-                        <a href="cuenta.html">@otra_cuenta</a>
+                    <li ng-repeat="cuenta in cuentas">
+                        <a ng-click="openAcc(cuenta)">
+                            {{'@' + cuenta}}
+                        </a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
