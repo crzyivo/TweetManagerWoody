@@ -10,7 +10,7 @@ var userSchema = new Schema({
     },
     password: String,
     admin: Boolean,
-    cuentas: [{cuentaTwitter: String}],
+    cuentas: [String],
     origen: [String],
     primerAcceso: Boolean,
     entradaApp: Date,

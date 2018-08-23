@@ -104,16 +104,20 @@ const accGet = function (req,res) {
   console.log(req.query)
   Usuario.find({email: req.query.email})
   .then((user) => {
+    console.log(user);
       var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.query.account)
       console.log(index)
       if (index === -1) {
+        console.log('dafuck')
         response = {"error" : true,"message" : "Account doesn't exist"};
       }
       else{
+        console.log(user[0].cuentas);
         response = {"error" : false,"message" : user[0].cuentas[index]};
       }
       res.json(response);
   }).catch((err)=>{
+    console.log('dafuck')
       response = {"error" : true,"message" : "Error deleting account"};
       console.log(err)
       res.json(response);
