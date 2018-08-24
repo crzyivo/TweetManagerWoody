@@ -13,6 +13,12 @@ const accRouter = require('./app_server/routes/account');
 
 var app = express();
 
+// Para el error de: Access-Control-Allow-Origin
+var cors = require('cors');
+
+// use it before all route definitions
+app.use(cors({origin: 'http://localhost:3003'}));
+
 // view engine setup
 app.set('views', path.join(__dirname,'app_server', 'views'));
 app.set('view engine', 'pug');

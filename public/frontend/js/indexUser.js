@@ -52,7 +52,10 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
 
   $scope.TWAcc = function(){
     if($scope.nameAcc.replace(/\s/g, '') !== '') {
-      $http.get('/acc/show').then(()=>{
+      $http.get('/acc/show/'+localStorageService.get('username')).then((err, response)=>{
+        if (err) {
+          $scope.error = err
+        }
         $http.put('/acc/insertAcc', {
           params: {
             email: localStorageService.get('username'),
@@ -64,7 +67,7 @@ indexUser.controller('index',['$scope','$http','$window','localStorageService',f
           $scope.error = "";
           $window.location.href = '/frontend/pages/indexUser';
         })
-      }).catch()
+      })
     }
     else {
       $scope.error = "Inserte un usuario para insertar nueva cuenta"

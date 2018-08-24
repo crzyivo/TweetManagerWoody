@@ -266,7 +266,6 @@ const logout = function(req, res){
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
   }
-  console.log(req)
   res.redirect('/');
 };
 
