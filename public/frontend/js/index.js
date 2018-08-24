@@ -78,7 +78,7 @@ indexNg.controller('index',['$scope','$http','$window','localStorageService','$r
           $scope.error = "";
           $window.location.href = '/frontend/pages/indexUser';
         })
-      }).catch()
+      })
     }
     else {
       $scope.error = "Inserte un usuario para insertar nueva cuenta"
