@@ -22,7 +22,7 @@ indexNg.controller('setSession',['$scope','$http','$window','localStorageService
         });
   }
 }]);
-indexNg.controller('index',['$scope','$http','$window','localStorageService','$rootScope',function($scope, $http, $window, localStorageService,$rootScope) {
+indexNg.controller('index',['$scope','$http','$window','localStorageService','$rootScope','$location',function($scope, $http, $window, localStorageService,$rootScope,$location) {
   $scope.nameAcc = " ";
   $scope.error = "";
   $scope.cuentas = {};
@@ -64,24 +64,34 @@ indexNg.controller('index',['$scope','$http','$window','localStorageService','$r
     })
   };
 
-  $scope.TWAcc = function(){
-    if($scope.nameAcc.replace(/\s/g, '') !== '') {
-      $http.get('/acc/show').then(()=>{
-        $http.put('/acc/insertAcc', {
-          params: {
-            email: localStorageService.get('username'),
-            acc: $scope.nameAcc
-          }
-        }).then(function(response){
-          $scope.cuentas = response.data;
-          localStorageService.set('cuentas', response.data);
-          $scope.error = "";
-          $window.location.href = '/frontend/pages/indexUser';
-        })
-      }).catch()
-    }
-    else {
-      $scope.error = "Inserte un usuario para insertar nueva cuenta"
+  // $scope.TWAcc = function(){
+  //   console.log('add');
+  //   if($scope.nameAcc.replace(/\s/g, '') !== '') {
+  //     $http.get('/acc/show').then(()=>{
+  //       $http.put('/acc/insertAcc', {
+  //         params: {
+  //           email: localStorageService.get('username'),
+  //           acc: $scope.nameAcc
+  //         }
+  //       }).then(function(response){
+  //         $scope.cuentas = response.data;
+  //         localStorageService.set('cuentas', response.data);
+  //         $scope.error = "";
+  //         $window.location.href = '/frontend/pages/indexUser';
+  //       })
+  //     }).catch()
+  //   }
+  //   else {
+  //     $scope.error = "Inserte un usuario para insertar nueva cuenta"
+  //   }
+  // };
+  $scope.TWAcc = function(url,refresh){
+    console.log('add');
+    if(refresh || $scope.$$phase) {
+      $window.location.href = url;
+    } else {
+      $location.path(url);
+      $scope.$apply();
     }
   };
 

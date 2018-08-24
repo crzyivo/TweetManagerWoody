@@ -85,9 +85,9 @@
             <br/>
             <div>
                 <form>
-                    <div>
+                    <div div ng-controller="index">
                         <input required type="text" name="username" ng-model="nameAcc" >
-                        <button type="submit" ng-click="TWAcc()">
+                        <button type="submit" ng-click="TWAcc('/acc/accTokens',false)">
                             Añadir cuenta
                         </button>
                         <div>

@@ -172,13 +172,14 @@ passport.use(new TwitterStrategy({
       consumerSecret: "FETpbJhYhcojkJKCKFagZE9LFkVl3vUHR8kKgY3TazC3MgUpre",
       callbackURL: urlPath + "/loginTwitter/callback",
       userAuthorizationURL: 'https://api.twitter.com/oauth/authenticate?force_login=true',
-      includeEmail: true
+      includeEmail: true,
     },
     function (token, tokenSecret, profile, done) {
       var usuario = {};
       console.log(profile);
       console.log(token)
       console.log(tokenSecret)
+      console.log()
       var query = {
         email: profile.emails[0].value
       };
@@ -215,7 +216,6 @@ passport.use(new TwitterStrategy({
     }));
 
 const loginTwitter = passport.authenticate('twitter',{prompt: 'select_account'});
-
 const loginTwitterCallback = function (req, res) {
   res.redirect('/frontend/index');
 };
