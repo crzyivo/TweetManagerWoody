@@ -173,6 +173,7 @@ passport.use(new TwitterStrategy({
       callbackURL: urlPath + "/loginTwitter/callback",
       userAuthorizationURL: 'https://api.twitter.com/oauth/authenticate?force_login=true',
       includeEmail: true,
+
     },
     function (token, tokenSecret, profile, done) {
       var usuario = {};

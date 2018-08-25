@@ -67,15 +67,15 @@
                         <td width="10%"> Eliminar</td>
                     </tr>
                     <tr ng-repeat="cuenta in cuentas">
-                        <td> {{cuenta.cuentaTwitter}} </td>
-                        <td> {{cuenta.cuentaTwitter}} </td>
+                        <td> {{cuenta}} </td>
+                        <td> {{cuenta}} </td>
                         <td>
-                            <button type="submit" ng-click="openAcc(cuenta.cuentaTwitter)">
+                            <button type="submit" ng-click="openAcc(cuenta)">
                                 Abrir
                             </button>
                         </td>
                         <td>
-                            <button type="submit" ng-click="deleteAcc(cuenta.cuentaTwitter)">
+                            <button type="submit" ng-click="deleteAcc(cuenta)">
                                 Delete
                             </button>
                         </td>

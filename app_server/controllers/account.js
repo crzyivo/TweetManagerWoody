@@ -16,11 +16,24 @@ function createStrategy(){
         consumerSecret: "FETpbJhYhcojkJKCKFagZE9LFkVl3vUHR8kKgY3TazC3MgUpre",
         callbackURL: urlPath + "/acc/tokens/callback",
         userAuthorizationURL: 'https://api.twitter.com/oauth/authenticate?force_login=true',
-        includeEmail: true
+        includeEmail: true,
+        passReqToCallback: true
       },
-      function (token, tokenSecret, profile, done) {
-        var usuario = {};
-        console.log('TOJKENKÑLN"DLF');
+      function (req,token, tokenSecret, profile, done) {
+        var usuario = req.user;
+        var cuenta = profile._json;
+        console.log(req.user);
+        console.log(profile._json);
+        //Si la cuenta ya esta asociada al usuario, mongoose no hara cambios
+            var cuenta_json = {
+                'cuenta': cuenta.screen_name,
+                'email':usuario.email,
+                'account_email':cuenta.email,
+                'public_name':cuenta.name,
+                'token':token,
+                'tokenSecret':tokenSecret
+            };
+            bdPath.postAccount(cuenta_json);
         return done(null,usuario);
       });
   strategy.name = 'twitterToken';
@@ -42,7 +55,7 @@ const recover = function(req,res){
             var response = {}
             response.cuentas = body.message.cuentas;
             res.status(200)
-            res.send(body.message[0].cuentas)
+            res.send(Object.keys(body.message[0].cuentas))
         }
     });
 };
@@ -67,7 +80,7 @@ const getAcc = function(req,res){
         if (body.message.length === 0) {
             res.status(400).send("La cuenta no existe");
         } else {
-            res.status(200)
+            res.status(200);
             res.send(body.message[0])
         }
     });
@@ -84,7 +97,7 @@ const deleteAcc = function(req,res){
             res.status(400).send("El usuario no existe");
         } else {
             res.status(200)
-            res.send(body.message[0].cuentas)
+            res.send(Object.keys(body.message[0].cuentas))
         }
     });
 };
