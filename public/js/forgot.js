@@ -12,7 +12,8 @@ forgNg.controller('forgot',['$scope','$http','$window',function ($scope,$http,$w
   $scope.recoverEmail = function() {
     $scope.alert = false;
     console.log("entro en recuperar cuenta")
-    if($scope.Datos !== undefined && $scope.Datos.email !== "" && $scope.Datos.email !== undefined){
+    if($scope.Datos !== undefined && $scope.Datos.email !== "" 
+    && $scope.Datos.email !== undefined){
         $http.post('/users/recover', $scope.Datos)
             .success(function (data) {
             //OK

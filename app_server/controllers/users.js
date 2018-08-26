@@ -84,6 +84,7 @@ const postUsers = function(req,res){
 };
 
 const recoverPass = function(req,res){
+  if(req.body.email !== "admin"){
     bdPath.getUsuarios({email: req.body.email},
       function (err, resBd, data) {
         if (err) {
@@ -125,12 +126,16 @@ const recoverPass = function(req,res){
                 }
                 console.log(info);
               });
-              res.status(200);
-              res.end();
-            });
+            res.status(200);
+            res.end();
           });
-        }
-      });
+        });
+      }
+    });
+  } else{
+    res.status(400)
+    res.send(" Escriba un email válido ")
+  }
 };
 
 const nuevaPass = function(req,res){
@@ -166,6 +171,43 @@ const nuevaPass = function(req,res){
   res.status(200);
   res.json({next:'/frontend/indexUser'});
 };
+
+const editUser = function(req,res){
+  bdPath.getUsuarios({email:req.body.email},
+      function (err,resBd,body) {
+        if(err){
+            console.log('usuario no encontrado');
+          res.status(500);
+          res.send(err);
+        }
+        var actualizado = body.message[0];
+        if(req.body.nombre !== undefined && req.body.nombre !== ""){
+          actualizado.nombre = req.body.nombre
+        }
+        if(req.body.apellidos !== undefined && req.body.apellidos !== ""){
+          actualizado.apellidos = req.body.apellidos
+        }
+        if(req.body.email !== undefined && req.body.email !== ""){
+          actualizado.email = req.body.email
+        }
+        if(req.body.password !== undefined && 
+          req.body.password !== CryptoJS.SHA256("").toString(CryptoJS.enc.Base64)){
+          bcrypt.hash(req.body.password,5).then(function (hash) {
+            actualizado.password = hash
+          })
+        }
+        bdPath.putUsuarios(actualizado,
+          function (err,resBd,body) {
+            if(err){
+              res.status(500);
+              res.send(err);
+            }
+          })
+        });
+  res.status(200);
+  res.json({next:'/frontend/indexUser'});
+};
+
 
 /**
  * Eliminar el usuario.
@@ -224,7 +266,13 @@ const deleteUser = function(req, res){
  * @param res
  */
 const getUser = function(req,res){
-  var user = req.user.email !== undefined ? req.user.email : req.user.emails[0];
+  var user = ""
+  if(req.user !== undefined){
+    user = req.user.email !== undefined ? req.user.email : req.user.emails[0];
+  }
+  if(req.query.email !== undefined && req.query.email !== ""){
+    user = req.query.email
+  }
   console.log(user);
   bdPath.getUsuarios({email: user},function (err,resBd,body) {
       if(err){
@@ -261,5 +309,6 @@ module.exports = {
     nuevaPass: nuevaPass,
     recoverPass: recoverPass,
     getUser: getUser,
-    getUsers: getUsers
+    getUsers: getUsers,
+    editUser: editUser
 };
