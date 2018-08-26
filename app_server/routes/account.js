@@ -9,7 +9,7 @@ router.put('/insertAcc',ctrlAcc.postAcc);
 router.get('/show',ctrlAcc.TWExtract);
 router.get('/show/callback',ctrlAcc.TWExtract,ctrlAcc.TWCallback);
 router.get('/tokens/callback',ctrlAcc.getTokens,ctrlAcc.getTokensCallback);
-router.get('/:email/:user',ctrlAcc.getAcc);
+router.get('/twits/:account/:user',ctrlAcc.getAcc);
 router.get('/accTokens',ctrlAcc.getTokens);
 
 module.exports = router;
