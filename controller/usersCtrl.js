@@ -129,10 +129,10 @@ const accPost = function (req,res) {
   // console.log(req.body)
   Usuario.find({email: req.body.email})
   .then((user) => {
-      var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.body.account)
+      var index = user[0].cuentas.map((acc) => { return acc}).indexOf(req.body.account)
       console.log(index)
       if (index === -1) {
-        user[0].cuentas.push({cuentaTwitter: req.body.account})
+        user[0].cuentas.push(req.body.account)
       }
       console.log(user[0].cuentas)
       Usuario.update({email: req.body.email},user[0],function (err,msg) {
@@ -144,7 +144,7 @@ const accPost = function (req,res) {
         res.json(response);
       })
   }).catch((err)=>{
-      response = {"error" : true,"message" : "Error deleting account"};
+      response = {"error" : true,"message" : "Error adding account"};
       console.log(err)
       res.json(response);
   })
