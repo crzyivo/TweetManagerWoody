@@ -33,6 +33,7 @@ indexNg.controller('index',['$scope','$http','$window','localStorageService','$r
   }).then(function(response){
     console.log(response.data);
     $scope.cuentas = response.data;
+    $rootScope.$broadcast('LocalStorageModule.notification.setItem',{key: 'loginNg.cuentas', newvalue: response.data});
     localStorageService.set('cuentas', response.data);
   });
 

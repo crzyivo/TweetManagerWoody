@@ -1,6 +1,6 @@
 //frontend/js/indexAdmin.js
 
-var indexAdmin = angular.module('indexAd',['LocalStorageModule']);
+var indexAdmin = angular.module('indexAd',['LocalStorageModule','navs']);
 
 indexAdmin.config(function (localStorageServiceProvider) {
   localStorageServiceProvider
