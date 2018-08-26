@@ -10,7 +10,16 @@ var userSchema = new Schema({
     },
     password: String,
     admin: Boolean,
-    cuentas: [String],
+    cuentas: {
+        type: Map,
+        of:{
+          public_name: String,
+          email: String,
+          account_name:String,
+          token:String,
+          tokenSecret:String,
+        }
+    },
     origen: [String],
     primerAcceso: Boolean,
     entradaApp: Date,

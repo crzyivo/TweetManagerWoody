@@ -77,12 +77,9 @@ const accDelete = function (req,res) {
   // console.log(req.body)
   Usuario.find({email: req.body.email})
   .then((user) => {
-      var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.body.account)
-      console.log(index)
-      if (index !== -1) {
-        user[0].cuentas.splice(index, 1)
-      }
-      console.log(user[0].cuentas)
+      console.log(user[0].cuentas);
+      var usuario =  user[0];
+      usuario.cuentas.delete(req.body.account);
       Usuario.update({email: req.body.email},user[0],function (err,msg) {
         if(err) {
           response = {"error" : true,"message" : "Error updating data"};
@@ -108,7 +105,6 @@ const accGet = function (req,res) {
       var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.query.account)
       console.log(index)
       if (index === -1) {
-        console.log('dafuck')
         response = {"error" : true,"message" : "Account doesn't exist"};
       }
       else{
@@ -124,30 +120,64 @@ const accGet = function (req,res) {
   })
 };
 
+// const accPost = function (req,res) {
+//   // console.log(req.query)  // Para hacer con postman
+//   // console.log(req.body)
+//   Usuario.find({email: req.body.email})
+//   .then((user) => {
+//       var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.body.account)
+//       console.log(index)
+//       if (index === -1) {
+//         user[0].cuentas.push({cuentaTwitter: req.body.account})
+//       }
+//       console.log(user[0].cuentas)
+//       Usuario.update({email: req.body.email},user[0],function (err,msg) {
+//         if(err) {
+//           response = {"error" : true,"message" : "Error updating data"};
+//         } else {
+//           response = {"error" : false,"message" : user};
+//         }
+//         res.json(response);
+//       })
+//   }).catch((err)=>{
+//       response = {"error" : true,"message" : "Error deleting account"};
+//       console.log(err)
+//       res.json(response);
+//   })
+// };
+
 const accPost = function (req,res) {
   // console.log(req.query)  // Para hacer con postman
   // console.log(req.body)
-  Usuario.find({email: req.body.email})
-  .then((user) => {
-      var index = user[0].cuentas.map((acc) => { return acc}).indexOf(req.body.account)
-      console.log(index)
-      if (index === -1) {
-        user[0].cuentas.push(req.body.account)
-      }
-      console.log(user[0].cuentas)
-      Usuario.update({email: req.body.email},user[0],function (err,msg) {
-        if(err) {
+  Usuario.find({email: req.body.email},function (err,user){
+        if(err){
           response = {"error" : true,"message" : "Error updating data"};
-        } else {
-          response = {"error" : false,"message" : user};
+          res.json(response);
+        }else if(user.length!==0) {
+          var usuario = user[0];
+          usuario.cuentas.set(req.body.cuenta,{
+            'account_name':req.body.cuenta,
+            'public_name':req.body.public_name,
+            'email':req.body.account_email,
+            'token':req.body.token,
+            'tokenSecret':req.body.tokenSecret
+          });
+          console.log(usuario);
+          Usuario.update({email: usuario.email},usuario,function (err,msg) {
+            if(err) {
+              response = {"error" : true,"message" : "Error adding data"};
+              console.log(msg);
+            } else {
+              response = {"error" : false,"message" : "User has been updated!"};
+              console.log(msg);
+            }
+            res.json(response);
+          });
+        }else{
+          response = {"error" : true,"message" : "No user found"};
+          res.json(response);
         }
-        res.json(response);
-      })
-  }).catch((err)=>{
-      response = {"error" : true,"message" : "Error adding account"};
-      console.log(err)
-      res.json(response);
-  })
+      });
 };
 
  module.exports = {
