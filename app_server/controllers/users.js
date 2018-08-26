@@ -174,15 +174,21 @@ const nuevaPass = function(req,res){
  */
 const deleteUser = function(req, res){
   console.log("He entrado en deleteUser")
-  var query = {error: true}
+  console.log(req.query)
+  var query = {}
   if(req.user.email !== undefined){  // Local
-    var query = {
+    query = {
       email: req.user.email
     };
   }
   else if(req.user.emails !== undefined){ // google no va???
-    var query = {
+    query = {
       email: req.user.emails[0]
+    };
+  }
+  if(req.query.email !== undefined){ // llamadas desde controlador
+    query = {
+      email: req.query.email
     };
   }
   console.log(query)
@@ -200,13 +206,13 @@ const deleteUser = function(req, res){
     res.redirect('/');
   }
   else{
-    bdPath.getUsuarios({},function (err, res) {
+    bdPath.getUsuarios({},function (err, resBd,body) {
       if (err) {
         console.log(err);
         return;
       }
       else{
-        res.json(res.message)
+        res.json(body.message);
       }
     })
   }

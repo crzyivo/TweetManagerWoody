@@ -71,8 +71,8 @@
                     <tr ng-repeat="cuenta in cuentas">
                         <td> {{cuenta.nombre + ' ' + cuenta.apellidos}} </td>
                         <td> {{cuenta.email}} </td>
-                        <td> {{cuenta.entradaApp.toUTCString()}} </td>
-                        <td> {{cuenta.ultimoAcceso.toUTCString()}} </td>
+                        <td> {{cuenta.entradaApp}} </td>
+                        <td> {{cuenta.ultimoAcceso}} </td>
                         <td>
                             <button type="submit" ng-click="openAcc(cuenta.email)">
                                 Abrir

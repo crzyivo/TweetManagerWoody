@@ -23,18 +23,33 @@ indexAdmin.controller('setSession',['$scope','$http','$window','localStorageServ
     }
   }]);
 
-indexAdmin.controller('index',['$scope','$http','$window','localStorageService',function($scope, $http, $window, localStorageService) {
+indexAdmin.controller('index',['$scope','$http','$window','localStorageService','$rootScope','$location',function($scope, $http, $window, localStorageService,$rootScope,$location) {
 
   $scope.nameAcc = " ";
   $scope.error = "";
-  $scope.users = {};
+  $scope.cuentas = {};
   $http.get('/users/users').then(function(response){
-    $scope.users = response.data;
-    localStorageService.set('cuentas', response.data);
+    var indexAux = response.data.map((user)=>{return user.admin}).indexOf(true)
+    $scope.cuentas = response.data
+    if(indexAux > -1){
+      $scope.cuentas.splice(indexAux,1)
+    }
+    $scope.cuentas = $scope.cuentas.map((user) => {
+      console.log(user)
+      return {
+          nombre: user.nombre,
+          apellidos: user.apellidos,
+          email: user.email,
+          entradaApp: new Date(user.entradaApp).toLocaleString(),
+          ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString()
+        }
+    })
+    localStorageService.set('cuentas', $scope.cuentas);
+    $rootScope.$broadcast('LocalStorageModule.notification.setItem',{key: 'loginNg.cuentas', newvalue: $scope.cuentas})
   });
 
   $scope.openAcc = function(account){
-    var aux = $scope.users.map((acc)=> {return acc.email}).indexOf(account);
+    var aux = $scope.cuentas.map((acc)=> {return acc.email}).indexOf(account);
     if(aux !== -1){
       localStorageService.set('account', account);
       console.log(aux);
@@ -44,18 +59,31 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
     else{
       $window.location.href = '/frontend/pages/indexAdmin';
     }
-    
   };
 
   $scope.deleteAcc = function(account){
-    $http.get('/deleteUser', {
+    $http.get('/users/deleteUser', {
       params: {
         email: account
       }
     }).then(function(response){
-      $scope.cuentas = response.data;
-      localStorageService.set('cuentas', response.data);
-      $scope.error = ""
+      console.log(response)
+      var indexAux = response.data.map((user)=>{return user.admin}).indexOf(true)
+      $scope.cuentas = response.data
+      if(indexAux > -1){
+        $scope.cuentas.splice(indexAux,1)
+      }
+      $scope.cuentas = $scope.cuentas.map((user) => {
+        return {
+            nombre: user.nombre,
+            apellidos: user.apellidos,
+            email: user.email,
+            entradaApp: new Date(user.entradaApp).toLocaleString(),
+          ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString()
+        }
+      })
+      localStorageService.set('cuentas', $scope.cuentas);
+      $rootScope.$broadcast('LocalStorageModule.notification.setItem',{key: 'loginNg.cuentas', newvalue: $scope.cuentas});
     })
   };
 }]);
