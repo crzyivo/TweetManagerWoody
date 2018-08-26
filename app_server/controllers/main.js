@@ -55,6 +55,9 @@ const  loginCallback = function(req,res){
   }else{
     response.next = '/frontend/index';
   }
+  if(req.user.admin){
+    response.next = '/frontend/pages/indexAdmin';
+  }
   response.username = req.user.email;
   res.json(response);
 
@@ -250,7 +253,11 @@ const session = function (req,res) {
 const index = function(req, res){
   if(req.cookies.user_sid){
     console.log("sesion ya iniciada");
-    res.redirect('/frontend/index');
+    response = '/frontend/index'
+    // if(req.user.admin){
+    //   response = '/frontend/pages/indexAdmin';
+    // }
+    res.redirect(response);
   }else{
     console.log("inicia sesion pls");
     res.redirect('/index');

@@ -193,10 +193,23 @@ const deleteUser = function(req, res){
         return;
       }
   });
-  if(req.cookies.user_sid){
-    res.clearCookie('user_sid');
+  if(!req.user.admin){
+    if(req.cookies.user_sid){
+      res.clearCookie('user_sid');
+    }
+    res.redirect('/');
   }
-  res.redirect('/');
+  else{
+    bdPath.getUsuarios({},function (err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      else{
+        res.json(res.message)
+      }
+    })
+  }
 };
 
 /**
@@ -218,11 +231,29 @@ const getUser = function(req,res){
   })
 };
 
+/**
+ * Información de perfil de usuario.
+ * @param req
+ * @param res
+ */
+const getUsers = function(req,res){
+  bdPath.getUsuarios({},function (err,resBd,body) {
+      if(err){
+          res.status(500);
+          res.send(err);
+      }else{
+          console.log(body)
+          res.json(body.message);
+      }
+
+  })
+};
+
 module.exports = {
     postUsers: postUsers,
     deleteUser: deleteUser,
     nuevaPass: nuevaPass,
     recoverPass: recoverPass,
-    getUser: getUser
-
+    getUser: getUser,
+    getUsers: getUsers
 };

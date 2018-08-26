@@ -60,10 +60,6 @@ const recover = function(req,res){
     });
 };
 
-const TWprueba = function(req,res){
-    twPath.getAcc(req.query.email)
-};
-
 const TWExtract = passport.authenticate('twitter');
 
 const TWCallback = function (req, res) {
