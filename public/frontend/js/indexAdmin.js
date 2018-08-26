@@ -27,14 +27,19 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
 
   $scope.nameAcc = " ";
   $scope.error = "";
+  $scope.users = {};
   $scope.cuentas = {};
   $http.get('/users/users').then(function(response){
     var indexAux = response.data.map((user)=>{return user.admin}).indexOf(true)
-    $scope.cuentas = response.data
+    $scope.users = response.data
     if(indexAux > -1){
-      $scope.cuentas.splice(indexAux,1)
+      $scope.users.splice(indexAux,1)
     }
-    $scope.cuentas = $scope.cuentas.map((user) => {
+    $scope.cuentas = $scope.users.map((user) => {
+      console.log(user)
+      return user.email
+    });
+    $scope.users = $scope.users.map((user) => {
       console.log(user)
       return {
           nombre: user.nombre,
@@ -44,12 +49,12 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
           ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString()
         }
     })
-    localStorageService.set('cuentas', $scope.cuentas);
+    localStorageService.set('cuentas', $scope.users);
     $rootScope.$broadcast('LocalStorageModule.notification.setItem',{key: 'loginNg.cuentas', newvalue: $scope.cuentas})
   });
 
   $scope.openAcc = function(account){
-    var aux = $scope.cuentas.map((acc)=> {return acc.email}).indexOf(account);
+    var aux = $scope.users.map((acc)=> {return acc.email}).indexOf(account);
     if(aux !== -1){
       localStorageService.set('account', account);
       console.log(aux);
@@ -69,11 +74,15 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
     }).then(function(response){
       console.log(response)
       var indexAux = response.data.map((user)=>{return user.admin}).indexOf(true)
-      $scope.cuentas = response.data
+      $scope.users = response.data
       if(indexAux > -1){
-        $scope.cuentas.splice(indexAux,1)
+        $scope.users.splice(indexAux,1)
       }
-      $scope.cuentas = $scope.cuentas.map((user) => {
+      $scope.cuentas = $scope.users.map((user) => {
+        console.log(user)
+        return user.email
+      });
+      $scope.users = $scope.users.map((user) => {
         return {
             nombre: user.nombre,
             apellidos: user.apellidos,
@@ -82,7 +91,7 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
           ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString()
         }
       })
-      localStorageService.set('cuentas', $scope.cuentas);
+      localStorageService.set('cuentas', $scope.users);
       $rootScope.$broadcast('LocalStorageModule.notification.setItem',{key: 'loginNg.cuentas', newvalue: $scope.cuentas});
     })
   };

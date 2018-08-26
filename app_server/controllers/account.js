@@ -53,9 +53,13 @@ const recover = function(req,res){
             res.status(400).send("El usuario no existe");
         } else {
             var response = {}
-            response.cuentas = body.message.cuentas;
+            console.log(body)
+            var response = {}
+            if(body.message[0].cuentas !== undefined){
+                response = body.message[0].cuentas
+            }
             res.status(200)
-            res.send(Object.keys(body.message[0].cuentas))
+            res.send(Object.keys(response))
         }
     });
 };
