@@ -101,20 +101,23 @@ const accGet = function (req,res) {
   console.log(req.query)
   Usuario.find({email: req.query.email})
   .then((user) => {
-    console.log(user);
-      var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.query.account)
-      console.log(index)
-      if (index === -1) {
+
+      if (user.length === 0) {
         response = {"error" : true,"message" : "Account doesn't exist"};
       }
-      else{
+      else {
         console.log(user[0].cuentas);
-        response = {"error" : false,"message" : user[0].cuentas[index]};
+        var cuentas = user[0].cuentas;
+        var cuenta_query=req.query.account;
+        if (cuentas.has(cuenta_query)) {
+          response = {"error": false, "message": cuentas.get(cuenta_query)};
+        }else{
+          response = {"error" : true,"message" : "La cuenta de twitter no esta asociada al usuario"};
+        }
       }
       res.json(response);
   }).catch((err)=>{
-    console.log('dafuck')
-      response = {"error" : true,"message" : "Error deleting account"};
+      response = {"error" : true,"message" : "No existe el usuario"};
       console.log(err)
       res.json(response);
   })
