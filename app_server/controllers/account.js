@@ -71,17 +71,19 @@ const TWCallback = function (req, res) {
 };
 
 const getAcc = function(req,res){
-    bdPath.getAccount({email: req.params.user, account: req.params.email },
+    bdPath.getAccount({email: req.params.user, account: req.params.account },
         function (err, resBd, body) {
         if (err) {
             res.status(500);
             res.send(err);
         }
-        if (body.message.length === 0) {
+        if (body.error) {
             res.status(400).send("La cuenta no existe");
         } else {
+            console.log(body);
+
             res.status(200);
-            res.send(body.message[0])
+            res.send(body.message)
         }
     });
 };

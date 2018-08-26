@@ -5,6 +5,7 @@ navNg.config(function (localStorageServiceProvider) {
         .setStorageType('sessionStorage')
         .setNotify(true, true);
 });
+
 navNg.directive('topBar',function () {
     var controller = ['$scope','$window','localStorageService',function($scope,$window,localStorageService) {
 
@@ -48,17 +49,8 @@ navNg.directive('sideBar',function () {
         delete $scope.cuentas[parameters.key];
       });
       $scope.openAcc = function(account){
-        var aux = $scope.cuentas.map((acc)=> {return acc.cuentaTwitter}).indexOf(account);
-        if(aux !== -1){
-          localStorageService.set('account', account);
-          console.log(aux);
-          $window.location.href = '/frontend/pages/cuenta';
-          // redirige siempre aquí aunque borres la cuenta porque no se actualiza
-        }
-        else{
-          $window.location.href = '/frontend/pages/indexUser';
-        }
-
+        //localStorageService.set('account', account);
+          $window.location.href = '/frontend/pages/cuenta?acc='+account;
       };
     }];
     return{
