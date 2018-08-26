@@ -20,7 +20,9 @@ function createStrategy(){
       },
       function (token, tokenSecret, profile, done) {
         var usuario = {};
-        console.log('TOJKENKÑLN"DLF');
+        console.log(token);
+        console.log(tokenSecret);
+        console.log(profile);
         return done(null,usuario);
       });
   strategy.name = 'twitterToken';
@@ -45,10 +47,6 @@ const recover = function(req,res){
             res.send(body.message[0].cuentas)
         }
     });
-};
-
-const TWprueba = function(req,res){
-    twPath.getAcc(req.query.email)
 };
 
 const TWExtract = passport.authenticate('twitter');
