@@ -21,9 +21,11 @@
                         <td> {{cuenta.entradaApp}} </td>
                         <td> {{cuenta.ultimoAcceso}} </td>
                         <td>
-                            <button type="submit" ng-click="openAcc(cuenta.email)">
-                                Abrir
-                            </button>
+                            <a href="#/settingsAdmin">
+                                <button type="submit" ng-click="openAcc(cuenta.email)">
+                                 Abrir
+                                </button>
+                            </a>
                         </td>
                         <td>
                             <button type="submit" ng-click="deleteAcc(cuenta.email)">
@@ -32,10 +34,6 @@
                         </td>
                     </tr>
                 </table>
-
-                <a href="#/settingsAdmin">
-                    Change
-                </a>
             </div>
             <br/>
             <!-- /#form -->

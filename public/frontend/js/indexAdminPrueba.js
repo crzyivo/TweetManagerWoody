@@ -35,8 +35,9 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
             nombre: user.nombre,
             apellidos: user.apellidos,
             email: user.email,
-            entradaApp: new Date(user.entradaApp).toLocaleString(),
-            ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString()
+            ultimoAcceso: new Date(user.ultimoAcceso).toLocaleString(),
+            entradaApp: new Date(user.entradaApp).toLocaleString()
+            
             }
         })
         localStorageService.set('cuentas', $scope.users);
@@ -46,13 +47,9 @@ indexAdmin.controller('index',['$scope','$http','$window','localStorageService',
     $scope.openAcc = function(account){
         var aux = $scope.users.map((acc)=> {return acc.email}).indexOf(account);
         if(aux !== -1){
-        localStorageService.set('account', account);
-        console.log(aux);
-        $window.location.href = '/frontend/pages/settingsAdmin';  
+            localStorageService.set('account', account);
+            console.log(aux); 
         // redirige siempre aquí aunque borres la cuenta porque no se actualiza
-        }
-        else{
-        $window.location.href = '/frontend/pages/indexAdmin';
         }
     };
 
