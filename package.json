@@ -19,6 +19,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
+    "get-random-values": "^1.2.0",
     "http-errors": "~1.6.2",
     "https": "^1.0.0",
     "less-middleware": "~2.2.1",
@@ -32,6 +33,7 @@
     "passport-twitter": "^1.0.4",
     "pug": "2.0.0-beta11",
     "randomstring": "^1.1.5",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "request-debug": "^0.2.0"
   }
 }

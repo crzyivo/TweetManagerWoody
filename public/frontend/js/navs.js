@@ -1,3 +1,4 @@
+//public/frontend/js/navs.js
 var navNg = angular.module('navs',['LocalStorageModule']);
 navNg.config(function (localStorageServiceProvider) {
     localStorageServiceProvider
