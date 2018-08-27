@@ -61,21 +61,25 @@
             <div ng-controller="index">
                 <table>
                     <tr>
-                        <td width="30%"> Correo de la cuenta </td>
-                        <td width="50%"> Descripción de la cuenta</td>
+                        <td width="10%"> Nombre de la cuenta</td>
+                        <td width="15%"> Correo de la cuenta </td>
+                        <td width="15%"> Nombre público </td>
+                        <td width="40%"> Descripción de la cuenta</td>
                         <td width="10%"> Editar</td>
                         <td width="10%"> Eliminar</td>
                     </tr>
                     <tr ng-repeat="cuenta in cuentas">
-                        <td> {{cuenta}} </td>
-                        <td> {{cuenta}} </td>
+                        <td> {{'@' + cuenta.account_name}} </td>
+                        <td> {{cuenta.email}} </td>
+                        <td> {{cuenta.public_name}} </td>
+                        <td> {{cuenta.description}} </td>
                         <td>
-                            <button type="submit" ng-click="openAcc(cuenta)">
-                                Abrir
+                            <button type="submit" ng-click="openAcc(cuenta.account_name)">
+                                Open
                             </button>
                         </td>
                         <td>
-                            <button type="submit" ng-click="deleteAcc(cuenta)">
+                            <button type="submit" ng-click="deleteAcc(cuenta.account_name)">
                                 Delete
                             </button>
                         </td>

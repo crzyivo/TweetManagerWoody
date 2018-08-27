@@ -59,7 +59,7 @@ const recover = function(req,res){
                 response = body.message[0].cuentas
             }
             res.status(200)
-            res.send(Object.keys(response))
+            res.send(response)
         }
     });
 };
