@@ -18,7 +18,7 @@ navNg.directive('topBar',function () {
     return {
         controller: controller,
         restrict: 'E',
-        templateUrl: '../pages/topbar.html'
+        templateUrl: '../pages/topbarAdmin.html'
     }
 });
 
