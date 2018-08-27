@@ -41,6 +41,45 @@ const usrGet = function(req, res) {
     });
 };
 
+const usrPutEmail = function (req,res) {
+  console.log(req.body.nombre);
+  var newUser = req.body;
+  var response = {};
+  var modify = false;
+  console.log(newUser);
+  Usuario.find({email: req.params.email}).then((user)=>{
+    console.log(user)
+    if(user[0].nombre !== newUser.nombre){
+      modify = true
+    }
+    else if(user[0].apellidos !== newUser.apellidos){
+      modify = true
+    }
+    else if(user[0].email !== newUser.email){
+      modify = true
+    }
+    else if(user[0].password !== newUser.password){
+      modify = true
+    }
+    console.log(modify)
+    if(modify){
+      Usuario.update({email: req.params.email},newUser,function (err,msg) {
+        if(err) {
+          response = {"error" : true,"message" : "Error adding data"};
+          console.log(msg);
+        } else {
+          response = {"error" : false,"message" : "User has been updated!"};
+          console.log(msg);
+        }
+        res.json(response);
+      });
+    }
+    else{
+      res.json({"error" : true, "message" : "No fields modified"})
+    }
+  })
+};
+
 const usrPut = function (req,res) {
   console.log(req.body.nombre);
   var newUser = req.body;
@@ -184,5 +223,5 @@ const accPost = function (req,res) {
 };
 
  module.exports = {
-    usrGet,usrPost,usrPut,usrDelete, accDelete, accPost, accGet
+    usrGet,usrPost,usrPut,usrPutEmail,usrDelete, accDelete, accPost, accGet
 };

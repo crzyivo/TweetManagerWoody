@@ -6,6 +6,7 @@ router.get('/',usrController.usrGet);
 router.post('/',usrController.usrPost);
 router.post('/recover',usrController.usrPut);
 router.put('/',usrController.usrPut);
+router.put('/:email',usrController.usrPutEmail);
 router.delete('/',usrController.usrDelete);
 router.put('/deleteAcc',usrController.accDelete);
 router.put('/postAcc',usrController.accPost);
