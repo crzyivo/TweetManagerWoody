@@ -173,6 +173,7 @@ const nuevaPass = function(req,res){
 };
 
 function check (req,res, actualizado) {
+  var passModified = false
   if(req.body.nombre !== undefined && req.body.nombre !== ""){
     actualizado.nombre = req.body.nombre
   }
@@ -184,38 +185,42 @@ function check (req,res, actualizado) {
   }
   if(req.body.password !== undefined && 
     req.body.password !== CryptoJS.SHA256("").toString(CryptoJS.enc.Base64)){
-    bcrypt.hash(req.body.password,5).then(function (hash) {
-      actualizado.password = hash
-    })
+    passModified = true
   }
-  bdPath.putUsuariosEmail(actualizado,req.body.email,
-    function (err,resBd,body) {
-      if(err){
-        res.status(500);
-        res.send(err);
-      }
-      else{
-        if(body.error === false){
-          res.status(200);
-          res.json(body);
+  bcrypt.hash(req.body.password,5).then(function (hash) {
+    if(passModified === true){
+      actualizado.password = hash
+    }
+    bdPath.putUsuariosEmail(actualizado,req.body.email,
+      function (err,resBd,body) {
+        console.log(body)
+        if(err){
+          res.status(500);
+          res.send(err);
         }
         else{
-          console.log(body.message)
-          if(body.message === "Error adding data"){
-            res.status(400);
-            res.send({"error": "Los datos no se han modificado correctamente en la base de datos"})
+          if(body.error === false){
+            res.status(200);
+            res.json(body);
           }
           else{
-            res.status(400);
-            res.send({"error": "No se ha modificado ningún campo. Rellene los campos e intentelo de nuevo"})
+            if(body.message === "Error adding data"){
+              res.status(400);
+              res.send({"error": "Los datos no se han modificado correctamente en la base de datos"})
+            }
+            else{
+              res.status(400);
+              res.send({"error": "No se ha modificado ningún campo. Rellene los campos e intentelo de nuevo"})
+            }
           }
         }
-      }
-    })
+      })
+  })
+  
 }
 
 const editUser = function(req,res){
-  bdPath.getUsuarios({email:req.body.email},
+  bdPath.getUsuarios({email: req.body.email},
       function (err,resBd,body) {
         if(err){
             console.log('usuario no encontrado');

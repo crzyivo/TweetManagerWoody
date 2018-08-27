@@ -1,6 +1,5 @@
 const passport = require('passport');
 const bdPath = require('../bdApiCalls');
-const twPath = require('../twitterCalls');
 const request = require('request');
 var TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -28,6 +27,7 @@ function createStrategy(){
             var cuenta_json = {
                 'cuenta': cuenta.screen_name,
                 'email':usuario.email,
+                'description': cuenta.description,
                 'account_email':cuenta.email,
                 'public_name':cuenta.name,
                 'token':token,

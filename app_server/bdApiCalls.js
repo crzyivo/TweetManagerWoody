@@ -42,7 +42,7 @@ function putUsuarios(usuario,callback){
 function putUsuariosEmail(usuario,email,callback){
   request.put({
     baseUrl: bdPath,
-    uri: "/users/" + email,
+    uri: "/users/changeUser/" + email,
     json: true,
     body: usuario
   },callback);
