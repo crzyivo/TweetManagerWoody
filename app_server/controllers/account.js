@@ -53,17 +53,17 @@ const recover = function(req,res){
         if (body.message.length === 0) {
             res.status(400).send("El usuario no existe");
         } else {
-            var response = {}
+            var response = []
             console.log(body)
-            var response = {}
             if(body.message[0].cuentas !== undefined){
-                var response=[];
                 var cuentas = body.message[0].cuentas;
                 Object.keys(cuentas).forEach(function (key) {
                   console.log(cuentas[key]);
                   response.push({
                     account_name:cuentas[key].account_name,
-                    email:cuentas[key].email
+                    email:cuentas[key].email,
+                    public_name:cuentas[key].public_name,
+                    description:cuentas[key].description
                   })
                 });
               console.log(response);
@@ -92,6 +92,7 @@ const getAcc = function(req,res){
         } else {
             var account = body.message;
             twPath.getHome(20,account.token,account.tokenSecret,function (err,resTw,body) {
+                console.log(body)
                 var tweets = [];
                 body.forEach(function (tweet) {
                     tweets.push({
@@ -197,8 +198,23 @@ const deleteAcc = function(req,res){
         if (body.message.length === 0) {
             res.status(400).send("El usuario no existe");
         } else {
+            var response = []
+            console.log(body)
+            if(body.message[0].cuentas !== undefined){
+                var cuentas = body.message[0].cuentas;
+                Object.keys(cuentas).forEach(function (key) {
+                  console.log(cuentas[key]);
+                  response.push({
+                    account_name:cuentas[key].account_name,
+                    email:cuentas[key].email,
+                    public_name:cuentas[key].public_name,
+                    description:cuentas[key].description
+                  })
+                });
+              console.log(response);
+            }
             res.status(200)
-            res.send(Object.keys(body.message[0].cuentas))
+            res.send(response)
         }
     });
 };
@@ -213,8 +229,23 @@ const postAcc = function(req,res){
         if (body.message.length === 0) {
             res.status(400).send("El usuario no existe");
         } else {
+            var response = []
+            console.log(body)
+            if(body.message[0].cuentas !== undefined){
+                var cuentas = body.message[0].cuentas;
+                Object.keys(cuentas).forEach(function (key) {
+                  console.log(cuentas[key]);
+                  response.push({
+                    account_name:cuentas[key].account_name,
+                    email:cuentas[key].email,
+                    public_name:cuentas[key].public_name,
+                    description:cuentas[key].description
+                  })
+                });
+              console.log(response);
+            }
             res.status(200)
-            res.send(body.message[0].cuentas)
+            res.send(response)
         }
     });
 };

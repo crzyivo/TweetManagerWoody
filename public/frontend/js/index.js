@@ -38,11 +38,11 @@ indexNg.controller('index',['$scope','$http','$window','localStorageService','$r
   });
 
   $scope.openAcc = function(account){
-    var aux = $scope.cuentas.map((acc)=> {return acc.cuentaTwitter}).indexOf(account);
+    var aux = $scope.cuentas.map((acc)=> {return acc.account_name}).indexOf(account.account_name);
     if(aux !== -1){
-      localStorageService.set('account', account);
+      localStorageService.set('account', account.account_name);
       console.log(aux);
-      $window.location.href = '/frontend/pages/cuenta';
+      $window.location.href = '/frontend/pages/cuenta?acc='+account.account_name;
       // redirige siempre aquí aunque borres la cuenta porque no se actualiza
     }
     else{
@@ -55,7 +55,7 @@ indexNg.controller('index',['$scope','$http','$window','localStorageService','$r
     $http.put('/acc/deleteAcc', {
       params: {
         email: localStorageService.get('username'),
-        acc: account
+        acc: account.account_name
       }
     }).then(function(response){
       $scope.cuentas = response.data;

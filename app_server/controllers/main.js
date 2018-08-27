@@ -198,9 +198,6 @@ passport.use(new TwitterStrategy({
               console.log(body.message);
               usuario = body.message[0];
               usuario.ultimoAcceso = new Date()
-              if(usuario.cuentas.indexOf(profile.emails[0].value) === -1){
-                usuario.cuentas.push({cuentaTwitter: profile.emails[0].value})
-              }
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
@@ -212,7 +209,6 @@ passport.use(new TwitterStrategy({
               usuario.origen = profile.provider;
               usuario.entradaApp = new Date();
               usuario.ultimoAcceso = new Date();
-              usuario.cuentas = [{cuentaTwitter: profile.emails[0].value}]
               bdApi.postUsuarios(usuario);
             }
             return done(null, usuario);

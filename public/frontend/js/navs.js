@@ -15,6 +15,9 @@ navNg.directive('topBar',function () {
             localStorageService.remove('username');
             $window.location.href = '/logout';
         }
+        $scope.redirect = function(redirection){
+          $window.location.href = redirection
+      }
     }];
     return {
         controller: controller,
@@ -53,6 +56,9 @@ navNg.directive('sideBar',function () {
         //localStorageService.set('account', account);
           $window.location.href = '/frontend/pages/cuenta?acc='+account.account_name;
       };
+      $scope.redirect = function(redirection){
+          $window.location.href = redirection
+      } 
     }];
     return{
         controller: controller,
