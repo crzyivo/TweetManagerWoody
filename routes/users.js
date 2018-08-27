@@ -5,11 +5,11 @@ var router = express.Router();
 router.get('/',usrController.usrGet);
 router.post('/',usrController.usrPost);
 router.post('/recover',usrController.usrPut);
-router.put('/',usrController.usrPut);
-router.put('/:email',usrController.usrPutEmail);
-router.delete('/',usrController.usrDelete);
 router.put('/deleteAcc',usrController.accDelete);
 router.put('/postAcc',usrController.accPost);
+router.put('/changeUser/:email',usrController.usrPutEmail);
+router.put('/',usrController.usrPut);
+router.delete('/',usrController.usrDelete);
 router.get('/getAcc',usrController.accGet);
 
 module.exports = router;

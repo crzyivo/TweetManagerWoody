@@ -201,6 +201,7 @@ const accPost = function (req,res) {
             'account_name':req.body.cuenta,
             'public_name':req.body.public_name,
             'email':req.body.account_email,
+            'description': req.body.description,
             'token':req.body.token,
             'tokenSecret':req.body.tokenSecret
           });
