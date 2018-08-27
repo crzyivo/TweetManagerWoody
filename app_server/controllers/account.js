@@ -57,7 +57,16 @@ const recover = function(req,res){
             console.log(body)
             var response = {}
             if(body.message[0].cuentas !== undefined){
-                response = body.message[0].cuentas
+                var response=[];
+                var cuentas = body.message[0].cuentas;
+                Object.keys(cuentas).forEach(function (key) {
+                  console.log(cuentas[key]);
+                  response.push({
+                    account_name:cuentas[key].account_name,
+                    email:cuentas[key].email
+                  })
+                });
+              console.log(response);
             }
             res.status(200)
             res.send(response)

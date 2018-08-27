@@ -51,7 +51,7 @@ navNg.directive('sideBar',function () {
       });
       $scope.openAcc = function(account){
         //localStorageService.set('account', account);
-          $window.location.href = '/frontend/pages/cuenta?acc='+account;
+          $window.location.href = '/frontend/pages/cuenta?acc='+account.account_name;
       };
     }];
     return{
