@@ -1,5 +1,6 @@
 const passport = require('passport');
 const bdPath = require('../bdApiCalls');
+const twPath = require('../twitterCalls');
 const request = require('request');
 var TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -80,12 +81,101 @@ const getAcc = function(req,res){
         if (body.error) {
             res.status(400).send("La cuenta no existe");
         } else {
-            console.log(body);
-
-            res.status(200);
-            res.send(body.message)
+            var account = body.message;
+            twPath.getHome(20,account.token,account.tokenSecret,function (err,resTw,body) {
+                var tweets = [];
+                body.forEach(function (tweet) {
+                    tweets.push({
+                        text:tweet.text,
+                        screen_name:tweet.user.screen_name,
+                        name:tweet.user.name,
+                        img:tweet.user.profile_image_url_https,
+                        created:tweet.created_at
+                    });
+                });
+                res.status(200);
+                res.send(tweets);
+            });
         }
     });
+};
+
+const getAccUser = function(req,res){
+    bdPath.getAccount({email: req.params.user, account: req.params.account },
+        function (err, resBd, body) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.error) {
+                res.status(400).send("La cuenta no existe");
+            } else {
+                var account = body.message;
+                twPath.getUserTweets(account.account_name,20,account.token,account.tokenSecret,function (err,resTw,body) {
+                    var tweets = [];
+                    body.forEach(function (tweet) {
+                        tweets.push({
+                            text:tweet.text,
+                            screen_name:tweet.user.screen_name,
+                            name:tweet.user.name,
+                            img:tweet.user.profile_image_url_https,
+                            created:tweet.created_at
+                        });
+                    });
+                    res.status(200);
+                    res.send(tweets);
+                });
+            }
+        });
+};
+
+const getAccMentions = function(req,res){
+    bdPath.getAccount({email: req.params.user, account: req.params.account },
+        function (err, resBd, body) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.error) {
+                res.status(400).send("La cuenta no existe");
+            } else {
+                var account = body.message;
+                twPath.getUserMentions(20,account.token,account.tokenSecret,function (err,resTw,body) {
+                    var tweets = [];
+                    body.forEach(function (tweet) {
+                        tweets.push({
+                            text:tweet.text,
+                            screen_name:tweet.user.screen_name,
+                            name:tweet.user.name,
+                            img:tweet.user.profile_image_url_https,
+                            created:tweet.created_at
+                        });
+                    });
+                    res.status(200);
+                    res.send(tweets);
+                });
+            }
+        });
+};
+
+const postAccTweet = function(req,res){
+    bdPath.getAccount({email: req.params.user, account: req.params.account },
+        function (err, resBd, body) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.error) {
+                res.status(400).send("La cuenta no existe");
+            } else {
+                var account = body.message;
+                twPath.postTweet(req.body.text,account.token,account.tokenSecret,function (err,resTw,body) {
+                    var tweets = [];
+                    res.status(200);
+                    res.send(body);
+                });
+            }
+        });
 };
 
 const deleteAcc = function(req,res){
@@ -134,5 +224,8 @@ module.exports = {
     TWExtract: TWExtract,
     TWCallback: TWCallback,
     getTokens: getTokens,
-    getTokensCallback: getTokensCallback
+    getTokensCallback: getTokensCallback,
+    getAccUser: getAccUser,
+    getAccMentions: getAccMentions,
+    postAccTweet:postAccTweet
 };
