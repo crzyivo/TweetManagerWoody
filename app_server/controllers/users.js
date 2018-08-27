@@ -172,6 +172,48 @@ const nuevaPass = function(req,res){
   res.json({next:'/frontend/indexUser'});
 };
 
+function check (req,res, actualizado) {
+  if(req.body.nombre !== undefined && req.body.nombre !== ""){
+    actualizado.nombre = req.body.nombre
+  }
+  if(req.body.apellidos !== undefined && req.body.apellidos !== ""){
+    actualizado.apellidos = req.body.apellidos
+  }
+  if(req.body.newEmail !== undefined && req.body.newEmail !== ""){
+    actualizado.email = req.body.newEmail
+  }
+  if(req.body.password !== undefined && 
+    req.body.password !== CryptoJS.SHA256("").toString(CryptoJS.enc.Base64)){
+    bcrypt.hash(req.body.password,5).then(function (hash) {
+      actualizado.password = hash
+    })
+  }
+  bdPath.putUsuariosEmail(actualizado,req.body.email,
+    function (err,resBd,body) {
+      if(err){
+        res.status(500);
+        res.send(err);
+      }
+      else{
+        if(body.error === false){
+          res.status(200);
+          res.json(body);
+        }
+        else{
+          console.log(body.message)
+          if(body.message === "Error adding data"){
+            res.status(400);
+            res.send({"error": "Los datos no se han modificado correctamente en la base de datos"})
+          }
+          else{
+            res.status(400);
+            res.send({"error": "No se ha modificado ningún campo. Rellene los campos e intentelo de nuevo"})
+          }
+        }
+      }
+    })
+}
+
 const editUser = function(req,res){
   bdPath.getUsuarios({email:req.body.email},
       function (err,resBd,body) {
@@ -180,32 +222,29 @@ const editUser = function(req,res){
           res.status(500);
           res.send(err);
         }
+        console.log(req.body)
         var actualizado = body.message[0];
-        if(req.body.nombre !== undefined && req.body.nombre !== ""){
-          actualizado.nombre = req.body.nombre
-        }
-        if(req.body.apellidos !== undefined && req.body.apellidos !== ""){
-          actualizado.apellidos = req.body.apellidos
-        }
-        if(req.body.email !== undefined && req.body.email !== ""){
-          actualizado.email = req.body.email
-        }
-        if(req.body.password !== undefined && 
-          req.body.password !== CryptoJS.SHA256("").toString(CryptoJS.enc.Base64)){
-          bcrypt.hash(req.body.password,5).then(function (hash) {
-            actualizado.password = hash
-          })
-        }
-        bdPath.putUsuarios(actualizado,
-          function (err,resBd,body) {
+        if(req.body.newEmail !== req.body.email){
+          console.log(req.body.newEmail)
+          bdPath.getUsuarios({email: req.body.newEmail}, function (err,resBd,bod){
             if(err){
-              res.status(500);
-              res.send(err);
+              res.status(400);
+              res.send({"error": "Error en la base de datos"});
+            }
+            else if(bod.message[0] !== undefined){
+              console.log(bod)
+              res.status(400);
+              res.send({"error": "El email solicitado ya existe, vuelva a intentarlo con un nuevo email."})
+            }
+            else{
+              check(req,res,actualizado)
             }
           })
-        });
-  res.status(200);
-  res.json({next:'/frontend/indexUser'});
+        }
+        else{
+          check(req,res,actualizado)
+        }
+  });
 };
 
 

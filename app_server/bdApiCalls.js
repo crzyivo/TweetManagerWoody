@@ -39,6 +39,15 @@ function putUsuarios(usuario,callback){
   },callback);
 }
 
+function putUsuariosEmail(usuario,email,callback){
+  request.put({
+    baseUrl: bdPath,
+    uri: "/users/" + email,
+    json: true,
+    body: usuario
+  },callback);
+}
+
 function deleteUsuarios(usuario,callback){
   request.delete({
     baseUrl: bdPath,
@@ -76,5 +85,5 @@ function getAccount(query,callback) {
 
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios, deleteUsuarios, 
+module.exports = {getUsuarios,postUsuarios,putUsuarios, putUsuariosEmail, deleteUsuarios, 
   recoverPassword, deleteAccount, postAccount, getAccount};
