@@ -53,10 +53,10 @@ const  loginCallback = function(req,res){
   if(req.user.primerAcceso){
     response.next = '/firstLogin';
   }else{
-    response.next = '/frontend/index';
+    response.next = '/frontend/pages/index';
   }
   if(req.user.admin){
-    response.next = '/frontend/pages/indexAdmin';
+    response.next = '/frontend/pages/adminSPA';
   }
   response.username = req.user.email;
   res.json(response);
@@ -115,7 +115,7 @@ const loginGoogle = passport.authenticate('google', {
 });
 
 const loginGoogleCallback = function (req, res) {
-    res.redirect('/frontend/index');
+    res.redirect('/frontend/pages/index/');
 };
 
 /**
@@ -164,7 +164,7 @@ passport.use(new FacebookStrategy({
 const loginFacebook = passport.authenticate('facebook', { scope : ['email'] ,failureRedirect:'/'});
 
 const loginFacebookCallback = function (req, res) {
-    res.redirect('/frontend/index');
+    res.redirect('/frontend/pages/index');
 };
 
 /**
@@ -217,7 +217,7 @@ passport.use(new TwitterStrategy({
 
 const loginTwitter = passport.authenticate('twitter',{prompt: 'select_account'});
 const loginTwitterCallback = function (req, res) {
-  res.redirect('/frontend/index');
+  res.redirect('/frontend/pages/index');
 };
 
 /**
@@ -249,9 +249,9 @@ const session = function (req,res) {
 const index = function(req, res){
   if(req.cookies.user_sid){
     console.log("sesion ya iniciada");
-    response = '/frontend/index'
+    response = '/frontend/pages/index'
     // if(req.user.admin){
-    //   response = '/frontend/pages/indexAdmin';
+    //   response = '/frontend/pages/indexAdminSPA';  Aquí no entrará porque administrador no viaja a URLs desconocidas al ser SPA
     // }
     res.redirect(response);
   }else{

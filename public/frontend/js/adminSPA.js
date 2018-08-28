@@ -1,4 +1,4 @@
-//frontend/js/indexAdmin.js
+//frontend/js/adminSPA.js
 
 var app = angular.module('indexAd',['ngRoute','LocalStorageModule','navs']);
 
@@ -18,6 +18,11 @@ app.config(function($routeProvider) {
   
     .when('/settingsAdmin', {
       templateUrl : '../pages/settingsAdminPrueba.html',
+      controller  : 'perfilCtrl'
+    })
+
+    .when('/stats', {
+      templateUrl : '../pages/statsAdminSPA.html',
       controller  : 'perfilCtrl'
     })
   
