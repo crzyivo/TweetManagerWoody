@@ -48,7 +48,6 @@ passport.use(new LocalStrategy(function (username,password,done) {
 const login = passport.authenticate('local');
 
 const  loginCallback = function(req,res){
-  console.log(req.user);
   var response = {};
   if(req.user.primerAcceso){
     response.next = '/firstLogin';
@@ -266,7 +265,6 @@ const index = function(req, res){
  * @param res
  */
 const logout = function(req, res){
-  console.log(req.body);
   if(req.cookies.user_sid){
     res.clearCookie('user_sid');
   }
