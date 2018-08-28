@@ -85,5 +85,23 @@ function getAccount(query,callback) {
 
 }
 
+function getProgramados(query,callback){
+    request.get({
+        baseUrl: bdPath,
+        uri: "/programados",
+        qs: query,
+        json:true
+    },callback);
+}
+
+function postProgramados(msg,callback){
+    request.post({
+        baseUrl: bdPath,
+        uri: "/programados",
+        body: msg,
+        json:true
+    },callback);
+}
+
 module.exports = {getUsuarios,postUsuarios,putUsuarios, putUsuariosEmail, deleteUsuarios, 
-  recoverPassword, deleteAccount, postAccount, getAccount};
+  recoverPassword, deleteAccount, postAccount, getAccount,getProgramados,postProgramados};

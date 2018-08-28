@@ -44,7 +44,7 @@ passport.use('twitterToken',createStrategy());
 
 const recover = function(req,res){
     console.log(req.query.email)
-    bdPath.getUsuarios({email: req.query.email},
+    bdPath.getUsuarios({email: req.user.email},
         function (err, resBd, body) {
         if (err) {
             res.status(500);
@@ -92,19 +92,21 @@ const getAcc = function(req,res){
         } else {
             var account = body.message;
             twPath.getHome(20,account.token,account.tokenSecret,function (err,resTw,body) {
-                console.log(body)
+                console.log(body);
                 var tweets = [];
-                body.forEach(function (tweet) {
-                    tweets.push({
-                        text:tweet.text,
-                        screen_name:tweet.user.screen_name,
-                        name:tweet.user.name,
-                        img:tweet.user.profile_image_url_https,
-                        created:tweet.created_at
+                if(!body.errors) {
+                    body.forEach(function (tweet) {
+                        tweets.push({
+                            text: tweet.text,
+                            screen_name: tweet.user.screen_name,
+                            name: tweet.user.name,
+                            img: tweet.user.profile_image_url_https,
+                            created: tweet.created_at
+                        });
                     });
-                });
-                res.status(200);
-                res.send(tweets);
+                }
+                    res.status(200);
+                    res.send(tweets);
             });
         }
     });
@@ -123,17 +125,19 @@ const getAccUser = function(req,res){
                 var account = body.message;
                 twPath.getUserTweets(account.account_name,20,account.token,account.tokenSecret,function (err,resTw,body) {
                     var tweets = [];
-                    body.forEach(function (tweet) {
-                        tweets.push({
-                            text:tweet.text,
-                            screen_name:tweet.user.screen_name,
-                            name:tweet.user.name,
-                            img:tweet.user.profile_image_url_https,
-                            created:tweet.created_at
+                    if(!body.errors) {
+                        body.forEach(function (tweet) {
+                            tweets.push({
+                                text: tweet.text,
+                                screen_name: tweet.user.screen_name,
+                                name: tweet.user.name,
+                                img: tweet.user.profile_image_url_https,
+                                created: tweet.created_at
+                            });
                         });
-                    });
-                    res.status(200);
-                    res.send(tweets);
+                    }
+                        res.status(200);
+                        res.send(tweets);
                 });
             }
         });
@@ -152,15 +156,17 @@ const getAccMentions = function(req,res){
                 var account = body.message;
                 twPath.getUserMentions(20,account.token,account.tokenSecret,function (err,resTw,body) {
                     var tweets = [];
-                    body.forEach(function (tweet) {
-                        tweets.push({
-                            text:tweet.text,
-                            screen_name:tweet.user.screen_name,
-                            name:tweet.user.name,
-                            img:tweet.user.profile_image_url_https,
-                            created:tweet.created_at
+                    if(!body.errors) {
+                        body.forEach(function (tweet) {
+                            tweets.push({
+                                text: tweet.text,
+                                screen_name: tweet.user.screen_name,
+                                name: tweet.user.name,
+                                img: tweet.user.profile_image_url_https,
+                                created: tweet.created_at
+                            });
                         });
-                    });
+                    }
                     res.status(200);
                     res.send(tweets);
                 });
@@ -172,21 +178,46 @@ const postAccTweet = function(req,res){
     bdPath.getAccount({email: req.params.user, account: req.params.account },
         function (err, resBd, body) {
             if (err) {
+                console.log(err);
                 res.status(500);
                 res.send(err);
             }
             if (body.error) {
+                console.log('meeeeeh');
                 res.status(400).send("La cuenta no existe");
             } else {
                 var account = body.message;
+                console.log(body);
                 twPath.postTweet(req.body.text,account.token,account.tokenSecret,function (err,resTw,body) {
-                    var tweets = [];
-                    res.status(200);
-                    res.send(body);
+                    if(err){
+                        console.log(err);
+                        res.status(500);
+                        res.send(err);
+                    }else {
+                        console.log(body);
+                        var tweets = [];
+                        res.status(200);
+                        res.send(body);
+                    }
                 });
             }
         });
 };
+
+const sendProgTweet = function (req,res) {
+    twPath.postTweet(req.body.text,req.body.token,req.body.tokenSecret,function (err,resTw,body) {
+        if(err){
+            console.log(err);
+            res.status(500);
+            res.send(err);
+        }else {
+            console.log(body);
+            var tweets = [];
+            res.status(200);
+            res.send(body);
+        }
+    });
+}
 
 const deleteAcc = function(req,res){
     bdPath.deleteAccount({email: req.body.params.email, account: req.body.params.acc},
@@ -256,6 +287,49 @@ const getTokensCallback = function (req, res) {
   res.redirect('/frontend/perfil.html');
 };
 
+const getProgramados = function(req,res){
+    var query={
+        email: req.params.user,
+        cuenta: req.params.account
+    };
+    bdPath.getProgramados(query,function (err,resTw,body) {
+        var tweets = [];
+        var clock_img = 'https://cdn2.iconfinder.com/data/icons/pixel-art-large/100/PixelArtIcons-19-512.png';
+        body.message.forEach(function (tweet) {
+            tweets.push({
+                text: tweet.text,
+                screen_name: tweet.cuenta,
+                name: tweet.public_name,
+                created: tweet.trigger
+            });
+        });
+        res.status(200);
+        res.send(tweets);
+    });
+};
+
+const postProgramados = function(req,res){
+    var body = {
+        text:req.body.text,
+        trigger:req.body.trigger,
+        public_name:req.body.public_name,
+        usuario:req.params.user,
+        cuenta:req.params.account
+    };
+    bdPath.postProgramados(body,function (err, resBd, body) {
+        if (err) {
+            res.status(500);
+            res.send(err);
+        }
+        if (body.error) {
+            res.status(400).send("La cuenta no existe");
+        } else {
+            res.status(200);
+            res.send(body);
+        }
+    });
+};
+
 module.exports = {
     recover: recover,
     getAcc: getAcc,
@@ -267,5 +341,9 @@ module.exports = {
     getTokensCallback: getTokensCallback,
     getAccUser: getAccUser,
     getAccMentions: getAccMentions,
-    postAccTweet:postAccTweet
+    postAccTweet:postAccTweet,
+    getProgramados: getProgramados,
+    postProgramados: postProgramados,
+    sendProgTweet: sendProgTweet
+
 };

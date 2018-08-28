@@ -1,0 +1,14 @@
+<li class="left clearfix">
+    <div class="chat-body clearfix">
+        <div class="header">
+            <strong class="primary-font">{{tweetObj.name}}</strong>
+            <a href="https://twitter.com/{{tweetObj.screen_name}}">{{'(@' +tweetObj.screen_name+')'}}</a>
+            <small class="pull-right text-muted">
+                <i class="fa fa-clock-o fa-fw"></i> {{time}}
+            </small>
+        </div>
+        <p>
+            {{tweetObj.text}}
+        </p>
+    </div>
+</li>

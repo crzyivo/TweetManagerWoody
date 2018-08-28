@@ -13,8 +13,10 @@ navNg.directive('topBar',function () {
         $scope.logout=function () {
             console.log('hi');
             localStorageService.remove('username');
+            localStorageService.remove('cuentas');
+            localStorageService.remove('account');
             $window.location.href = '/logout';
-        }
+        };
         $scope.redirect = function(redirection){
           $window.location.href = redirection
       }
