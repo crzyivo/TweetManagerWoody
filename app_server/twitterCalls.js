@@ -89,6 +89,24 @@ function postTweet(text,user_token,user_secret,callback){
     },callback);
 }
 
+function getReTweets(count,user_token,user_secret,callback){
+  var endpoint = '/statuses/retweets_of_me.json';
+  var oauth = {
+    consumer_key: credentials.twitterKeys.consumer_key,
+    consumer_secret: credentials.twitterKeys.consumer_secret,
+    token: user_token,
+    token_secret: user_secret
+  };
+  request.get({
+    url: twitterBase+endpoint,
+    oauth: oauth,
+    qs:{
+      count:count
+    },
+    json:true
+  },callback);
+}
+
 
 
 module.exports = {
@@ -96,5 +114,6 @@ module.exports = {
     getHome,
     getUserTweets,
     getUserMentions,
-    postTweet
+    postTweet,
+    getReTweets
 };

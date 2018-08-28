@@ -32,6 +32,14 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
     ).then(function(response){
        $scope.user_mentions = response.data;
     });
+  $http.get('/acc/twits/retweets/'+$scope.thisCuenta+'/'+localStorageService.get('username')
+  ).then(function(response){
+    $scope.user_retweets = response.data;
+  });
+  $http.get('/acc/twits/favs/'+$scope.thisCuenta+'/'+localStorageService.get('username')
+  ).then(function(response){
+    $scope.user_favs = response.data;
+  });
     $http.get('/acc/twits/programados/'+$scope.thisCuenta+'/'+localStorageService.get('username')
     ).then(function(response){
         $scope.programmed = response.data;

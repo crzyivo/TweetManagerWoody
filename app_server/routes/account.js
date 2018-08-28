@@ -17,5 +17,8 @@ router.get('/accTokens',ctrlAcc.getTokens);
 router.get('/twits/programados/:account/:user',ctrlAcc.getProgramados);
 router.post('/twits/programados/:account/:user',ctrlAcc.postProgramados);
 router.post('/twits/newProgTweet/:account/:user',ctrlAcc.sendProgTweet);
+router.get('/twits/retweets/:account/:user',ctrlAcc.getAccRetweets);
+router.get('/twits/favs/:account/:user',ctrlAcc.getAccFavs);
+
 
 module.exports = router;

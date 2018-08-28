@@ -101,7 +101,9 @@ const getAcc = function(req,res){
                             screen_name: tweet.user.screen_name,
                             name: tweet.user.name,
                             img: tweet.user.profile_image_url_https,
-                            created: tweet.created_at
+                            created: tweet.created_at,
+                          retweet_count: tweet.retweet_count,
+                          favorite_count:tweet.favorite_count
                         });
                     });
                 }
@@ -132,7 +134,9 @@ const getAccUser = function(req,res){
                                 screen_name: tweet.user.screen_name,
                                 name: tweet.user.name,
                                 img: tweet.user.profile_image_url_https,
-                                created: tweet.created_at
+                                created: tweet.created_at,
+                              retweet_count: tweet.retweet_count,
+                              favorite_count:tweet.favorite_count
                             });
                         });
                     }
@@ -163,7 +167,9 @@ const getAccMentions = function(req,res){
                                 screen_name: tweet.user.screen_name,
                                 name: tweet.user.name,
                                 img: tweet.user.profile_image_url_https,
-                                created: tweet.created_at
+                                created: tweet.created_at,
+                              retweet_count: tweet.retweet_count,
+                              favorite_count:tweet.favorite_count
                             });
                         });
                     }
@@ -172,6 +178,78 @@ const getAccMentions = function(req,res){
                 });
             }
         });
+};
+
+const getAccRetweets = function(req,res){
+  bdPath.getAccount({email: req.params.user, account: req.params.account },
+      function (err, resBd, body) {
+        if (err) {
+          res.status(500);
+          res.send(err);
+        }
+        if (body.error) {
+          res.status(400).send("La cuenta no existe");
+        } else {
+          var account = body.message;
+          twPath.getReTweets(20,account.token,account.tokenSecret,function (err,resTw,body) {
+            var tweets = [];
+            if(!body.errors) {
+              body.forEach(function (tweet) {
+                tweets.push({
+                  text: tweet.text,
+                  screen_name: tweet.user.screen_name,
+                  name: tweet.user.name,
+                  img: tweet.user.profile_image_url_https,
+                  created: tweet.created_at,
+                  retweet_count: tweet.retweet_count,
+                  favorite_count:tweet.favorite_count
+                });
+              });
+            }
+            console.log(tweets.length);
+            res.status(200);
+            res.send(tweets);
+          });
+        }
+      });
+};
+
+const getAccFavs = function(req,res){
+  bdPath.getAccount({email: req.params.user, account: req.params.account },
+      function (err, resBd, body) {
+        if (err) {
+          res.status(500);
+          res.send(err);
+        }
+        if (body.error) {
+          res.status(400).send("La cuenta no existe");
+        } else {
+          var account = body.message;
+          twPath.getUserTweets(account.account_name,50,account.token,account.tokenSecret,function (err,resTw,body) {
+            var count=20;
+            var tweets = [];
+            if(!body.errors) {
+              body.forEach(function (tweet) {
+                  if(parseInt(tweet.favorite_count)!==0) {
+                      console.log(tweet);
+                    tweets.push({
+                      text: tweet.text,
+                      screen_name: tweet.user.screen_name,
+                      name: tweet.user.name,
+                      img: tweet.user.profile_image_url_https,
+                      created: tweet.created_at,
+                      retweet_count: tweet.retweet_count,
+                      favorite_count: tweet.favorite_count
+                    });
+                  }
+              });
+            }
+            console.log(tweets.length);
+            res.status(200);
+            res.send(tweets);
+          });
+        }
+      });
 };
 
 const postAccTweet = function(req,res){
@@ -294,13 +372,14 @@ const getProgramados = function(req,res){
     };
     bdPath.getProgramados(query,function (err,resTw,body) {
         var tweets = [];
-        var clock_img = 'https://cdn2.iconfinder.com/data/icons/pixel-art-large/100/PixelArtIcons-19-512.png';
+        var clock_img = 'https://png.icons8.com/ios/50/000000/watch.png';
         body.message.forEach(function (tweet) {
             tweets.push({
                 text: tweet.text,
                 screen_name: tweet.cuenta,
                 name: tweet.public_name,
-                created: tweet.trigger
+                created: tweet.trigger,
+                img:clock_img
             });
         });
         res.status(200);
@@ -344,6 +423,8 @@ module.exports = {
     postAccTweet:postAccTweet,
     getProgramados: getProgramados,
     postProgramados: postProgramados,
-    sendProgTweet: sendProgTweet
+    sendProgTweet: sendProgTweet,
+    getAccRetweets: getAccRetweets,
+    getAccFavs:getAccFavs
 
 };
