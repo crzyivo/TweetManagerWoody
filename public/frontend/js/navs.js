@@ -55,7 +55,7 @@ navNg.directive('sideBar',function () {
         delete $scope.cuentas[parameters.key];
       });
       $scope.openAcc = function(account){
-        //localStorageService.set('account', account);
+        localStorageService.set('account', account.account_name);
           $window.location.href = '/frontend/pages/cuenta?acc='+account.account_name;
       };
       $scope.redirect = function(redirection){
