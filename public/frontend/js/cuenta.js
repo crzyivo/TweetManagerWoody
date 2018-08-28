@@ -16,7 +16,7 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
     $scope.error = ""
     $scope.url = ""
     $scope.tweet_text = ""
-    $scope.showM = false
+    $scope.tweet_text_prog = ""
 
     var today=moment().subtract(1,'days');
     $scope.today= today.toDate().toString();
@@ -95,14 +95,21 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
     $window.location.href = '/frontend/pages/cuenta';
   };
 
-  $scope.urlShortcut = function(url){
-    $http.post('http://localhost:3001/url/item', { "originalUrl": url, "shortBaseUrl": "https://localhost:3001" })
+  $scope.urlShortcut = function(url,type){
+    // en vez de localhost->> https://mighty-depths-30160.herokuapp.com
+    $http.post('/acc/addUrl',{ "originalUrl": url })
       .then(function (response){
           if(response.error === undefined){
-            console.log(response)
-            $scope.url = "http://localhost:3001/url/item/"+response.data.urlCode
-            $scope.tweet_text = $scope.tweet_text + ' ' + $scope.url
-            $scope.showM = true
+              if(type === 'normal'){
+                $scope.url = response.data.shortUrl
+                $scope.tweet_text = $scope.tweet_text + ' ' + $scope.url
+                $scope.tweet_url = ""
+              }
+              else if(type === 'prog'){
+                $scope.url = response.data.shortUrl
+                $scope.tweet_text_prog= $scope.tweet_text_prog + ' ' + $scope.url
+                $scope.tweet_url_prog = ""
+              }
           }
       })
   }

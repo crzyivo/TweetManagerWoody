@@ -282,6 +282,26 @@ const postAccTweet = function(req,res){
         });
 };
 
+const postUrlShorten = function(req,res){
+    console.log(req.body)
+    bdPath.postUrl({ "originalUrl": req.body.originalUrl, "shortBaseUrl": hpaths.bdPath+'/url/item' },
+        function (err, resBd, body) {
+            if (err) {
+                console.log(err);
+                res.status(500);
+                res.send(err);
+            }
+            if (body.error) {
+                console.log('meeeeeh');
+                res.status(400).send("La cuenta no existe");
+            } else {
+                res.status(200);
+                res.send(body);
+            }
+        });
+};
+
+
 const sendProgTweet = function (req,res) {
     twPath.postTweet(req.body.text,req.body.token,req.body.tokenSecret,function (err,resTw,body) {
         if(err){
@@ -425,6 +445,7 @@ module.exports = {
     postProgramados: postProgramados,
     sendProgTweet: sendProgTweet,
     getAccRetweets: getAccRetweets,
-    getAccFavs:getAccFavs
+    getAccFavs:getAccFavs,
+    postUrlShorten: postUrlShorten
 
 };

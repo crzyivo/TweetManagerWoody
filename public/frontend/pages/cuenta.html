@@ -79,194 +79,209 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="home-pills">
                                     <div class="col-lg-3">
-                                        <!-- /.panel -->
-                                        <div class="chat-panel panel panel-default">
-                                            <div class="panel-heading">
-                                                <i class="fa fa-comments fa-fw"></i> HOME
-                                                <div class="btn-group pull-right">
-                                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-chevron-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu slidedown">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-refresh fa-fw"></i> Refresh
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-check-circle fa-fw"></i> Available
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-times fa-fw"></i> Busy
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-clock-o fa-fw"></i> Away
-                                                            </a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-sign-out fa-fw"></i> Sign Out
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!-- /.panel-heading -->
-                                            <div class="panel-body">
-                                                <ul class="chat">
-                                                    <div ng-repeat="tweet in home">
-                                                        <one-tweet tweet=tweet></one-tweet>
-                                                    </div>
-                                                </ul>
-                                            </div>
-                                            <!-- /.panel-body -->
-                                            <!-- /.panel-footer -->
-                                        </div>
-                                        <!-- /.panel .chat-panel -->
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <!-- /.panel -->
-                                        <div class="chat-panel panel panel-default">
-                                            <div class="panel-heading">
-                                                <i class="fa fa-comments fa-fw"></i> Mis Tweets
-                                                <div class="btn-group pull-right">
-                                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-chevron-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu slidedown">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-refresh fa-fw"></i> Refresh
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-check-circle fa-fw"></i> Available
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-times fa-fw"></i> Busy
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-clock-o fa-fw"></i> Away
-                                                            </a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-sign-out fa-fw"></i> Sign Out
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!-- /.panel-heading -->
-                                            <div class="panel-body">
-                                                <ul class="chat">
-                                                    <div ng-repeat="tweet in user_timeline">
-                                                        <one-tweet tweet=tweet></one-tweet>
-                                                    </div>
-                                                </ul>
-                                            </div>
-                                            <!-- /.panel-body -->
-                                            <div class="panel-footer">
-                                                <div class="input-group">
-                                                    <input id="btn-input" ng-model="tweet_text"type="text" maxlength="281" class="form-control input-sm" placeholder="Type your message here..." />
-                                                    <span class="input-group-btn">
+                    <!-- /.panel -->
+                    <div class="chat-panel panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i> HOME
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu slidedown">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-refresh fa-fw"></i> Refresh
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-check-circle fa-fw"></i> Available
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-times fa-fw"></i> Busy
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-clock-o fa-fw"></i> Away
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-sign-out fa-fw"></i> Sign Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <div ng-repeat="tweet in home">
+                                    <one-tweet tweet=tweet></one-tweet>
+                                </div>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <!-- /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <div class="col-lg-3">
+                    <!-- /.panel -->
+                    <div class="chat-panel panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i> Mis Tweets
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu slidedown">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-refresh fa-fw"></i> Refresh
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-check-circle fa-fw"></i> Available
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-times fa-fw"></i> Busy
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-clock-o fa-fw"></i> Away
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-sign-out fa-fw"></i> Sign Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <div ng-repeat="tweet in user_timeline">
+                                    <one-tweet tweet=tweet></one-tweet>
+                                </div>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <div>
+                                    <textarea class="form-control" id="btn-input" ng-model="tweet_text" maxlength="281" rows="3" placeholder="Type your message here..." ></textarea>
+                                </div>
+                                <div>
+                                <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="postTweet()" >
                                         Enviar Tweet
                                     </button>
-                                </span>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input id="btn-input-url" ng-model="tweet_url"type="text" class="form-control input-sm" placeholder="Type your url here..." />
-                                                    <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat-url" ng-click="urlShortcut(tweet_url)" >
+                                </span></div>
+                            </div>
+                            <div class="input-group">
+                                <input id="btn-input-url"  class="form-control input-sm" ng-model="tweet_url"type="text"placeholder="Type your url here..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-sm" id="btn-chat-url" ng-click="urlShortcut(tweet_url,'normal')" >
                                         Añadir URLs
                                     </button>
                                 </span>
-                                                </div>
-                                                <div ng-show="showM" class="input-group">Para testeo de URLs-> <a href="{{url}}"> {{url}}</a>
-                                                </div>
-                                            </div>
-                                            <!-- /.panel-footer -->
-                                        </div>
+                            </div>
+                            <!-- <div  class="form-group"><label for="fichero">Añadir archivo</label>
+                                <input type="file" class="form-control-file" id="fichero">
+                            </div>-->
+                        </div>
+                        <!-- /.panel-footer -->
+                    </div>
 
-                                        <!-- /.panel .chat-panel -->
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <div class="col-lg-3">
+                    <!-- /.panel -->
+                    <div class="chat-panel panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i> Tweets Programados
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu slidedown">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-refresh fa-fw"></i> Refresh
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-check-circle fa-fw"></i> Available
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-times fa-fw"></i> Busy
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-clock-o fa-fw"></i> Away
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-sign-out fa-fw"></i> Sign Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <ul class="chat">
+                                    <div ng-repeat="tweet in programmed">
+                                        <one-tweet-prog tweet=tweet></one-tweet-prog>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <!-- /.panel -->
-                                        <div class="chat-panel panel panel-default">
-                                            <div class="panel-heading">
-                                                <i class="fa fa-comments fa-fw"></i> Tweets Programados
-                                                <div class="btn-group pull-right">
-                                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-chevron-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu slidedown">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-refresh fa-fw"></i> Refresh
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-check-circle fa-fw"></i> Available
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-times fa-fw"></i> Busy
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-clock-o fa-fw"></i> Away
-                                                            </a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i class="fa fa-sign-out fa-fw"></i> Sign Out
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!-- /.panel-heading -->
-                                            <div class="panel-body">
-                                                <ul class="chat">
-                                                    <ul class="chat">
-                                                        <div ng-repeat="tweet in programmed">
-                                                            <one-tweet-prog tweet=tweet></one-tweet-prog>
-                                                        </div>
-                                                    </ul>
-                                                </ul>
-                                            </div>
-                                            <!-- /.panel-body -->
-                                            <div class="panel-footer">
-                                                <datepicker date-format="dd/MM/yyyy HH:mm:ss" date-min-limit={{today}}>
-                                                    <input ng-model="tweet_date" class="form-control input-sm" type="text"/>
-                                                </datepicker>
-                                                <div class="input-group">
-                                                    <input id="btn-input-prog" ng-model="tweet_text_prog" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                                                    <span class="input-group-btn">
+                                </ul>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <datepicker date-format="dd/MM/yyyy HH:mm:ss" date-min-limit={{today}}>
+                                <input ng-model="tweet_date" class="form-control input-sm" type="text"placeholder="Select date..."/>
+                            </datepicker>
+                            <div class="input-group">
+                                <div>
+                                    <textarea class="form-control" id="btn-input" ng-model="tweet_text_prog" maxlength="281" rows="3" placeholder="Type your message here..." ></textarea>
+                                </div>
+                                <div>
+                                <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat-prog" ng-click="postTweetProg()" >
                                         Programar Tweet
                                     </button>
-                                </span>
-                                                </div>
-                                                <div ng-show="error">{{error_msg}}</div>
-                                            </div>
+                                </span></div>
+                                <div>
+                                    <input id="btn-input" class="form-control input-sm" ng-model="tweet_url_prog"type="text" placeholder="Type your url here..." />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url_prog,'prog')" >
+                                            Añadir URLs
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div ng-show="error">{{error_msg}}</div>
+                        </div>
 
                                             <!-- /.panel-footer -->
                                         </div>
