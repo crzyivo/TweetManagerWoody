@@ -164,23 +164,30 @@
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" ng-model="tweet_text"type="text" maxlength="281" class="form-control input-sm" placeholder="Type your message here..." />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="postTweet()" >
-                                        Enviar Tweet
-                                    </button>
-                                </span>
+                                <div>
+                                    <textarea class="form-control" id="btn-input" ng-model="tweet_text" maxlength="281" rows="3" placeholder="Type your message here..."></textarea>
+                                </div>
+                                <div>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="postTweet()" >
+                                            Enviar Tweet
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                             <div class="input-group">
-                                <input id="btn-input" ng-model="tweet_url"type="text" class="form-control input-sm" placeholder="Type your url here..." />
+                                <input id="btn-input" class="form-control input-sm" ng-model="tweet_url"type="text" placeholder="Type your url here..." />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url)" >
+                                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url,'normal')" >
                                         Añadir URLs
                                     </button>
                                 </span>
                             </div>
-                            <div ng-show="showM" class="input-group">Para testeo de URLs-> <a href="{{url}}"> {{url}}</a> 
-                            </div>
+                            <!-- <div class="form-group">
+                                <label for="fichero">Añadir archivo</label>
+                                <input type="file" class="form-control-file" id="fichero">
+                            </div> -->
+                            
                         </div>
                         <!-- /.panel-footer -->
                     </div>
@@ -239,15 +246,27 @@
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <datepicker date-format="dd/MM/yyyy HH:mm:ss" date-min-limit={{today}}>
-                                <input ng-model="tweet_date" class="form-control input-sm" type="text"/>
+                                <input ng-model="tweet_date" class="form-control input-sm" type="text" placeholder="Select date..."/>
                             </datepicker>
                             <div class="input-group">
-                                <input id="btn-input-prog" ng-model="tweet_text_prog" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat-prog" ng-click="postTweetProg()" >
-                                        Programar Tweet
-                                    </button>
-                                </span>
+                                <div>
+                                    <textarea class="form-control" id="btn-input" ng-model="tweet_text_prog" maxlength="281" rows="3" placeholder="Type your message here..."></textarea>
+                                </div>
+                                <div>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat-prog" ng-click="postTweetProg()" >
+                                            Programar Tweet
+                                        </button>
+                                    </span>
+                                </div>
+                                <div>
+                                    <input id="btn-input" class="form-control input-sm" ng-model="tweet_url_prog"type="text" placeholder="Type your url here..." />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url_prog,'prog')" >
+                                            Añadir URLs
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
                             <div ng-show="error">{{error_msg}}</div>
                         </div>

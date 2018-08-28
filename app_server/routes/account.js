@@ -13,6 +13,7 @@ router.get('/twits/home/:account/:user',ctrlAcc.getAcc);
 router.get('/twits/user/:account/:user',ctrlAcc.getAccUser);
 router.get('/twits/mentions/:account/:user',ctrlAcc.getAccMentions);
 router.post('/twits/newTweet/:account/:user',ctrlAcc.postAccTweet);
+router.post('/addUrl',ctrlAcc.postUrlShorten);
 router.get('/accTokens',ctrlAcc.getTokens);
 router.get('/twits/programados/:account/:user',ctrlAcc.getProgramados);
 router.post('/twits/programados/:account/:user',ctrlAcc.postProgramados);
