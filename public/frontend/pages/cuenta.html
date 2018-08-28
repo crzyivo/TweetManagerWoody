@@ -170,9 +170,20 @@
                                     </button>
                                 </span>
                             </div>
+                            <div class="input-group">
+                                <input id="btn-input" ng-model="tweet_url"type="text" class="form-control input-sm" placeholder="Type your url here..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url)" >
+                                        Añadir URLs
+                                    </button>
+                                </span>
+                            </div>
+                            <div ng-show="showM" class="input-group">Para testeo de URLs-> <a href="{{url}}"> {{url}}</a> 
+                            </div>
                         </div>
                         <!-- /.panel-footer -->
                     </div>
+                    
                     <!-- /.panel .chat-panel -->
                 </div>
                 <div class="col-lg-3">

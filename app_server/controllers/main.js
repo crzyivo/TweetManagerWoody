@@ -115,7 +115,7 @@ const loginGoogle = passport.authenticate('google', {
 });
 
 const loginGoogleCallback = function (req, res) {
-    res.redirect('/frontend/pages/index');
+    res.redirect('/frontend/pages/index/');
 };
 
 /**

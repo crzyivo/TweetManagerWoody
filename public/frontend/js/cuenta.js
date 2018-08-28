@@ -14,6 +14,9 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
   var params = $location.search();
     $scope.thisCuenta = params.acc;
     $scope.error = ""
+    $scope.url = ""
+    $scope.tweet_text = ""
+    $scope.showM = false
 
   $http.get('/acc/twits/home/'+$scope.thisCuenta+'/'+localStorageService.get('username')
     ).then(function(response){
@@ -42,5 +45,17 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
     localStorageService.set('account', account);
     $window.location.href = '/frontend/pages/cuenta';
   };
+
+  $scope.urlShortcut = function(url){
+    $http.post('http://localhost:3001/url/item', { "originalUrl": url, "shortBaseUrl": "https://localhost:3001" })
+      .then(function (response){
+          if(response.error === undefined){
+            console.log(response)
+            $scope.url = "http://localhost:3001/url/item/"+response.data.urlCode
+            $scope.tweet_text = $scope.tweet_text + ' ' + $scope.url
+            $scope.showM = true
+          }
+      })
+  }
   
 }]);
