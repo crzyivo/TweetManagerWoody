@@ -169,7 +169,7 @@ const nuevaPass = function(req,res){
         });
       });
   res.status(200);
-  res.json({next:'/frontend/indexUser'});
+  res.json({next:'/frontend/pages/index'});
 };
 
 function check (req,res, actualizado) {

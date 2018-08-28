@@ -1,4 +1,4 @@
-//frontend/js/indexAdmin.js
+//frontend/js/indexAdminSPA.js
 
 var indexAdmin = angular.module('indexAd');
 

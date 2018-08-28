@@ -77,7 +77,7 @@ const recover = function(req,res){
 const TWExtract = passport.authenticate('twitter');
 
 const TWCallback = function (req, res) {
-    res.redirect('/frontend/pages/indexUser');
+    res.redirect('/frontend/pages/index');
 };
 
 const getAcc = function(req,res){
