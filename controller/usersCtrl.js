@@ -203,9 +203,57 @@ const accGethashtag = function (req,res) {
             response = {"error": true, "message": "No existe el usuario"};
         }
         res.json(response);
+      })
+    };
 
-    });
+const accsGet = function (req,res) {
+  // console.log(req.query)  // Para hacer con postman
+  // console.log(req.body)
+  console.log(req.query)
+  Usuario.find({email: req.query.email})
+  .then((user) => {
+
+      if (user.length === 0) {
+        response = {"error" : true,"message" : "Account doesn't exist"};
+      }
+      else {
+        console.log(user[0].cuentas);
+        var cuentas = user[0].cuentas;
+        response = {"error": false, "message": cuentas};
+      }
+      res.json(response);
+  }).catch((err)=>{
+      response = {"error" : true,"message" : "No existe el usuario"};
+      console.log(err)
+      res.json(response);
+  })
 };
+
+// const accPost = function (req,res) {
+//   // console.log(req.query)  // Para hacer con postman
+//   // console.log(req.body)
+//   Usuario.find({email: req.body.email})
+//   .then((user) => {
+//       var index = user[0].cuentas.map((acc) => { return acc.cuentaTwitter}).indexOf(req.body.account)
+//       console.log(index)
+//       if (index === -1) {
+//         user[0].cuentas.push({cuentaTwitter: req.body.account})
+//       }
+//       console.log(user[0].cuentas)
+//       Usuario.update({email: req.body.email},user[0],function (err,msg) {
+//         if(err) {
+//           response = {"error" : true,"message" : "Error updating data"};
+//         } else {
+//           response = {"error" : false,"message" : user};
+//         }
+//         res.json(response);
+//       })
+//   }).catch((err)=>{
+//       response = {"error" : true,"message" : "Error deleting account"};
+//       console.log(err)
+//       res.json(response);
+//   })
+// };
 
 const accDeletehashtag = function (req,res) {
     Usuario.find({email: req.body.email}, function (err, user) {
@@ -281,6 +329,7 @@ module.exports = {
     accDelete,
     accPost,
     accGet,
+    accsGet,
     accPosthashtag,
     accGethashtag,
     accDeletehashtag
