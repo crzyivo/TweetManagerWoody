@@ -263,7 +263,7 @@
                             </datepicker>
                             <div class="input-group">
                                 <div>
-                                    <textarea class="form-control" id="btn-input" ng-model="tweet_text_prog" maxlength="281" rows="3" placeholder="Type your message here..." ></textarea>
+                                    <textarea class="form-control" id="btn-input-prog" ng-model="tweet_text_prog" maxlength="281" rows="3" placeholder="Type your message here..." ></textarea>
                                 </div>
                                 <div>
                                 <span class="input-group-btn">
@@ -272,9 +272,9 @@
                                     </button>
                                 </span></div>
                                 <div>
-                                    <input id="btn-input" class="form-control input-sm" ng-model="tweet_url_prog"type="text" placeholder="Type your url here..." />
+                                    <input id="btn-input-url-prog" class="form-control input-sm" ng-model="tweet_url_prog"type="text" placeholder="Type your url here..." />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="urlShortcut(tweet_url_prog,'prog')" >
+                                        <button class="btn btn-warning btn-sm" id="btn-chat-url-prog" ng-click="urlShortcut(tweet_url_prog,'prog')" >
                                             Añadir URLs
                                         </button>
                                     </span>
@@ -447,8 +447,60 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="messages-pills">
-                                    <h4>Messages Tab</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Hashtags
+                                                </div>
+                                                <!-- /.panel-heading -->
+                                                <div class="panel-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>Palabra Clave</th>
+                                                                <th>Eliminar</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody ng-repeat="key in hashtags">
+                                                            <tr>
+                                                                <td>{{key}}</td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-danger btn-circle" ng-click="deleteHashtag(key)"><i class="fa fa-times"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div>
+                                                        <input id="btn-input-hashtag" class="form-control input-sm" ng-model="new_hashtags"type="text" placeholder="Claves separadas por ','..." />
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-warning btn-sm" id="btn-chat-hashtag" ng-click="addHashtag()" >
+                                                                Añadir Clave
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                    <!-- /.table-responsive -->
+                                                </div>
+                                                <!-- /.panel-body -->
+                                            </div>
+                                            <!-- /.panel -->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="chat-panel panel panel-default">
+                                                <div class="panel-body">
+                                                    <ul class="chat">
+                                                        <div ng-repeat="tweet in tweet_stream">
+                                                            <one-tweet tweet=tweet></one-tweet>
+                                                        </div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.col-lg-6 -->
+                                    </div>
+                                    <!-- /.row -->
                                 </div>
                             </div>
                         </div>
@@ -487,7 +539,9 @@
     <script src="../js/cuenta.js"></script>
     <script src="../js/tweets.js"></script>
     <script src="../js/moment.js"></script>
+    <script src="../js/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-datepicker/2.1.23/angular-datepicker.min.js" integrity="sha256-thVbLv5+i8J4fwntInuwD3ovGWMt1Fw2FeyHRDxa+Es=" crossorigin="anonymous"></script>
+    <script src="../js/socket.min.js"></script>
 </body>
 
 </html>

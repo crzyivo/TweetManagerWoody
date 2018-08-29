@@ -75,6 +75,33 @@ function postAccount(cuenta,callback){
   },callback);
 }
 
+function postHashtag(body,callback){
+    request.put({
+        baseUrl: bdPath,
+        uri: "/users/hashtag",
+        json: true,
+        body: body
+    },callback);
+}
+
+function getHashtag(query,callback){
+    request.get({
+        baseUrl: bdPath,
+        uri: "/users/hashtag",
+        json: true,
+        qs: query
+    },callback);
+}
+
+function deleteHashtag(body,callback){
+    request.delete({
+        baseUrl: bdPath,
+        uri: "/users/hashtag",
+        json: true,
+        body: body
+    },callback);
+}
+
 function getAccount(query,callback) {
   request.get({
     baseUrl: bdPath,
@@ -123,5 +150,21 @@ function postProgramados(msg,callback){
     },callback);
 }
 
-module.exports = {getUsuarios,postUsuarios,putUsuarios, putUsuariosEmail, deleteUsuarios, 
-  recoverPassword, deleteAccount, postAccount, getAccount, getAccounts,getProgramados,postUrl,postProgramados};
+module.exports = {
+    getUsuarios,
+    postUsuarios,
+    putUsuarios,
+    putUsuariosEmail,
+    deleteUsuarios,
+    recoverPassword,
+    deleteAccount,
+    postAccount,
+    getAccount,
+    getAccounts,
+    getProgramados,
+    postUrl,
+    postProgramados,
+    postHashtag,
+    getHashtag,
+    deleteHashtag
+};
