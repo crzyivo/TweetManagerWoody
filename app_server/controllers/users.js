@@ -169,16 +169,23 @@ const nuevaPass = function(req,res){
               }
               else{
                 if(!body.error){
-                  statsApi.createStat({id: actualizado._id, email: actualizado.email, fecha: actualizado.entradaApp});
-                  statsApi.updateAccess({id: actualizado._id});
+                  statsApi.createStat({id: actualizado._id, email: actualizado.email, fecha: actualizado.entradaApp},
+                  function(){
+                    statsApi.updateAccess({id: actualizado._id}, function(){
+                      res.status(200);
+                      res.json({next:'/frontend/pages/index'});
+                    })          
+                  })
+                }
+                else{
+                  res.status(500);
+                  res.send(error);
                 }
               }
             }
           )
         });
       });
-  res.status(200);
-  res.json({next:'/frontend/pages/index'});
 };
 
 function check (req,res, actualizado) {

@@ -52,6 +52,8 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
         $http.get('/acc/twits/user/'+$scope.thisCuenta+'/'+localStorageService.get('username')
         ).then(function(response){
             $scope.user_timeline = response.data;
+            $scope.tweet_text = ""
+            $scope.tweet_text_prog = ""
         });
     })
   };
@@ -86,6 +88,8 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
               $http.get('/acc/twits/programados/'+$scope.thisCuenta+'/'+localStorageService.get('username')
               ).then(function(resProg){
                   $scope.programmed = resProg.data;
+                  $scope.tweet_text = ""
+                  $scope.tweet_text_prog = ""
               });
           })
       }
