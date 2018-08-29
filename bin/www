@@ -50,14 +50,25 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 //Servidor websockets
-var io = require('socket.io')(herokuSettings.entorno==="local"?serverhttps:http);
-io.on('connection',function (socket) {
-  console.log('connected');
-    socket.on('start',function (msg) {
+if(herokuSettings.entorno==="local") {
+  var io = require('socket.io')(serverhttps);
+  io.on('connection', function (socket) {
+    console.log('connected');
+    socket.on('start', function (msg) {
       console.log(msg)
-        streamCtrl.open(socket,msg);
+      streamCtrl.open(socket, msg);
     });
-});
+  });
+}else {
+  var io = require('socket.io').listen(http);
+  io.on('connection', function (socket) {
+    console.log('connected');
+    socket.on('start', function (msg) {
+      console.log(msg)
+      streamCtrl.open(socket, msg);
+    });
+  });
+}
 /**
  * Normalize a port into a number, string, or false.
  */
