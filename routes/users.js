@@ -11,5 +11,8 @@ router.put('/changeUser/:email',usrController.usrPutEmail);
 router.put('/',usrController.usrPut);
 router.delete('/',usrController.usrDelete);
 router.get('/getAcc',usrController.accGet);
+router.put('/hashtag',usrController.accPosthashtag);
+router.get('/hashtag',usrController.accGethashtag);
+router.delete('/hashtag',usrController.accDeletehashtag);
 
 module.exports = router;
