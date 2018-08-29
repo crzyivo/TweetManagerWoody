@@ -1,19 +1,5 @@
 //frontend/js/accNg.js
 var accNg = angular.module('account', ['LocalStorageModule', 'navs', 'tweet', '720kb.datepicker','btford.socket-io']);
-function listener(tweet,tw_array) {
-    //console.log("Received data from websocket: ", messageObj);
-    //console.log(data);
-    var tweet_obj = {
-        text: tweet.text,
-        screen_name: tweet.user.screen_name,
-        name: tweet.user.name,
-        img: tweet.user.profile_image_url_https,
-        created: tweet.created_at,
-        retweet_count: tweet.retweet_count,
-        favorite_count: tweet.favorite_count
-    };
-    tw_array.push(tweet_obj);
-}
 
 accNg.config(function (localStorageServiceProvider, $locationProvider) {
     localStorageServiceProvider
@@ -140,23 +126,22 @@ accNg.controller('info', ['$scope', '$http', '$window', 'localStorageService', '
         $window.location.href = '/frontend/pages/cuenta';
     };
 
-    $scope.urlShortcut = function (url, type) {
-        // en vez de localhost->> https://mighty-depths-30160.herokuapp.com
-        $http.post('/acc/addUrl', {"originalUrl": url})
-            .then(function (response) {
-                if (response.error === undefined) {
-                    if (type === 'normal') {
-                        $scope.url = response.data.shortUrl
-                        $scope.tweet_text = $scope.tweet_text + ' ' + $scope.url
-                        $scope.tweet_url = ""
-                    }
-                    else if (type === 'prog') {
-                        $scope.url = response.data.shortUrl
-                        $scope.tweet_text_prog = $scope.tweet_text_prog + ' ' + $scope.url
-                        $scope.tweet_url_prog = ""
-                    }
-                }
-            })
-    }
-
+  $scope.urlShortcut = function(url,type){
+    $http.post('/acc/addUrl',{ "originalUrl": url })
+      .then(function (response){
+          if(response.error === undefined){
+              if(type === 'normal'){
+                $scope.url = response.data.shortUrl
+                $scope.tweet_text = $scope.tweet_text + ' ' + $scope.url
+                $scope.tweet_url = ""
+              }
+              else if(type === 'prog'){
+                $scope.url = response.data.shortUrl
+                $scope.tweet_text_prog= $scope.tweet_text_prog + ' ' + $scope.url
+                $scope.tweet_url_prog = ""
+              }
+          }
+      })
+  }
+  
 }]);

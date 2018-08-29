@@ -1,6 +1,7 @@
 const passport = require('passport');
 const request = require('request');
 const bdApi = require('../bdApiCalls');
+const statsApi = require('../StatsApiCalls');
 var hpaths = require("../conf/herokuSettings");
 const bcrypt = require('bcrypt');
 var bdPath = hpaths.bdPath;
@@ -39,6 +40,7 @@ passport.use(new LocalStrategy(function (username,password,done) {
         }
         console.log("Login OK");
         usuario.ultimoAcceso = new Date();
+        statsApi.updateAccess({id: usuario._id});
         bdApi.putUsuarios(usuario);
         return done(null,usuario);
       });
@@ -90,6 +92,7 @@ passport.use(new GoogleStrategy({
               if(usuario.origen.indexOf(profile.provider) === -1) {
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
+                statsApi.updateAccess({id: usuario._id});
 
               }
             } else {
@@ -99,7 +102,10 @@ passport.use(new GoogleStrategy({
               usuario.origen = profile.provider;
               usuario.entradaApp = new Date();
               usuario.ultimoAcceso = new Date();
+              usuario.cuentas = {}
               bdApi.postUsuarios(usuario);
+              statsApi.createStat({id: usuario._id,email: usuario.email, fecha: usuario.entradaApp});
+              statsApi.updateAccess({id: usuario._id});
             }
             return done(null, usuario);
           });
@@ -146,6 +152,7 @@ passport.use(new FacebookStrategy({
                     if(usuario.origen.indexOf(profile.provider) === -1) {
                         usuario.origen.push(profile.provider);
                         bdApi.putUsuarios(usuario);
+                        statsApi.updateAccess({id: usuario._id});
                     }
                 } else {
                   usuario.email = profile.emails[0].value;
@@ -154,7 +161,10 @@ passport.use(new FacebookStrategy({
                   usuario.origen = profile.provider;
                   usuario.entradaApp = new Date();
                   usuario.ultimoAcceso = new Date();
+                  usuario.cuentas = {}
                   bdApi.postUsuarios(usuario);
+                  statsApi.createStat({id: usuario._id,email: usuario.email, fecha: usuario.entradaApp});
+                  statsApi.updateAccess({id: usuario._id});
                 }
                 return done(null, usuario);
             });
@@ -200,6 +210,7 @@ passport.use(new TwitterStrategy({
               if(usuario.origen.indexOf(profile.provider) === -1){
                 usuario.origen.push(profile.provider);
                 bdApi.putUsuarios(usuario);
+                statsApi.updateAccess({id: usuario._id});
               }
             } else {
               usuario.email = profile.emails[0].value;
@@ -208,7 +219,10 @@ passport.use(new TwitterStrategy({
               usuario.origen = profile.provider;
               usuario.entradaApp = new Date();
               usuario.ultimoAcceso = new Date();
+              usuario.cuentas = {}
               bdApi.postUsuarios(usuario);
+              statsApi.createStat({id: usuario._id,email: usuario.email, fecha: usuario.entradaApp});
+              statsApi.updateAccess({id: usuario._id});
             }
             return done(null, usuario);
           });

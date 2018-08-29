@@ -1,6 +1,7 @@
 const passport = require('passport');
 const bdPath = require('../bdApiCalls');
 const twPath = require('../twitterCalls');
+const statsApi = require('../StatsApiCalls');
 const request = require('request');
 var TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -258,43 +259,39 @@ const postAccTweet = function(req,res){
                 res.status(400).send("La cuenta no existe");
             } else {
                 var account = body.message;
-                console.log(body);
                 twPath.postTweet(req.body.text,account.token,account.tokenSecret,function (err,resTw,body) {
                     if(err){
                         console.log(err);
                         res.status(500);
                         res.send(err);
                     }else {
-                        var tweets = [];
-                        res.status(200);
-                        res.send(body);
-                    }
-                });
-            }
-        });
-};
-const testStream = function(req,res){
-    bdPath.getAccount({email: 'escuin100@gmail.com', account: 'Ivan_Escuin' },
-        function (err, resBd, body) {
-            if (err) {
-                console.log(err);
-                res.status(500);
-                res.send(err);
-            }
-            if (body.error) {
-                res.status(400).send("La cuenta no existe");
-            } else {
-                var account = body.message;
-                console.log(body);
-                twPath.stream('',account.token,account.tokenSecret,function (err,resTw,body) {
-                    if(err){
-                        console.log(err);
-                        res.status(500);
-                        res.send(err);
-                    }else {
-                        var tweets = [];
-                        res.status(200);
-                        res.send(body);
+                        var tweet = {
+                            id: "",
+                            account_name: account.account_name,
+                            location: {
+                                lat: "0",
+                                long: "0"
+                            },
+                            fecha: new Date(body.created_at),
+                            tweetLength: body.text.length
+                        };
+                        bdPath.getUsuarios({email: req.params.user}, function(err, redBd, bod){
+                            if (err) {
+                                console.log(err);
+                                res.status(500);
+                                res.send(err);
+                            }
+                            if (body.error) {
+                                console.log('meeeeeh');
+                                res.status(400).send("La cuenta no existe");
+                            } else {
+                                console.log("llego aqui de verdad")
+                                tweet.id = bod.message[0]._id
+                                statsApi.addTwitStats(tweet)
+                            }
+                            res.status(200);
+                            res.send(body);
+                        })
                     }
                 });
             }
@@ -328,9 +325,32 @@ const sendProgTweet = function (req,res) {
             res.status(500);
             res.send(err);
         }else {
-            var tweets = [];
-            res.status(200);
-            res.send(body);
+            var tweet = {
+                id: "",
+                account_name: account.account_name,
+                location: {
+                    lat: 0,
+                    long: 0
+                },
+                time: body.created_at,
+                tweetLength: body.text.length
+            };
+            bdPath.getUsuarios({email: req.params.user}, function(err, redBd, bod){
+                if (err) {
+                    console.log(err);
+                    res.status(500);
+                    res.send(err);
+                }
+                if (body.error) {
+                    console.log('meeeeeh');
+                    res.status(400).send("La cuenta no existe");
+                } else {
+                    tweet.id = bod.message[0]._id
+                    statsApi.addTwitStats(tweet)
+                }
+                res.status(200);
+                res.send(body);
+            })
         }
     });
 }
