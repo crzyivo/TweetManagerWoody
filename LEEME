@@ -16,3 +16,6 @@ las credenciales son:{
   email: cso5tvh2lduroxg@ethereal.email,
   password: zfyZVHFC5rqU7uTtXJ
 }
+
+Para ejecutar la aplicacion en local se debe ejecutar por separado mediante "npm start" tanto la rama "master",
+como la rama "mongo"
