@@ -112,6 +112,16 @@ function getAccount(query,callback) {
 
 }
 
+function getAccounts(query,callback) {
+  request.get({
+    baseUrl: bdPath,
+    uri: "/users/getAccs",
+    qs: query,
+    json:true
+  },callback);
+
+}
+
 function postUrl(query,callback) {
   request.post({
     baseUrl: bdPath,
@@ -150,6 +160,7 @@ module.exports = {
     deleteAccount,
     postAccount,
     getAccount,
+    getAccounts,
     getProgramados,
     postUrl,
     postProgramados,

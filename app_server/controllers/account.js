@@ -112,6 +112,100 @@ const getAcc = function(req,res){
     });
 };
 
+const calc = function(req,res){
+    var datos = req.body.datos
+    var tiempos = datos.map((tweet)=>{
+        var fecha = new Date(tweet.created)
+        return {Hora: fecha.getHours(), Minuto: fecha.getMinutes(), Segundo: fecha.getSeconds(),
+            write: fecha.toTimeString(), diaSemana: fecha.getDay(), diaMes: fecha.getDate()} 
+    })
+    var dataBar = []
+    tiempos.map((tweet)=>{
+        dataBar.push(tweet.diaMes)
+    })
+    var dataBar2 = []
+    tiempos.map((tweet)=>{
+        dataBar2.push(tweet.diaSemana)
+    })
+    var count = 0;
+    var data = []
+    var table = []
+
+    var labels = []
+
+    for(var j = 0; j < 7; j++){
+        count = 0;
+        for(var i = 0; i < dataBar2.length; ++i){
+            if(dataBar2[i] == j){
+                count++;
+            }
+        }
+        table[j] = count
+    }
+
+    for(var j = 1; j < 32; j++){
+        count = 0;
+        labels[j-1] = j
+        for(var i = 0; i < dataBar.length; ++i){
+            if(dataBar[i] == j){
+                count++;
+            }
+        }
+        data[j-1] = count
+    }
+    console.log(data)
+    res.status(200)
+    res.send({datos: data, datos2: table, labels: labels})
+    };
+
+const getAllAcc = function(req,res){
+    bdPath.getAccounts({email: req.params.user},
+        function (err, resBd, body) {
+        if (err) {
+            res.status(500);
+            res.send(err);
+        }
+        if (body.error) {
+            res.status(400).send("El usuario no tiene cuentas asociadas");
+        } else {
+            console.log(body);
+            var tweetList = []
+            var num = 0
+            var numTweets = 0
+            var objeto = body.message
+            Object.keys(objeto).forEach(function (account) {
+                var tweets = []       
+                twPath.getUserTweets(objeto[account].account_name,300,objeto[account].token,objeto[account].tokenSecret,
+                    function (err,resTw,body) {
+                    if(!body.errors) {
+                        body.forEach(function (tweet) {
+                            tweets.push({
+                                text: tweet.text,
+                                screen_name: tweet.user.screen_name,
+                                name: tweet.user.name,
+                                img: tweet.user.profile_image_url_https,
+                                created: tweet.created_at,
+                                retweet_count: tweet.retweet_count,
+                                favorite_count:tweet.favorite_count
+                            });
+                        });
+                    }
+                    console.log(tweets)
+                    tweetList = tweetList.concat(tweets)
+                    num += 1
+                    if(Object.keys(objeto).length === num){
+                        res.status(200);
+                        res.send(tweetList);
+                    }
+                })
+            })
+                
+            
+            
+        }
+    });
+};
+
 const getAccUser = function(req,res){
     bdPath.getAccount({email: req.params.user, account: req.params.account },
         function (err, resBd, body) {
@@ -329,10 +423,10 @@ const sendProgTweet = function (req,res) {
                 id: "",
                 account_name: account.account_name,
                 location: {
-                    lat: 0,
-                    long: 0
+                    lat: "0",
+                    long: "0"
                 },
-                time: body.created_at,
+                fecha: new Date(body.created_at),
                 tweetLength: body.text.length
             };
             bdPath.getUsuarios({email: req.params.user}, function(err, redBd, bod){
@@ -520,6 +614,7 @@ const postProgramados = function(req,res){
 module.exports = {
     recover: recover,
     getAcc: getAcc,
+    getAllAcc: getAllAcc,
     deleteAcc: deleteAcc,
     postAcc: postAcc,
     TWExtract: TWExtract,
@@ -535,6 +630,7 @@ module.exports = {
     getAccRetweets: getAccRetweets,
     getAccFavs:getAccFavs,
     postUrlShorten: postUrlShorten,
+    calc: calc,
     postAccHashtag: postAccHashtag,
     getAccHashtag: getAccHashtag,
     deleteAccHashtag: deleteAccHashtag
