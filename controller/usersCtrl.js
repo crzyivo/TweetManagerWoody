@@ -168,7 +168,7 @@ const accPosthashtag = function (req,res) {
             var cuenta = usuario.cuentas.get(req.body.cuenta);
             console.log(req.body.hashtags);
             req.body.hashtags.forEach(function (hashtag) {
-                if(!cuenta.hashtags.includes(hashtag)) {
+                if(cuenta.hashtags && !cuenta.hashtags.includes(hashtag)) {
                     cuenta.hashtags.push(hashtag);
                 }
             });
@@ -177,7 +177,7 @@ const accPosthashtag = function (req,res) {
                     response = {"error": true, "message": "Error adding data"};
                     console.log(msg);
                 } else {
-                    response = {"error": false, "message": cuenta.hashtags};
+                    response = {"error": false, "message": cuenta.hashtags ? cuenta.hashtags : []};
                     console.log(msg);
                 }
                 res.json(response);
@@ -198,7 +198,7 @@ const accGethashtag = function (req,res) {
         } else if (user.length !== 0) {
             var usuario = user[0];
             var cuenta = usuario.cuentas.get(req.query.cuenta);
-            response = {"error": false, "message": cuenta.hashtags};
+            response = {"error": false, "message": cuenta.hashtags ? cuenta.hashtags : []};
         }else{
             response = {"error": true, "message": "No existe el usuario"};
         }
