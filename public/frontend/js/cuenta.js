@@ -96,7 +96,6 @@ accNg.controller('info',['$scope','$http','$window','localStorageService','$loca
   };
 
   $scope.urlShortcut = function(url,type){
-    // en vez de localhost->> https://mighty-depths-30160.herokuapp.com
     $http.post('/acc/addUrl',{ "originalUrl": url })
       .then(function (response){
           if(response.error === undefined){

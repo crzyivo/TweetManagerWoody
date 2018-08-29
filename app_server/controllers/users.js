@@ -1,4 +1,5 @@
 const bdPath = require('../bdApiCalls');
+const statsApi = require('../statsApiCalls');
 
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
@@ -51,6 +52,7 @@ const postUsers = function(req,res){
               console.log(passGenerada)
               var usuario = req.body;
               usuario.primerAcceso = true;
+              usuario.cuentas = {}
               usuario.password = CryptoJS.SHA256(passGenerada).toString(CryptoJS.enc.Base64);
               bcrypt.hash(usuario.password, 5).then(function (hash) {
                 usuario.password = hash;
@@ -160,12 +162,19 @@ const nuevaPass = function(req,res){
           actualizado.password = hash;
           console.log(actualizado);
           bdPath.putUsuarios(actualizado,
-              function (err,resBd,body) {
-                if(err){
-                  res.status(500);
-                  res.send(err);
+            function (err,resBd,body) {
+              if(err){
+                res.status(500);
+                res.send(err);
+              }
+              else{
+                if(!body.error){
+                  statsApi.createStat({id: actualizado._id, email: actualizado.email, fecha: actualizado.entradaApp});
+                  statsApi.updateAccess({id: actualizado._id});
                 }
-              })
+              }
+            }
+          )
         });
       });
   res.status(200);
@@ -279,10 +288,15 @@ const deleteUser = function(req, res){
   }
   console.log(query)
   bdPath.deleteUsuarios(query,
-    function (err, res) {
+    function (err, resbd,body) {
       if (err) {
         console.log(err);
         return;
+      }
+      else{
+        if(!body.error){
+          statsApi.updateBaja({id: body.message._id, fecha: new Date()});
+        }
       }
   });
   if(!req.user.admin){
