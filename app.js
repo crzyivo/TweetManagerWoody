@@ -17,7 +17,7 @@ var app = express();
 var cors = require('cors');
 
 // use it before all route definitions
-app.use(cors({origin: 'http://localhost:3003'}));
+app.use(cors({origin: herokuSettings.urlPath}));
 
 // view engine setup
 app.set('views', path.join(__dirname,'app_server', 'views'));

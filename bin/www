@@ -55,7 +55,7 @@ if(herokuSettings.entorno==="local") {
     });
   });
 }else {
-  var io = require('socket.io').listen(http);
+  var io = require('socket.io').listen(server);
   console.log('heroku sockets');
   console.log(io);
   io.on('connection', function (socket) {
