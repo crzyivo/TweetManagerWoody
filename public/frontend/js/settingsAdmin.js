@@ -23,7 +23,7 @@ setNg.controller('perfilCtrl',['$scope','$http','$window','localStorageService',
         $scope.same=false;
         $scope.changed=false;
         $scope.failure=false;
-        if ($scope.password1 !== $scope.password2) {
+        if ($scope.password1 !== $scope.password2 || $scope.password1==="" || $scope.password2==="") {
             $scope.same=true;
 
         } else {
