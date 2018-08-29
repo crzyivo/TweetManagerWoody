@@ -8,7 +8,7 @@ var hpaths = require("../conf/herokuSettings");
 var urlPath = hpaths.urlPath;
 
 /**
- * Configuración y acceso mediante la cuenta de Twitter
+ * Configuración tokens mediante la cuenta de Twitter
  */
 function createStrategy(){
   var strategy = new TwitterStrategy({
@@ -54,7 +54,6 @@ const recover = function(req,res){
             res.status(400).send("El usuario no existe");
         } else {
             var response = []
-            console.log(body)
             if(body.message[0].cuentas !== undefined){
                 var cuentas = body.message[0].cuentas;
                 Object.keys(cuentas).forEach(function (key) {
@@ -66,7 +65,6 @@ const recover = function(req,res){
                     description:cuentas[key].description
                   })
                 });
-              console.log(response);
             }
             res.status(200)
             res.send(response)
@@ -92,7 +90,6 @@ const getAcc = function(req,res){
         } else {
             var account = body.message;
             twPath.getHome(20,account.token,account.tokenSecret,function (err,resTw,body) {
-                console.log(body);
                 var tweets = [];
                 if(!body.errors) {
                     body.forEach(function (tweet) {
@@ -206,7 +203,6 @@ const getAccRetweets = function(req,res){
                 });
               });
             }
-            console.log(tweets.length);
             res.status(200);
             res.send(tweets);
           });
@@ -231,7 +227,6 @@ const getAccFavs = function(req,res){
             if(!body.errors) {
               body.forEach(function (tweet) {
                   if(parseInt(tweet.favorite_count)!==0) {
-                      console.log(tweet);
                     tweets.push({
                       text: tweet.text,
                       screen_name: tweet.user.screen_name,
@@ -244,7 +239,6 @@ const getAccFavs = function(req,res){
                   }
               });
             }
-            console.log(tweets.length);
             res.status(200);
             res.send(tweets);
           });
@@ -261,7 +255,6 @@ const postAccTweet = function(req,res){
                 res.send(err);
             }
             if (body.error) {
-                console.log('meeeeeh');
                 res.status(400).send("La cuenta no existe");
             } else {
                 var account = body.message;
@@ -272,7 +265,33 @@ const postAccTweet = function(req,res){
                         res.status(500);
                         res.send(err);
                     }else {
-                        console.log(body);
+                        var tweets = [];
+                        res.status(200);
+                        res.send(body);
+                    }
+                });
+            }
+        });
+};
+const testStream = function(req,res){
+    bdPath.getAccount({email: 'escuin100@gmail.com', account: 'Ivan_Escuin' },
+        function (err, resBd, body) {
+            if (err) {
+                console.log(err);
+                res.status(500);
+                res.send(err);
+            }
+            if (body.error) {
+                res.status(400).send("La cuenta no existe");
+            } else {
+                var account = body.message;
+                console.log(body);
+                twPath.stream('',account.token,account.tokenSecret,function (err,resTw,body) {
+                    if(err){
+                        console.log(err);
+                        res.status(500);
+                        res.send(err);
+                    }else {
                         var tweets = [];
                         res.status(200);
                         res.send(body);
@@ -309,7 +328,6 @@ const sendProgTweet = function (req,res) {
             res.status(500);
             res.send(err);
         }else {
-            console.log(body);
             var tweets = [];
             res.status(200);
             res.send(body);
@@ -379,6 +397,56 @@ const postAcc = function(req,res){
     });
 };
 
+const postAccHashtag = function(req,res){
+    bdPath.postHashtag({email: req.params.user, cuenta: req.params.account, hashtags:req.body.hashtags},
+        function (err, resBd, body) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.message.length === 0 || body.error) {
+                res.status(400).send("El usuario no existe");
+            } else {
+                res.status(200);
+                res.send(body.message);
+            }
+        });
+};
+
+const getAccHashtag = function(req,res){
+    console.log(req.params);
+    bdPath.getHashtag({email: req.params.user, cuenta: req.params.account},
+        function (err, resBd, body) {
+        console.log(body)
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.message.length === 0 || body.error) {
+                res.status(400).send("El usuario no existe");
+            } else {
+                res.status(200);
+                res.send(body.message);
+            }
+        });
+};
+
+const deleteAccHashtag = function(req,res){
+    bdPath.deleteHashtag({email: req.params.user, cuenta: req.params.account, hashtag:req.params.hashtag},
+        function (err, resBd, body) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            if (body.message.length === 0 || body.error) {
+                res.status(400).send("El usuario no existe");
+            } else {
+                res.status(200);
+                res.send(body.message);
+            }
+        });
+};
+
 const getTokens = passport.authenticate('twitterToken',{prompt: 'select_account'});
 const getTokensCallback = function (req, res) {
   console.log('callback babyyy');
@@ -446,6 +514,9 @@ module.exports = {
     sendProgTweet: sendProgTweet,
     getAccRetweets: getAccRetweets,
     getAccFavs:getAccFavs,
-    postUrlShorten: postUrlShorten
+    postUrlShorten: postUrlShorten,
+    postAccHashtag: postAccHashtag,
+    getAccHashtag: getAccHashtag,
+    deleteAccHashtag: deleteAccHashtag
 
 };

@@ -107,6 +107,24 @@ function getReTweets(count,user_token,user_secret,callback){
   },callback);
 }
 
+function stream(keys,user_token,user_secret,callback){
+    var url = 'https://stream.twitter.com/1.1/statuses/filter.json';
+    var oauth = {
+        consumer_key: credentials.twitterKeys.consumer_key,
+        consumer_secret: credentials.twitterKeys.consumer_secret,
+        token: user_token,
+        token_secret: user_secret
+    };
+    request.post({
+        url: url,
+        oauth: oauth,
+        qs:{
+            track:keys
+        }
+    }).on('data',callback);
+}
+
+
 
 
 module.exports = {
@@ -115,5 +133,6 @@ module.exports = {
     getUserTweets,
     getUserMentions,
     postTweet,
-    getReTweets
+    getReTweets,
+    stream
 };
