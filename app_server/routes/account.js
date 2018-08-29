@@ -22,6 +22,6 @@ router.get('/twits/retweets/:account/:user',ctrlAcc.getAccRetweets);
 router.get('/twits/favs/:account/:user',ctrlAcc.getAccFavs);
 router.post('/twits/hashtags/:account/:user',ctrlAcc.postAccHashtag);
 router.get('/twits/hashtags/:account/:user',ctrlAcc.getAccHashtag);
-router.delete('/twits/hashtags/:hashtag/:account/:user',ctrlAcc.deleteAccHashtag);
+router.delete('/twits/hashtags/:account/:user',ctrlAcc.deleteAccHashtag);
 
 module.exports = router;

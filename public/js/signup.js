@@ -26,6 +26,7 @@ regNg.controller('registro',['$scope','$http','$window','vcRecaptchaService',fun
             //OK
             $scope.introduceCaptcha=false;
             $scope.exito = true;
+            $scope.mostrar=false;
             $scope.textoBoton = 'Logeate';
             $scope.funcionBoton = 'vuelta()';
           })
@@ -39,6 +40,6 @@ regNg.controller('registro',['$scope','$http','$window','vcRecaptchaService',fun
     }
   };
   $scope.vuelta = function () {
-    $window.location.href('/');
+    $window.location.href='/';
   }
 }]);

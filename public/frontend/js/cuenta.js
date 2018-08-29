@@ -7,14 +7,18 @@ accNg.config(function (localStorageServiceProvider, $locationProvider) {
         .setStorageType('sessionStorage')
     $locationProvider.html5Mode(true);
 });
-accNg.factory('socket', function(socketFactory) {
-    return socketFactory({
-        ioSocket: io.connect('https://localhost:3003')
+accNg.factory('socketGen', function(socketFactory) {
+    return {newSocket: function(){
+        return socketFactory({
+      ioSocket: io.connect('/')
     });
+    }
+    }
 });
-accNg.controller('info', ['$scope', '$http', '$window', 'localStorageService', '$location','socket',
-    function ($scope, $http, $window, localStorageService, $location,socket) {
+accNg.controller('info', ['$scope', '$http', '$window', 'localStorageService', '$location','socketGen',
+    function ($scope, $http, $window, localStorageService, $location,socketGen) {
     var params = $location.search();
+    var socket=socketGen.newSocket();
     $scope.thisCuenta = params.acc;
     $scope.error = "";
     $scope.url = "";
@@ -70,19 +74,34 @@ accNg.controller('info', ['$scope', '$http', '$window', 'localStorageService', '
     };
 
     $scope.addHashtag = function () {
-        // var array_keys = $scope.new_hashtags.split(',');
-        // $http.post('/acc/twits/hashtags/' + $scope.thisCuenta + '/' + localStorageService.get('username'),
-        //     {hashtags: array_keys}
-        // ).then(function (response) {
-        //     $scope.hashtags = response.data;
-        // })
-        socket.send('holalsdñ');
+        var array_keys = $scope.new_hashtags.split(',');
+        $http.post('/acc/twits/hashtags/' + $scope.thisCuenta + '/' + localStorageService.get('username'),
+            {hashtags: array_keys}
+        ).then(function (response) {
+            socket.disconnect();
+            $scope.hashtags = response.data;
+            socket = socketGen.newSocket();
+            socket.emit('start',{keys:$scope.hashtags,cuenta:$scope.thisCuenta,usuario:localStorageService.get('username')});
+          socket.on('tweet',function (tweet) {
+            $scope.tweet_stream.unshift(tweet);
+          })
+        })
     };
 
     $scope.deleteHashtag = function (key) {
-        $http.delete('/acc/twits/hashtags/'+ key +'/' + $scope.thisCuenta + '/' + localStorageService.get('username')
+        $http.delete('/acc/twits/hashtags/'+ $scope.thisCuenta + '/' + localStorageService.get('username'),{params: {hashtag: key}}
         ).then(function (response) {
-            $scope.hashtags = response.data;
+            if(response.data) {
+              $scope.hashtags = response.data;
+            }else {
+                $scope.hashtags=[];
+            }
+          socket.disconnect();
+          socket = socketGen.newSocket();
+          socket.emit('start',{keys:$scope.hashtags,cuenta:$scope.thisCuenta,usuario:localStorageService.get('username')});
+          socket.on('tweet',function (tweet) {
+            $scope.tweet_stream.unshift(tweet);
+          })
         })
     };
 

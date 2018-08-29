@@ -1,7 +1,7 @@
 const passport = require('passport');
 const bdPath = require('../bdApiCalls');
 const twPath = require('../twitterCalls');
-const statsApi = require('../StatsApiCalls');
+const statsApi = require('../statsApiCalls');
 const request = require('request');
 var TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -425,7 +425,7 @@ const postAccHashtag = function(req,res){
                 res.send(err);
             }
             if (body.message.length === 0 || body.error) {
-                res.status(400).send("El usuario no existe");
+              res.send([]);
             } else {
                 res.status(200);
                 res.send(body.message);
@@ -443,7 +443,7 @@ const getAccHashtag = function(req,res){
                 res.send(err);
             }
             if (body.message.length === 0 || body.error) {
-                res.status(400).send("El usuario no existe");
+              res.send([]);
             } else {
                 res.status(200);
                 res.send(body.message);
@@ -452,14 +452,14 @@ const getAccHashtag = function(req,res){
 };
 
 const deleteAccHashtag = function(req,res){
-    bdPath.deleteHashtag({email: req.params.user, cuenta: req.params.account, hashtag:req.params.hashtag},
+    bdPath.deleteHashtag({email: req.params.user, cuenta: req.params.account, hashtag:req.query.hashtag},
         function (err, resBd, body) {
             if (err) {
                 res.status(500);
                 res.send(err);
             }
             if (body.message.length === 0 || body.error) {
-                res.status(400).send("El usuario no existe");
+                res.send([]);
             } else {
                 res.status(200);
                 res.send(body.message);

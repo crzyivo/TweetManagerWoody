@@ -52,7 +52,9 @@ server.on('listening', onListening);
 //Servidor websockets
 var io = require('socket.io')(serverhttps);
 io.on('connection',function (socket) {
+  console.log('connected');
     socket.on('start',function (msg) {
+      console.log(msg)
         streamCtrl.open(socket,msg);
     });
 });
