@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var usersRouter = require('./routes/users');
 var tweetProgramadoRouter =  require('./routes/tweetProgramado');
 var urlRouter = require('./routes/urlShorten');
+var statsRouter = require('./routes/userStats');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({"extended" : true}));
 app.use('/users', usersRouter);
 app.use('/programados',tweetProgramadoRouter);
 app.use('/url', urlRouter);
+app.use('/stat', statsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

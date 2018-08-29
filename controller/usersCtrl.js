@@ -9,7 +9,7 @@ const usrPost = function (req, res) {
     var response = {};
     newUser.save()
         .then((newUser) => {
-            response = {"error": false, "message": "User has been added!"};
+            response = {"error": false, "message": newUser};
             console.log(newUser);
             res.json(response);
         }).catch((err) => {
@@ -99,8 +99,8 @@ const usrDelete = function (req, res) {
     // console.log(req.query)  // Para hacer con postman
     // console.log(req.body)
     Usuario.findOneAndRemove({email: req.body.email})
-        .then(() => {
-            response = {"error": false, "message": "User has been deleted!"};
+        .then((user) => {
+            response = {"error": false, "message": user};
             res.json(response);
         }).catch((err) => {
         response = {"error": true, "message": "Error deleting data"};
