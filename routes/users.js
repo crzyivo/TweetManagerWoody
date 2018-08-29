@@ -11,5 +11,6 @@ router.put('/changeUser/:email',usrController.usrPutEmail);
 router.put('/',usrController.usrPut);
 router.delete('/',usrController.usrDelete);
 router.get('/getAcc',usrController.accGet);
+router.get('/getAccs',usrController.accsGet);
 
 module.exports = router;

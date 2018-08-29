@@ -162,6 +162,29 @@ const accGet = function (req,res) {
   })
 };
 
+const accsGet = function (req,res) {
+  // console.log(req.query)  // Para hacer con postman
+  // console.log(req.body)
+  console.log(req.query)
+  Usuario.find({email: req.query.email})
+  .then((user) => {
+
+      if (user.length === 0) {
+        response = {"error" : true,"message" : "Account doesn't exist"};
+      }
+      else {
+        console.log(user[0].cuentas);
+        var cuentas = user[0].cuentas;
+        response = {"error": false, "message": cuentas};
+      }
+      res.json(response);
+  }).catch((err)=>{
+      response = {"error" : true,"message" : "No existe el usuario"};
+      console.log(err)
+      res.json(response);
+  })
+};
+
 // const accPost = function (req,res) {
 //   // console.log(req.query)  // Para hacer con postman
 //   // console.log(req.body)
@@ -224,5 +247,5 @@ const accPost = function (req,res) {
 };
 
  module.exports = {
-    usrGet,usrPost,usrPut,usrPutEmail,usrDelete, accDelete, accPost, accGet
+    usrGet,usrPost,usrPut,usrPutEmail,usrDelete, accDelete, accPost, accGet, accsGet
 };
